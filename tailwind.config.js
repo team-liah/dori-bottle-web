@@ -13,10 +13,15 @@ module.exports = {
       gray: '#8492a6',
       'gray-light': '#d3dce6',
       white: '#ffffff',
+      black: '#000000',
+      primary: '#FFB120',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
+    },
+    height: {
+      screen: '100dvh',
     },
     extend: {
       spacing: {
