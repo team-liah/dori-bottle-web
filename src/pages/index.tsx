@@ -1,22 +1,11 @@
-import ExampleComponent from '@/components/ExampleComponent';
-import ExampleCompositionComponent from '@/components/ExampleCompositionComponent';
-import { ExampleContext } from '@/context/ExampleContext';
 import Head from 'next/head';
-import { Fragment, useContext } from 'react';
-import tw from 'tailwind-styled-components';
+import { Fragment } from 'react';
 
 //#region Styled Components
-
-const ContextExampleContainer = tw.div`fixed top-0 right-0 bg-gray-dark`;
-
-const ContextData = tw.span`px-4 text-white`;
-
-const ChangeButton = tw.button`bg-green text-white px-4 py-2`;
 
 //#endregion
 
 export default function Home() {
-  const { data, handleData } = useContext(ExampleContext);
   return (
     <Fragment>
       <Head>
@@ -25,13 +14,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.icso" />
       </Head>
-      <ContextExampleContainer>
-        <ContextData>{data}</ContextData>
-        <ChangeButton onClick={() => handleData('Context Has Changed!')}>Change</ChangeButton>
-      </ContextExampleContainer>
-      <ExampleCompositionComponent name="This is Composition Exammple Component" header={<ExampleComponent name="Header" />} footer={<ExampleComponent name="Footer" />}>
-        <ExampleComponent name="Children" />
-      </ExampleCompositionComponent>
+      <div>this is index page</div>
     </Fragment>
   );
 }
