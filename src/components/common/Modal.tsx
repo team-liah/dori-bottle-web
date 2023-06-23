@@ -1,14 +1,24 @@
-import { motion } from 'framer-motion';
-import React, { Fragment } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
 import { useContext } from 'react';
 import tw from 'tailwind-styled-components';
 import Portal from './Portal';
-import { ModalContext } from '@/context/ModalContext';
+import { FloatingContext } from '@/context/FloatingContext';
 
 //#region Styled Component
 
-const Dimmed = tw.div`
+const ModalWrapper = tw.div`
   fixed
+  left-0
+  top-0
+  z-[2000]
+  h-screen
+  w-screen
+  overflow-hidden
+`;
+
+const Dimmed = tw.div`
+  absolute
   left-0
   top-0
   h-screen
@@ -28,25 +38,28 @@ const ModalContainer = tw(motion.div)`
 //#endregion
 
 const Modal = () => {
-  const { openedModals, closeModal } = useContext(ModalContext);
+  const { openedModals, closeModal } = useContext(FloatingContext);
 
   return (
     <Portal>
-      {openedModals.map((modal, index) => {
-        const { component: Component, props } = modal;
+      <AnimatePresence>
+        {openedModals.map((modal, index) => {
+          const { component: Component, props } = modal;
 
-        return (
-          <Fragment key={index}>
-            <Dimmed onClick={() => closeModal(Component)} />
-            <ModalContainer
-              initial={{ opacity: 0, y: '100%' }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <Component {...props} />
-            </ModalContainer>
-          </Fragment>
-        );
-      })}
+          return (
+            <ModalWrapper key={index}>
+              <Dimmed onClick={() => closeModal(Component)} />
+              <ModalContainer
+                initial={{ opacity: 0, y: '100%' }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: '100%', transition: { duration: 0.1 } }}
+              >
+                <Component {...props} />
+              </ModalContainer>
+            </ModalWrapper>
+          );
+        })}
+      </AnimatePresence>
     </Portal>
   );
 };

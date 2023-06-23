@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { ModalContext } from '@/context/ModalContext';
+import { FloatingContext } from '@/context/FloatingContext';
 
 const useModals = () => {
-  const { openModal, closeModal } = useContext(ModalContext);
+  const { openModal, closeModal } = useContext(FloatingContext);
 
   return { openModal, closeModal };
 };
