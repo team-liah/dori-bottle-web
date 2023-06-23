@@ -1,31 +1,44 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useState } from 'react';
+
+interface ModalComponentType {
+  component: React.FC<any>;
+  props?: any;
+}
 
 interface ModalContextType {
-  openedModals: React.ReactNode[];
-  openModal: (Component: React.ReactNode) => void;
-  closeModal: (Component: React.ReactNode) => void;
+  openedModals: ModalComponentType[];
+  openModal: (modalComponent: ModalComponentType) => void;
+  closeModal: (component: React.FC<any>) => void;
 }
 
 interface ModalContextProps {
   children: React.ReactNode;
 }
 
-export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
+export const ModalContext = createContext<ModalContextType>(
+  {} as ModalContextType,
+);
 
-export const ModalProvider = (props: ModalContextProps) => {
-  const [openedModals, setOpenedModals] = useState<React.ReactNode[]>([]);
+const ModalProvider: React.FC<ModalContextProps> = ({ children }) => {
+  const [openedModals, setOpenedModals] = useState<ModalComponentType[]>([]);
 
-  const openModal = (Component: React.ReactNode) => {
+  const openModal = ({ component, props }: ModalComponentType) => {
     setOpenedModals((modals) => {
-      return [...modals, Component];
+      return [...modals, { component, props }];
     });
   };
 
-  const closeModal = (Component: React.ReactNode) => {
+  const closeModal = (component: React.FC<any>) => {
     setOpenedModals((modals) => {
-      return modals.filter((modal) => modal !== Component);
+      return modals.filter((modal) => modal.component !== component);
     });
   };
 
-  return <ModalContext.Provider value={{ openedModals, openModal, closeModal }}>{props.children}</ModalContext.Provider>;
+  return (
+    <ModalContext.Provider value={{ openedModals, openModal, closeModal }}>
+      {children}
+    </ModalContext.Provider>
+  );
 };
+
+export default ModalProvider;

@@ -10,15 +10,33 @@ interface IExampleCompositionComponentProps {
 
 //#region Styled Components
 
-const Container = tw.div`w-[400px] flex flex-col p-2`;
+const Container = tw.div`
+  flex
+  w-[400px]
+  flex-col
+  p-2
+`;
 
-const Description = tw.span`p-2 bg-blue`;
+const Description = tw.span`
+  bg-blue
+p-2
+`;
 
-const BodyContainer = tw.div`flex flex-col gap-1 bg-gray`;
+const BodyContainer = tw.div`
+  flex
+  flex-col
+  gap-1
+  bg-gray
+`;
 
 //#endregion
 
-const ExampleCompositionComponent = ({ name, children, header, footer }: IExampleCompositionComponentProps) => {
+const ExampleCompositionComponent = ({
+  name,
+  children,
+  header,
+  footer,
+}: IExampleCompositionComponentProps) => {
   return (
     <Container>
       <Description>{name}</Description>

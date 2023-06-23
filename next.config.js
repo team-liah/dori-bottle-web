@@ -4,9 +4,7 @@ const withPWA = require('next-pwa');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   reactStrictMode: true,
   async rewrites() {
     return [
@@ -20,7 +18,7 @@ const config = {
 
 const nextConfig = withPWA({
   dest: 'public',
-  // disable: !isProduction,
+  disable: !isProduction,
   runtimeCaching: [],
 })(config);
 

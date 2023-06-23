@@ -9,8 +9,7 @@ interface IPortalProps {
 
 //#endregion
 
-function Portal(props: IPortalProps) {
-  const { children } = props;
+function Portal({ children }: IPortalProps) {
   const [element, setElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
