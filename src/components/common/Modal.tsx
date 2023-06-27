@@ -12,8 +12,11 @@ const ModalWrapper = tw.div`
   left-0
   top-0
   z-[2000]
+  flex
   h-screen
   w-screen
+  items-center
+  justify-center
   overflow-hidden
 `;
 
@@ -28,6 +31,13 @@ const Dimmed = tw.div`
 `;
 
 const ModalContainer = tw(motion.div)`
+  absolute
+  w-fit
+  overflow-hidden
+  rounded-[20px]
+`;
+
+const BottomSheetContainer = tw(motion.div)`
   w-full
   absolute
   bottom-0
@@ -49,13 +59,31 @@ const Modal = () => {
           return (
             <ModalWrapper key={index}>
               <Dimmed onClick={() => closeModal(Component)} />
-              <ModalContainer
-                initial={{ opacity: 0, y: '100%' }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: '100%', transition: { duration: 0.1 } }}
-              >
-                <Component {...props} />
-              </ModalContainer>
+              {modal.position === 'bottom' ? (
+                <BottomSheetContainer
+                  initial={{ opacity: 0, y: '100%' }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: '100%',
+                    transition: { duration: 0.1 },
+                  }}
+                >
+                  <Component {...props} />
+                </BottomSheetContainer>
+              ) : (
+                <ModalContainer
+                  initial={{ opacity: 0, y: '100%' }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: '100%',
+                    transition: { duration: 0.1 },
+                  }}
+                >
+                  <Component {...props} />
+                </ModalContainer>
+              )}
             </ModalWrapper>
           );
         })}

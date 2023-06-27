@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useState } from 'react';
 
 interface FloatingComponentType {
   component: React.FC<any>;
+  position?: 'center' | 'bottom';
   props?: any;
 }
 
@@ -27,9 +28,9 @@ const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
   const [openedToast, setOpenedToasts] = useState<FloatingComponentType>();
 
   const openModal = useCallback(
-    ({ component, props }: FloatingComponentType) => {
+    ({ component, position, props }: FloatingComponentType) => {
       setOpenedModals((modals) => {
-        return [...modals, { component, props }];
+        return [...modals, { component, position, props }];
       });
     },
     [],

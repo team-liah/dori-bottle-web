@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Custom from '@/components/common/CustomStyledComponent';
-import TestModal from '@/components/test/TestModal';
+import TestBottomModal from '@/components/test/TestBottomModal';
 import useModals from '@/hooks/useModals';
 
 //#region Styled Component
@@ -10,18 +10,19 @@ import useModals from '@/hooks/useModals';
 export default function Login() {
   const { openModal, closeModal } = useModals();
 
-  const handleClickTestModal = () => {
+  const handleClickTestBottomModal = () => {
     openModal({
-      component: TestModal,
+      component: TestBottomModal,
+      position: 'bottom',
       props: {
-        onClose: () => closeModal(TestModal),
+        onClose: () => closeModal(TestBottomModal),
       },
     });
   };
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-end px-5 py-8">
-      <Custom.Button onClick={handleClickTestModal}>
+      <Custom.Button onClick={handleClickTestBottomModal}>
         로그인/회원가입
       </Custom.Button>
     </div>
