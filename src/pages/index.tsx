@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Fragment } from 'react';
 
 //#region Styled Components
@@ -14,7 +15,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.icso" />
       </Head>
-      <div>this is index page</div>
+      <div>
+        this is index page
+        <Link href={'/login'}>
+          <div>로그인 페이지로 이동</div>
+        </Link>
+      </div>
     </Fragment>
   );
 }

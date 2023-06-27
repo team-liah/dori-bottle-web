@@ -1,5 +1,11 @@
 {
   "extends": ["react-app", "prettier/prettier"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ],
   "plugins": ["react-hooks", "import", "prettier", "@typescript-eslint"],
   "settings": {
     "import/resolver": {
@@ -20,13 +26,23 @@
     "no-tabs": "error",
     "import/no-anonymous-default-export": 0,
     "object-shorthand": "error",
-    "padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "return" }],
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" }
+    ],
     "@typescript-eslint/no-redeclare": 0,
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
     "import/order": [
       "error",
       {
-        "groups": [["external", "builtin"], "internal", ["parent", "sibling", "index"]],
+        "groups": [
+          ["external", "builtin"],
+          "internal",
+          ["parent", "sibling", "index"]
+        ],
         "alphabetize": { "order": "asc" }
       }
     ],

@@ -1,34 +1,93 @@
-import React, { Fragment } from 'react';
-import Portal from './Portal';
-import tw from 'tailwind-styled-components';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
 import { useContext } from 'react';
-import { ModalContext } from '@/context/ModalContext';
+import tw from 'tailwind-styled-components';
+import Portal from './Portal';
+import { FloatingContext } from '@/context/FloatingContext';
 
 //#region Styled Component
 
-const Dimmed = tw.div<{ $open: boolean }>`
-  fixed w-screen h-screen left-0 top-0 bg-black bg-opacity-60 ${(props) => (props.$open ? '' : 'hidden')}`;
+const ModalWrapper = tw.div`
+  fixed
+  left-0
+  top-0
+  z-[2000]
+  flex
+  h-screen
+  w-screen
+  items-center
+  justify-center
+  overflow-hidden
+`;
+
+const Dimmed = tw.div`
+  absolute
+  left-0
+  top-0
+  h-screen
+  w-screen
+  bg-black
+  bg-opacity-60
+`;
 
 const ModalContainer = tw(motion.div)`
-  w-full absolute bottom-0 bg-white rounded-t-[25px] overflow-hidden pt-10 pb-8`;
+  absolute
+  w-fit
+  overflow-hidden
+  rounded-[20px]
+`;
+
+const BottomSheetContainer = tw(motion.div)`
+  w-full
+  absolute
+  bottom-0
+  rounded-t-[25px]
+  overflow-hidden
+`;
 
 //#endregion
 
 const Modal = () => {
-  const { openedModals, closeModal } = useContext(ModalContext);
+  const { openedModals, closeModal } = useContext(FloatingContext);
+
   return (
     <Portal>
-      {openedModals.map((modal, index) => {
-        return (
-          <Fragment key={modal?.toLocaleString()}>
-            <Dimmed $open={true} onClick={() => closeModal(modal)} />
-            <ModalContainer initial={{ opacity: 0, y: '100%' }} animate={{ opacity: 1, y: 0 }}>
-              {modal}
-            </ModalContainer>
-          </Fragment>
-        );
-      })}
+      <AnimatePresence>
+        {openedModals.map((modal, index) => {
+          const { component: Component, props } = modal;
+
+          return (
+            <ModalWrapper key={index}>
+              <Dimmed onClick={() => closeModal(Component)} />
+              {modal.position === 'bottom' ? (
+                <BottomSheetContainer
+                  initial={{ opacity: 0, y: '100%' }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: '100%',
+                    transition: { duration: 0.1 },
+                  }}
+                >
+                  <Component {...props} />
+                </BottomSheetContainer>
+              ) : (
+                <ModalContainer
+                  initial={{ opacity: 0, y: '100%' }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: '100%',
+                    transition: { duration: 0.1 },
+                  }}
+                >
+                  <Component {...props} />
+                </ModalContainer>
+              )}
+            </ModalWrapper>
+          );
+        })}
+      </AnimatePresence>
     </Portal>
   );
 };
