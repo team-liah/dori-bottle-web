@@ -10,7 +10,9 @@ const config = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.BASE_API_URL}/api/v1/:path*`,
+        destination: `${
+          process.env.BASE_API_URL || 'https://api.doribottle-id.co.kr'
+        }/api/v1/:path*`,
       },
     ];
   },
