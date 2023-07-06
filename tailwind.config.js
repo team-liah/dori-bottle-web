@@ -14,8 +14,12 @@ module.exports = {
       'gray-light': '#d3dce6',
       white: '#ffffff',
       black: '#000000',
-      primary: '#FFB120',
       toast: '#425776',
+      'main-blue': '#056BF1',
+      'point-yellow': '#FFB120',
+      unactivated: '#B9B9B9',
+      gray1: '#353535',
+      alert: '#FF5151',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
