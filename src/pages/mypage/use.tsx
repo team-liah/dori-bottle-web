@@ -7,7 +7,7 @@ import useModals from '@/hooks/useModals';
 
 //#endregion
 
-export default function Login() {
+export default function Use() {
   const { openModal, closeModal } = useModals();
 
   const handleClickTestBottomModal = () => {
