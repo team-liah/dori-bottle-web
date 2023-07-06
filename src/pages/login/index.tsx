@@ -58,7 +58,7 @@ export default function Login() {
       </TopContainer>
       <LinkWrapper
         href={`/login/confirmation${
-          callbackUrl && `?callbackUrl=${encodeURIComponent(callbackUrl)}`
+          callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''
         }`}
       >
         <Custom.Button>휴대폰번호로 시작하기</Custom.Button>

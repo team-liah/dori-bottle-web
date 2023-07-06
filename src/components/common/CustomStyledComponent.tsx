@@ -8,9 +8,12 @@ export const Button = tw.button`
     text-[16px]
     font-medium
     text-white
+    transition-colors
+    disabled:bg-unactivated
 `;
 
 export const MobileWrapper = tw.div`
+    relative
     h-screen
     w-screen
     bg-white

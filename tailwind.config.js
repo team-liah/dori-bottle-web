@@ -17,6 +17,9 @@ module.exports = {
       toast: '#425776',
       'main-blue': '#056BF1',
       'point-yellow': '#FFB120',
+      unactivated: '#B9B9B9',
+      gray1: '#353535',
+      alert: '#FF5151',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
