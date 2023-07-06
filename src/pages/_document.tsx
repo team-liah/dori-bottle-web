@@ -4,8 +4,8 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="/manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#1976d2" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#FFFFFF" />
       </Head>
       <body>
         <Main />
