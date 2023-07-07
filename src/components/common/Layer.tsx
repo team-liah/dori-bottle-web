@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import * as Icon from 'react-feather';
+import * as Icon from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 
@@ -41,7 +41,7 @@ const Title = tw.span`
   text-gray1
 `;
 
-const BackButton = tw(Icon.ArrowLeft)`
+const BackButton = tw(Icon.FiArrowLeft)`
   w-[24px]
   h-[24px]
   cursor-pointer

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AlertCircle } from 'react-feather';
 import { ControllerRenderProps } from 'react-hook-form';
+import { FiAlertCircle } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import { ILoginFormInputs } from '@/types/user';
 
@@ -57,7 +57,7 @@ const StyledInput = tw.input<{ $error?: boolean }>`
   ${({ $error }) => $error && 'border-alert'}
 `;
 
-const AlertCircleIcon = tw(AlertCircle)`
+const AlertCircleIcon = tw(FiAlertCircle)`
   w-[24px]
   h-[24px]
   text-white
