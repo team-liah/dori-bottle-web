@@ -6,7 +6,13 @@
       "parser": "@typescript-eslint/parser"
     }
   ],
-  "plugins": ["react-hooks", "import", "prettier", "@typescript-eslint"],
+  "plugins": [
+    "react-hooks",
+    "import",
+    "prettier",
+    "@typescript-eslint",
+    "@tanstack/query"
+  ],
   "settings": {
     "import/resolver": {
       "typescript": {}
@@ -51,6 +57,8 @@
       {
         "ignoreDeclarationSort": true
       }
-    ]
+    ],
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/prefer-query-object-syntax": "error"
   }
 }

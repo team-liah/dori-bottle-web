@@ -1,15 +1,12 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
-import { getHypenTel } from '../../../utils/util';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Input from '@/components/common/Input';
 import Layer from '@/components/common/Layer';
-import { ILoginFormInputs } from '@/types/common';
-
-interface IPhoneInputLayerProps {
-  onClickNext: () => void;
-}
+import { Regex } from '@/constants/Regex';
+import { ILoginFormInputs } from '@/types/user';
+import { getHypenTel } from '@/utils/util';
 
 //#region Styled Component
 
@@ -25,17 +22,19 @@ const Wrapper = tw.div`
 
 //#endregion
 
-const PhoneInputLayer = ({ onClickNext }: IPhoneInputLayerProps) => {
-  const { control, watch } = useFormContext<ILoginFormInputs>();
+const PhoneInputLayer = () => {
+  const {
+    control,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useFormContext<ILoginFormInputs>();
 
   return (
     <Layer
       title="휴대폰번호 입력"
       footer={
-        <Custom.Button
-          disabled={watch('loginId').length !== 13}
-          onClick={onClickNext}
-        >
+        <Custom.Button type="submit" disabled={watch('loginId')?.length !== 13}>
           다음
         </Custom.Button>
       }
@@ -44,16 +43,27 @@ const PhoneInputLayer = ({ onClickNext }: IPhoneInputLayerProps) => {
         <Controller
           name="loginId"
           control={control}
-          rules={{ required: true }}
+          rules={{
+            required: '휴대폰번호를 입력해주세요.',
+            pattern: {
+              value: Regex.PHONE_NUMBER_REGEX,
+              message: '잘못된 전화번호 형식입니다.',
+            },
+          }}
           render={({ field }) => (
             <Input
               label="휴대폰번호를 입력해주세요"
               id="loginId"
               type="tel"
               maxLength={13}
+              autoFocus={true}
+              error={errors.loginId?.message}
               field={{
                 ...field,
-                onChange: (e) => field.onChange(getHypenTel(e.target.value)),
+                onChange: (e) => {
+                  clearErrors('loginId');
+                  field.onChange(getHypenTel(e.target.value));
+                },
               }}
             />
           )}

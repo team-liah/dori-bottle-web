@@ -19,6 +19,7 @@ module.exports = {
       'point-yellow': '#FFB120',
       unactivated: '#B9B9B9',
       gray1: '#353535',
+      gray2: '#5F5F5F',
       alert: '#FF5151',
     },
     fontFamily: {
