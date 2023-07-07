@@ -1,11 +1,13 @@
+import { Regex } from '@/constants/Regex';
+
 export const getHypenTel = (tel: string) => {
   return tel
-    .replace(/[^0-9]/g, '')
+    .replace(Regex.ONLY_NUMBER_REGEX, '')
     .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
 };
 
 export const getOnlyNumber = (str: string) => {
-  return str.replace(/[^0-9]/g, '');
+  return str.replace(Regex.ONLY_NUMBER_REGEX, '');
 };
 
 export const getTimeFormat = (second: number) => {

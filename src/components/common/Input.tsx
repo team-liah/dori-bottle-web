@@ -55,7 +55,7 @@ const StyledInput = tw.input<{ $error?: boolean }>`
   text-gray1
   focus-within:border-main-blue
   focus-within:outline-none
-  ${({ $error }) => $error && 'border-alert'}
+  ${({ $error }) => $error && 'border-alert focus-within:border-alert'}
 `;
 
 const AlertCircleIcon = tw(FiAlertCircle)`

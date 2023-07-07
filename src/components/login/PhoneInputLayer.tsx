@@ -1,15 +1,12 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
-import { getHypenTel } from '../../../utils/util';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Input from '@/components/common/Input';
 import Layer from '@/components/common/Layer';
+import { Regex } from '@/constants/Regex';
 import { ILoginFormInputs } from '@/types/user';
-
-interface IPhoneInputLayerProps {
-  onSubmit: () => void;
-}
+import { getHypenTel } from '@/utils/util';
 
 //#region Styled Component
 
@@ -25,7 +22,7 @@ const Wrapper = tw.div`
 
 //#endregion
 
-const PhoneInputLayer = ({ onSubmit }: IPhoneInputLayerProps) => {
+const PhoneInputLayer = () => {
   const {
     control,
     watch,
@@ -37,10 +34,7 @@ const PhoneInputLayer = ({ onSubmit }: IPhoneInputLayerProps) => {
     <Layer
       title="휴대폰번호 입력"
       footer={
-        <Custom.Button
-          disabled={watch('loginId').length !== 13}
-          onClick={onSubmit}
-        >
+        <Custom.Button type="submit" disabled={watch('loginId')?.length !== 13}>
           다음
         </Custom.Button>
       }
@@ -49,7 +43,13 @@ const PhoneInputLayer = ({ onSubmit }: IPhoneInputLayerProps) => {
         <Controller
           name="loginId"
           control={control}
-          rules={{ required: true }}
+          rules={{
+            required: '휴대폰번호를 입력해주세요.',
+            pattern: {
+              value: Regex.PHONE_NUMBER_REGEX,
+              message: '잘못된 전화번호 형식입니다.',
+            },
+          }}
           render={({ field }) => (
             <Input
               label="휴대폰번호를 입력해주세요"

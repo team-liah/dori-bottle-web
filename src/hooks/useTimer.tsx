@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const useTimer = () => {
-  const [seconds, setSeconds] = useState(0);
+const useTimer = (timer: number) => {
+  const [seconds, setSeconds] = useState(timer);
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds(seconds - 1);

@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
-import { getTimeFormat } from '../../../utils/util';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Input from '@/components/common/Input';
 import Layer from '@/components/common/Layer';
 import useTimer from '@/hooks/useTimer';
 import useToast from '@/hooks/useToast';
 import { ILoginFormInputs } from '@/types/user';
+import { getOnlyNumber, getTimeFormat } from '@/utils/util';
 
 interface IVerifyInputLayerProps {
   onResend: () => void;
-  onSubmit: () => void;
   onClickBack: () => void;
 }
 
@@ -45,21 +44,18 @@ const RefreshText = tw.span`
 
 const VerifyInputLayer = ({
   onResend,
-  onSubmit,
   onClickBack,
 }: IVerifyInputLayerProps) => {
   const {
     control,
+    setFocus,
     watch,
+    resetField,
     clearErrors,
     formState: { errors },
   } = useFormContext<ILoginFormInputs>();
   const { openToast } = useToast();
-  const { seconds, handleSeconds } = useTimer();
-
-  useEffect(() => {
-    handleSeconds(300);
-  }, [handleSeconds]);
+  const { seconds, handleSeconds } = useTimer(300);
 
   const handleClickRefresh = () => {
     if (seconds > 290) {
@@ -72,6 +68,8 @@ const VerifyInputLayer = ({
 
     onResend();
     handleSeconds(300);
+    resetField('loginPassword');
+    setFocus('loginPassword');
   };
 
   return (
@@ -79,8 +77,8 @@ const VerifyInputLayer = ({
       title="인증번호 입력"
       footer={
         <Custom.Button
+          type="submit"
           disabled={seconds < 1 || watch('loginPassword').length < 6}
-          onClick={onSubmit}
         >
           다음
         </Custom.Button>
@@ -91,12 +89,17 @@ const VerifyInputLayer = ({
         <Controller
           name="loginPassword"
           control={control}
-          rules={{ required: true }}
+          rules={{
+            minLength: {
+              value: 6,
+              message: '인증번호 6자리를 입력해주세요.',
+            },
+          }}
           render={({ field }) => (
             <Input
               label="인증번호 6자리를 입력해주세요"
               id="loginPassword"
-              type="text"
+              type="tel"
               maxLength={6}
               error={errors.loginPassword?.message}
               autoFocus={true}
@@ -105,7 +108,7 @@ const VerifyInputLayer = ({
                 ...field,
                 onChange: (e) => {
                   clearErrors('loginPassword');
-                  field.onChange(e);
+                  field.onChange(getOnlyNumber(e.target.value));
                 },
               }}
             />

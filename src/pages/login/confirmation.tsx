@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { getErrorMessage } from '../../../utils/error';
+import { FormProvider, useForm } from 'react-hook-form';
 import PhoneInputLayer from '@/components/login/PhoneInputLayer';
 import VerifyInputLayer from '@/components/login/VerifyInputLayer';
 import useToast from '@/hooks/useToast';
 import { ILoginFormInputs } from '@/types/user';
+import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
 
@@ -37,6 +37,7 @@ const Confirmation = () => {
   // 인증번호 전송
   const onSendVerificationCode = async () => {
     try {
+      await methods.trigger('loginId');
       await axios.post('/api/account/auth/send-sms', {
         loginId: methods.getValues('loginId'),
       });
@@ -49,13 +50,13 @@ const Confirmation = () => {
     }
   };
 
-  const onSubmitVerifyToken: SubmitHandler<ILoginFormInputs> = async (data) => {
+  const onSubmitVerifyToken = async () => {
     try {
-      await axios.post('/api/account/auth', data);
+      await axios.post('/api/account/auth', methods.getValues());
       openToast({
         component: '로그인 성공',
       });
-      router.push('/');
+      router.push((router.query.callbackUrl as string) || '/');
     } catch (error) {
       methods.setError('loginPassword', {
         type: 'manual',
@@ -64,14 +65,21 @@ const Confirmation = () => {
     }
   };
 
+  const onSubmit = async () => {
+    if (step === 0) {
+      await onSendVerificationCode();
+    } else {
+      await onSubmitVerifyToken();
+    }
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={(e) => e.preventDefault()}>
-        {step === 0 && <PhoneInputLayer onSubmit={onSendVerificationCode} />}
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        {step === 0 && <PhoneInputLayer />}
         {step === 1 && (
           <VerifyInputLayer
             onResend={onSendVerificationCode}
-            onSubmit={methods.handleSubmit(onSubmitVerifyToken)}
             onClickBack={() => setStep(0)}
           />
         )}
