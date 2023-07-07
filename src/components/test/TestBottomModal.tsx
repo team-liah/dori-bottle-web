@@ -1,6 +1,5 @@
 import React from 'react';
 import TestModal from './TestModal';
-import TestToast from './TestToast';
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
 
@@ -17,8 +16,7 @@ const TestBottomModal = ({ onClose }: ITestBottomModalProps) => {
   const { openToast } = useToast();
   const handleToast = (text: string) => {
     openToast({
-      component: TestToast,
-      props: { children: text },
+      component: text,
     });
   };
 
