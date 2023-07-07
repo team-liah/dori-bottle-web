@@ -57,7 +57,7 @@ const Toast = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <openedToast.component {...openedToast.props} />
+              {openedToast.component}
             </ToastContainer>
           </ToastWrapper>
         )}

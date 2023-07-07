@@ -15,6 +15,7 @@ interface IInputProps {
   error?: string;
   maxLength?: number;
   autoFocus?: boolean;
+  autoComplete?: string;
   field: ControllerRenderProps<ILoginFormInputs, any>;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
@@ -90,6 +91,7 @@ const Input = ({
   maxLength,
   readOnly,
   autoFocus,
+  autoComplete,
   field,
 }: IInputProps) => {
   return (
@@ -105,6 +107,7 @@ const Input = ({
           maxLength={maxLength}
           $error={error !== undefined}
           autoFocus={autoFocus}
+          autoComplete={autoComplete}
           {...field}
         />
         {error && <AlertCircleIcon />}
