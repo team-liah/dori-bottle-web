@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import * as Icon from 'react-feather';
+import * as Icon from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 
@@ -8,6 +8,7 @@ interface ILayerProps {
   title: string;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  onClickBack?: () => void;
 }
 
 //#region Styled Components
@@ -40,7 +41,7 @@ const Title = tw.span`
   text-gray1
 `;
 
-const BackButton = tw(Icon.ArrowLeft)`
+const BackButton = tw(Icon.FiArrowLeft)`
   w-[24px]
   h-[24px]
   cursor-pointer
@@ -55,12 +56,20 @@ const Body = tw.div`
 
 //#endregion
 
-const Layer = ({ title, children, footer }: ILayerProps) => {
+const Layer = ({ title, children, footer, onClickBack }: ILayerProps) => {
   const router = useRouter();
+
+  const handleBack = () => {
+    if (onClickBack) {
+      onClickBack();
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <Wrapper>
-      <BackButton onClick={() => router.back()} />
+      <BackButton onClick={handleBack} />
       <TopWrapper>
         <Header>
           <Title>{title}</Title>

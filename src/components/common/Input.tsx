@@ -1,8 +1,8 @@
 import React from 'react';
-import { AlertCircle } from 'react-feather';
 import { ControllerRenderProps } from 'react-hook-form';
+import { FiAlertCircle } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
-import { ILoginFormInputs } from '@/types/common';
+import { ILoginFormInputs } from '@/types/user';
 
 interface IInputProps {
   id?: string;
@@ -12,9 +12,10 @@ interface IInputProps {
   value?: string | number;
   label?: string;
   readOnly?: boolean;
-  error?: boolean;
-  errorText?: string;
+  error?: string;
   maxLength?: number;
+  autoFocus?: boolean;
+  autoComplete?: string;
   field: ControllerRenderProps<ILoginFormInputs, any>;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
@@ -52,11 +53,12 @@ const StyledInput = tw.input<{ $error?: boolean }>`
   leading-[22px]
   tracking-[-0.48px]
   text-gray1
-  focus-within:outline-main-blue
-  ${({ $error }) => $error && 'border-alert'}
+  focus-within:border-main-blue
+  focus-within:outline-none
+  ${({ $error }) => $error && 'border-alert focus-within:border-alert'}
 `;
 
-const AlertCircleIcon = tw(AlertCircle)`
+const AlertCircleIcon = tw(FiAlertCircle)`
   w-[24px]
   h-[24px]
   text-white
@@ -86,9 +88,10 @@ const Input = ({
   defaultValue,
   label,
   error,
-  errorText,
   maxLength,
   readOnly,
+  autoFocus,
+  autoComplete,
   field,
 }: IInputProps) => {
   return (
@@ -102,12 +105,14 @@ const Input = ({
           readOnly={readOnly}
           placeholder={placeholder}
           maxLength={maxLength}
-          $error={error}
+          $error={error !== undefined}
+          autoFocus={autoFocus}
+          autoComplete={autoComplete}
           {...field}
         />
         {error && <AlertCircleIcon />}
       </InputWrapper>
-      <ErrorText>{errorText}</ErrorText>
+      <ErrorText>{error}</ErrorText>
     </Wrapper>
   );
 };

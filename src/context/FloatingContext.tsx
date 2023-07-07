@@ -6,12 +6,15 @@ interface FloatingComponentType {
   props?: any;
 }
 
+interface ToastType {
+  component: React.ReactNode;
+}
 interface FloatingContextType {
   openedModals: FloatingComponentType[];
   openModal: (modalComponent: FloatingComponentType) => void;
   closeModal: (component: React.FC<any>) => void;
-  openedToast?: FloatingComponentType;
-  openToast: (modalComponent: FloatingComponentType) => void;
+  openedToast?: ToastType;
+  openToast: (modalComponent: ToastType) => void;
   closeToast: () => void;
 }
 
@@ -25,7 +28,7 @@ export const FloatingContext = createContext<FloatingContextType>(
 
 const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
   const [openedModals, setOpenedModals] = useState<FloatingComponentType[]>([]);
-  const [openedToast, setOpenedToasts] = useState<FloatingComponentType>();
+  const [openedToast, setOpenedToasts] = useState<ToastType>();
 
   const openModal = useCallback(
     ({ component, position, props }: FloatingComponentType) => {
@@ -42,12 +45,9 @@ const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
     });
   }, []);
 
-  const openToast = useCallback(
-    ({ component, props }: FloatingComponentType) => {
-      setOpenedToasts({ component, props });
-    },
-    [],
-  );
+  const openToast = useCallback(({ component }: ToastType) => {
+    setOpenedToasts({ component });
+  }, []);
 
   const closeToast = useCallback(() => {
     setOpenedToasts(undefined);
