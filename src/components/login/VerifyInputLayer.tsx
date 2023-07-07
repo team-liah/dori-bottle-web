@@ -4,10 +4,11 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Input from '@/components/common/Input';
 import Layer from '@/components/common/Layer';
-import { ILoginFormInputs } from '@/types/common';
+import { ILoginFormInputs } from '@/types/user';
 
 interface IVerifyInputLayerProps {
-  onClickNext: () => void;
+  onSubmit: () => void;
+  onClickBack: () => void;
 }
 
 //#region Styled Component
@@ -24,13 +25,17 @@ const Wrapper = tw.div`
 
 //#endregion
 
-const VerifyInputLayer = ({ onClickNext }: IVerifyInputLayerProps) => {
+const VerifyInputLayer = ({
+  onSubmit,
+  onClickBack,
+}: IVerifyInputLayerProps) => {
   const { control } = useFormContext<ILoginFormInputs>();
 
   return (
     <Layer
       title="인증번호 입력"
-      footer={<Custom.Button onClick={onClickNext}>다음</Custom.Button>}
+      footer={<Custom.Button onClick={onSubmit}>다음</Custom.Button>}
+      onClickBack={onClickBack}
     >
       <Wrapper>
         <Controller
@@ -41,7 +46,8 @@ const VerifyInputLayer = ({ onClickNext }: IVerifyInputLayerProps) => {
             <Input
               label="인증번호 6자리를 입력해주세요"
               id="loginPassword"
-              type="text"
+              type="number"
+              autoFocus={true}
               field={field}
             />
           )}

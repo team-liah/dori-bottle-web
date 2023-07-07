@@ -8,6 +8,7 @@ interface ILayerProps {
   title: string;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  onClickBack?: () => void;
 }
 
 //#region Styled Components
@@ -55,12 +56,20 @@ const Body = tw.div`
 
 //#endregion
 
-const Layer = ({ title, children, footer }: ILayerProps) => {
+const Layer = ({ title, children, footer, onClickBack }: ILayerProps) => {
   const router = useRouter();
+
+  const handleBack = () => {
+    if (onClickBack) {
+      onClickBack();
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <Wrapper>
-      <BackButton onClick={() => router.back()} />
+      <BackButton onClick={handleBack} />
       <TopWrapper>
         <Header>
           <Title>{title}</Title>
