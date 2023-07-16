@@ -1,6 +1,9 @@
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputLayer from '@/components/join/RegisterInputLayer';
+import TermsInputLayer from '@/components/join/TermsInputLayer';
 import { ILoginFormInputs } from '@/types/user';
 
 //#region Styled Component
@@ -9,6 +12,7 @@ import { ILoginFormInputs } from '@/types/user';
 
 const Join = () => {
   const methods = useForm<ILoginFormInputs>();
+  const router = useRouter();
 
   const [step, setStep] = useState(0);
 
@@ -24,7 +28,10 @@ const Join = () => {
     if (step === 0) {
       setStep(1);
     } else {
-      console.log(methods.getValues());
+      await axios.post('/api/account/register', {
+        ...methods.getValues(),
+      });
+      router.push('/join/complete');
     }
   };
 
@@ -39,6 +46,7 @@ const Join = () => {
         }}
       >
         {step === 0 && <RegisterInputLayer />}
+        {step === 1 && <TermsInputLayer onClickBack={() => setStep(0)} />}
       </form>
     </FormProvider>
   );
