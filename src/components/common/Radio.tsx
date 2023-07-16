@@ -2,20 +2,13 @@ import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { FiAlertCircle } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
+import { IRadioOption } from '@/types/common';
 
 interface IInputProps {
   id?: string;
-  type?: React.HTMLInputTypeAttribute;
-  placeholder?: string;
-  defaultValue?: string;
-  value?: string | number;
+  options: IRadioOption[];
   label?: string;
-  readOnly?: boolean;
   error?: string;
-  maxLength?: number;
-  autoFocus?: boolean;
-  autoComplete?: string;
-  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   field: ControllerRenderProps<any, any>;
 }
 
@@ -38,23 +31,28 @@ const Label = tw.label`
 
 const InputWrapper = tw.div`
   relative
+  flex
   w-full
+  flex-row
+  gap-[15px]
 `;
 
-const StyledInput = tw.input<{ $error?: boolean }>`
-  w-full
+const StyeldRadio = tw.div<{ $selected?: boolean }>`
+  flex
+  h-[58px]
+  flex-1
+  cursor-pointer
+  items-center
+  justify-center
   rounded-[15px]
-  border-[1.5px]
-  border-unactivated
-  p-[19px]
+  border
+  border-solid
+  border-main-blue
   text-[16px]
   font-medium
-  leading-[22px]
   tracking-[-0.48px]
-  text-gray1
-  focus-within:border-main-blue
-  focus-within:outline-none
-  ${({ $error }) => $error && 'border-alert focus-within:border-alert'}
+  text-main-blue
+  ${({ $selected }) => $selected && 'bg-main-blue text-white'}
 `;
 
 const AlertCircleIcon = tw(FiAlertCircle)`
@@ -80,37 +78,20 @@ const ErrorText = tw.span`
 
 //#endregion
 
-const Input = ({
-  id,
-  type,
-  placeholder,
-  defaultValue,
-  label,
-  error,
-  maxLength,
-  readOnly,
-  autoFocus,
-  autoComplete,
-  field,
-  onKeyUp,
-}: IInputProps) => {
+const Radio = ({ options, label, error, field }: IInputProps) => {
   return (
     <Wrapper>
       {label && <Label>{label}</Label>}
       <InputWrapper>
-        <StyledInput
-          type={type}
-          id={id}
-          defaultValue={defaultValue}
-          readOnly={readOnly}
-          placeholder={placeholder}
-          maxLength={maxLength}
-          $error={error !== undefined}
-          autoFocus={autoFocus}
-          autoComplete={autoComplete}
-          {...field}
-          onKeyUp={onKeyUp}
-        />
+        {options.map((option) => (
+          <StyeldRadio
+            key={option.value}
+            $selected={field.value === option.value}
+            onClick={() => field.onChange(option.value)}
+          >
+            {option.label}
+          </StyeldRadio>
+        ))}
         {error && <AlertCircleIcon />}
       </InputWrapper>
       <ErrorText>{error}</ErrorText>
@@ -118,4 +99,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Radio;
