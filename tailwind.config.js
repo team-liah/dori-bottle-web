@@ -16,6 +16,7 @@ module.exports = {
       black: '#000000',
       toast: '#425776',
       'main-blue': '#056BF1',
+      'main-text': '#353535',
       'point-yellow': '#FFB120',
       unactivated: '#B9B9B9',
       gray1: '#353535',

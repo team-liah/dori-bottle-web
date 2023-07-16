@@ -3,6 +3,7 @@ import React from 'react';
 import { useContext } from 'react';
 import tw from 'tailwind-styled-components';
 import Portal from './Portal';
+import { MOTION } from '@/constants/MotionConstants';
 import { FloatingContext } from '@/context/FloatingContext';
 
 //#region Styled Component
@@ -60,27 +61,11 @@ const Modal = () => {
             <ModalWrapper key={index}>
               <Dimmed onClick={() => closeModal(Component)} />
               {modal.position === 'bottom' ? (
-                <BottomSheetContainer
-                  initial={{ opacity: 0, y: '100%' }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{
-                    opacity: 0,
-                    y: '100%',
-                    transition: { duration: 0.1 },
-                  }}
-                >
+                <BottomSheetContainer {...MOTION.POP}>
                   <Component {...props} />
                 </BottomSheetContainer>
               ) : (
-                <ModalContainer
-                  initial={{ opacity: 0, y: '100%' }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{
-                    opacity: 0,
-                    y: '100%',
-                    transition: { duration: 0.1 },
-                  }}
-                >
+                <ModalContainer {...MOTION.POP}>
                   <Component {...props} />
                 </ModalContainer>
               )}

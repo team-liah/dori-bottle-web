@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import PhoneInputLayer from '@/components/login/PhoneInputLayer';
 import VerifyInputLayer from '@/components/login/VerifyInputLayer';
 import useToast from '@/hooks/useToast';
+import { fetcher } from '@/service/fetch';
 import { ILoginFormInputs } from '@/types/user';
 import { getErrorMessage } from '@/utils/error';
 
@@ -53,10 +54,6 @@ const Confirmation = () => {
   const onSubmitVerifyToken = async () => {
     try {
       await axios.post('/api/account/auth', methods.getValues());
-      openToast({
-        component: '로그인 성공',
-      });
-      router.push((router.query.callbackUrl as string) || '/');
     } catch (error) {
       methods.setError('loginPassword', {
         type: 'manual',
@@ -65,11 +62,35 @@ const Confirmation = () => {
     }
   };
 
+  const handleAfterSubmit = async () => {
+    try {
+      const profile = await fetcher('/me/profile');
+
+      if (profile) {
+        openToast({
+          component: `${profile.name}님 반갑습니다.`,
+        });
+        router.push((router.query.callbackUrl as string) || '/');
+      } else {
+        throw new Error('프로필 정보를 가져오지 못했습니다.');
+      }
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        router.push('/join');
+      } else {
+        openToast({
+          component: '오류가 발생했습니다.',
+        });
+      }
+    }
+  };
+
   const onSubmit = async () => {
     if (step === 0) {
       await onSendVerificationCode();
     } else {
       await onSubmitVerifyToken();
+      await handleAfterSubmit();
     }
   };
 
