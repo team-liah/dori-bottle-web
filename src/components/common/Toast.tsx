@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useContext } from 'react';
 import tw from 'tailwind-styled-components';
 import Portal from './Portal';
+import { MOTION } from '@/constants/MotionConstants';
 import { FloatingContext } from '@/context/FloatingContext';
 
 //#region Styled Component
@@ -52,11 +53,7 @@ const Toast = () => {
       <AnimatePresence>
         {openedToast && (
           <ToastWrapper>
-            <ToastContainer
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
+            <ToastContainer {...MOTION.FADE}>
               {openedToast.component}
             </ToastContainer>
           </ToastWrapper>
