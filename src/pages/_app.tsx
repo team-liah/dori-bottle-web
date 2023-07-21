@@ -19,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>도리보틀</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
