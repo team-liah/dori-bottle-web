@@ -79,7 +79,7 @@ const Confirmation = () => {
         router.push('/join');
       } else {
         openToast({
-          component: '오류가 발생했습니다.',
+          component: getErrorMessage(error),
         });
       }
     }

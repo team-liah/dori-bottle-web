@@ -115,7 +115,7 @@ export default function Complete() {
         {'님,\n도리보틀 회원가입을\n축하합니다!'}
       </Title>
       <ContentWrapper>
-        <BubbleImage src="/svg/Bubble.svg" alt="next" />
+        <BubbleImage src="/svg/bubble.svg" alt="next" />
         <ContentText>
           {'웰컴버블 10개를 드렸어요\n'}
           <b>{'결제수단 등록'}</b>

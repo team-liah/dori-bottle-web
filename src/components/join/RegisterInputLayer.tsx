@@ -33,14 +33,14 @@ const RegisterInputLayer = () => {
   const {
     control,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useFormContext<IRegisterFormInputs>();
 
   const [step, setStep] = useState(0);
 
   const handleNextStep = () => {
     if (step === 2) return;
-    if (watch('name').length === 0) return;
+    if (!watch('name')) return;
     if (step === 1 && watch('birthDate')?.length !== 8) return;
     setStep((prev) => prev + 1);
   };
@@ -48,11 +48,7 @@ const RegisterInputLayer = () => {
   return (
     <Layer
       title="기본정보 입력"
-      footer={
-        <Custom.Button type="submit" disabled={!isValid}>
-          다음
-        </Custom.Button>
-      }
+      footer={<Custom.Button type="submit">다음</Custom.Button>}
     >
       <Wrapper>
         <Controller
@@ -68,11 +64,12 @@ const RegisterInputLayer = () => {
               maxLength={20}
               autoFocus={true}
               error={errors.name?.message}
-              field={field}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') {
+              field={{
+                ...field,
+                onBlur: () => {
+                  field.onBlur();
                   handleNextStep();
-                }
+                },
               }}
             />
           )}
@@ -83,9 +80,9 @@ const RegisterInputLayer = () => {
           control={control}
           rules={{
             required: '생년월일을 입력해주세요.',
-            minLength: {
-              value: 8,
-              message: '다시 확인해주세요.',
+            pattern: {
+              value: /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|1\d|2[0-9]|3[01])$/,
+              message: '생년월일을 다시 확인해주세요.',
             },
           }}
           render={({ field }) =>
@@ -105,11 +102,10 @@ const RegisterInputLayer = () => {
                       const value = getOnlyNumber(e.target.value);
                       field.onChange(value);
                     },
-                  }}
-                  onKeyUp={(e) => {
-                    if (e.key === 'Enter') {
+                    onBlur: () => {
+                      field.onBlur();
                       handleNextStep();
-                    }
+                    },
                   }}
                 />
               </MotionWrapper>

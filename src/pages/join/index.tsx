@@ -4,14 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputLayer from '@/components/join/RegisterInputLayer';
 import TermsInputLayer from '@/components/join/TermsInputLayer';
-import { ILoginFormInputs } from '@/types/user';
+import { IRegisterFormInputs } from '@/types/user';
 
 //#region Styled Component
 
 //#endregion
 
 const Join = () => {
-  const methods = useForm<ILoginFormInputs>();
+  const methods = useForm<IRegisterFormInputs>();
   const router = useRouter();
 
   const [step, setStep] = useState(0);
@@ -26,6 +26,7 @@ const Join = () => {
 
   const onSubmit = async () => {
     if (step === 0) {
+      await methods.trigger('birthDate');
       setStep(1);
     } else {
       await axios.post('/api/account/register', {
