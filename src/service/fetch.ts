@@ -1,8 +1,7 @@
-import axios from 'axios';
+import api from './api';
 
 export const fetcher = async (url: string) => {
-  const apiUrl = `/api${url}`;
-  const res = await axios.get(apiUrl);
+  const res = await api.get(url);
 
   return res.data;
 };

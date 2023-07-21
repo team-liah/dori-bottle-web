@@ -6,7 +6,6 @@ export default function Document() {
       <Head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#FFFFFF" />
-        <title>도리보틀</title>
       </Head>
       <body>
         <Main />

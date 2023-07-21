@@ -1,5 +1,4 @@
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { GetServerSideProps } from 'next';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
@@ -103,7 +102,7 @@ export default function Complete() {
   const router = useRouter();
   const { data: profile } = useQuery<IProfile>({
     queryKey: ['profile'],
-    queryFn: () => fetcher('/me/profile'),
+    queryFn: () => fetcher('/api/me/profile'),
   });
 
   if (!profile) return null;
@@ -115,7 +114,7 @@ export default function Complete() {
         {'님,\n도리보틀 회원가입을\n축하합니다!'}
       </Title>
       <ContentWrapper>
-        <BubbleImage src="/svg/Bubble.svg" alt="next" />
+        <BubbleImage src="/svg/bubble.svg" alt="next" />
         <ContentText>
           {'웰컴버블 10개를 드렸어요\n'}
           <b>{'결제수단 등록'}</b>
@@ -139,13 +138,25 @@ export default function Complete() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['profile'], () => fetcher('/me/profile'));
+// TODO: Axios Aggregate Error 원인 파악
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const queryClient = new QueryClient();
 
-  return {
-    props: {
-      dehydratedProps: dehydrate(queryClient),
-    },
-  };
-};
+//   try {
+//     await queryClient.prefetchQuery(['profile'], () =>
+//       fetcher('/api/me/profile'),
+//     );
+
+//     return {
+//       props: {
+//         dehydratedProps: dehydrate(queryClient),
+//       },
+//     };
+//   } catch (error) {
+//     return {
+//       notFound: true,
+//     };
+//   } finally {
+//     queryClient.clear();
+//   }
+// };

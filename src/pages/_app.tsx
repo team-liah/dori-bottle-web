@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import Toast from '@/components/common/Toast';
@@ -15,15 +16,21 @@ export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <FloatingProvider>
-          <Component {...pageProps} />
-          <Modal />
-          <Toast />
-        </FloatingProvider>
-      </Hydrate>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <title>도리보틀</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <FloatingProvider>
+            <Component {...pageProps} />
+            <Modal />
+            <Toast />
+          </FloatingProvider>
+        </Hydrate>
+      </QueryClientProvider>
+    </>
   );
 }
