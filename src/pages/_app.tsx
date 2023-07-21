@@ -10,7 +10,6 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import Toast from '@/components/common/Toast';
-import { AuthProvider } from '@/context/AuthContext';
 import FloatingProvider from '@/context/FloatingContext';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -25,13 +24,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <AuthProvider>
-            <FloatingProvider>
-              <Component {...pageProps} />
-              <Modal />
-              <Toast />
-            </FloatingProvider>
-          </AuthProvider>
+          <FloatingProvider>
+            <Component {...pageProps} />
+            <Modal />
+            <Toast />
+          </FloatingProvider>
         </Hydrate>
       </QueryClientProvider>
     </>
