@@ -12,6 +12,11 @@ export interface IRegisterFormInputs {
   agreedTermsOfMarketing: boolean;
 }
 
+export interface IAuth {
+  loginId: string;
+  role: string;
+}
+
 export interface IProfile {
   id: string;
   loginId: string;

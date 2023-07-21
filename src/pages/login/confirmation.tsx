@@ -1,10 +1,11 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import PhoneInputLayer from '@/components/login/PhoneInputLayer';
 import VerifyInputLayer from '@/components/login/VerifyInputLayer';
+import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
+import api from '@/service/api';
 import { fetcher } from '@/service/fetch';
 import { ILoginFormInputs } from '@/types/user';
 import { getErrorMessage } from '@/utils/error';
@@ -16,6 +17,7 @@ import { getErrorMessage } from '@/utils/error';
 const Confirmation = () => {
   const { openToast } = useToast();
   const router = useRouter();
+  const { login } = useAuth();
 
   const methods = useForm<ILoginFormInputs>({
     defaultValues: {
@@ -39,7 +41,7 @@ const Confirmation = () => {
   const onSendVerificationCode = async () => {
     try {
       await methods.trigger('loginId');
-      await axios.post('/api/account/auth/send-sms', {
+      await api.post('/api/account/auth/send-sms', {
         loginId: methods.getValues('loginId'),
       });
       setStep(1);
@@ -53,7 +55,7 @@ const Confirmation = () => {
 
   const onSubmitVerifyToken = async () => {
     try {
-      await axios.post('/api/account/auth', methods.getValues());
+      await login(methods.getValues());
     } catch (error) {
       methods.setError('loginPassword', {
         type: 'manual',
@@ -64,7 +66,7 @@ const Confirmation = () => {
 
   const handleAfterSubmit = async () => {
     try {
-      const profile = await fetcher('/me/profile');
+      const profile = await fetcher('/api/me/profile');
 
       if (profile) {
         openToast({

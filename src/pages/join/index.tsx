@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputLayer from '@/components/join/RegisterInputLayer';
 import TermsInputLayer from '@/components/join/TermsInputLayer';
+import api from '@/service/api';
 import { IRegisterFormInputs } from '@/types/user';
 
 //#region Styled Component
@@ -29,7 +29,7 @@ const Join = () => {
       await methods.trigger('birthDate');
       setStep(1);
     } else {
-      await axios.post('/api/account/register', {
+      await api.post('/api/account/register', {
         ...methods.getValues(),
       });
       router.push('/join/complete');

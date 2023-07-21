@@ -1,0 +1,45 @@
+import axios from 'axios';
+import mem from 'mem';
+
+const api = axios.create({
+  headers: { 'Content-type': 'application/json' }, // data type
+});
+
+api.interceptors.response.use(
+  function (response) {
+    // if res.status is 200, return response
+    return response;
+  },
+  async function (error) {
+    const originalConfig = error.config;
+
+    // if res.status is 401, refresh
+    if (error.response.status === 401) {
+      try {
+        await memorizedRefresh();
+
+        return api(originalConfig);
+      } catch (error) {
+        // if refresh fails, redirect to login page
+        window.location.href = `/login?callbackUrl=${window.location.pathname}`;
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export default api;
+
+const memorizedRefresh = mem(
+  async () => {
+    const response = await api.post('/api/account/refresh-auth');
+    if (process.env.NODE_ENV === 'development') {
+      document.cookie = `access_token=${response.data.accessToken}; path=/;`;
+      document.cookie = `refresh_token=${response.data.refreshToken}; path=/;`;
+    }
+  },
+  {
+    maxAge: 3000,
+  },
+);
