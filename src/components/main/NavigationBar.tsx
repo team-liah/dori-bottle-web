@@ -13,6 +13,7 @@ const Wrapper = tw.div`
   flex-row
   items-center
   justify-between
+  pb-9
 `;
 
 const NotificationButton = tw.div`
