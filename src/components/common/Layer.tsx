@@ -16,7 +16,7 @@ interface ILayerProps {
 const Wrapper = tw(Custom.MobileWrapper)`
   flex
   flex-col
-  pt-[40px]
+  pt-[20px]
   justify-between
 `;
 

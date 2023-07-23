@@ -20,3 +20,13 @@ export const MobileWrapper = tw.div`
     px-[20px]
     pb-[108px]
 `;
+
+export const Dimmed = tw.div`
+    absolute
+    top-0
+    left-0
+    h-screen
+    w-screen
+    bg-black
+    opacity-60
+`;

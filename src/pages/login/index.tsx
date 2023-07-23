@@ -1,10 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
-import Logo from '/public/assets/Logo.png';
 
 //#region Styled Component
 const Wrapper = tw(Custom.MobileWrapper)`
@@ -12,7 +10,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   items-center
   justify-between
-  pt-[100px]
+  pt-[64px]
 `;
 
 const TopContainer = tw.div`
@@ -21,11 +19,6 @@ const TopContainer = tw.div`
   flex-col
   gap-8
 `;
-
-const LogoImage = tw(Image)`
-  w-full
-`;
-
 const LabelText = tw.div`
   w-full
   rounded-[16px]
@@ -53,7 +46,7 @@ export default function Login() {
   return (
     <Wrapper>
       <TopContainer>
-        <LogoImage alt="Dori Bottle" src={Logo} />
+        <img src="/svg/text_logo.svg" alt="Dori Bottle" />
         <LabelText>지금 회원가입하고 무료 이용권 받으세요 🎉</LabelText>
       </TopContainer>
       <LinkWrapper
