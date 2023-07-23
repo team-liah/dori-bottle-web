@@ -17,6 +17,11 @@ export interface IAuth {
   role: string;
 }
 
+export interface ILoginResponse {
+  accessToken: string;
+  refreshToken?: string;
+}
+
 export interface IProfile {
   id: string;
   loginId: string;
