@@ -1,1 +1,1 @@
-export type MotionType = 'SLIDE' | 'FADE' | 'POP';
+export type MotionType = 'SLIDE' | 'FADE' | 'POP' | 'DRAWER';
