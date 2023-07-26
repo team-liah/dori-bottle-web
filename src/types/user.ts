@@ -15,6 +15,7 @@ export interface IRegisterFormInputs {
 export interface IAuth {
   loginId: string;
   role: string;
+  name: string;
 }
 
 export interface ILoginResponse {

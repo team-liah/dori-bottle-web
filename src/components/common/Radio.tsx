@@ -53,6 +53,7 @@ const StyeldRadio = tw.div<{ $selected?: boolean }>`
   tracking-[-0.48px]
   text-main-blue
   ${({ $selected }) => $selected && 'bg-main-blue text-white'}
+  transition-all
 `;
 
 const AlertCircleIcon = tw(FiAlertCircle)`
