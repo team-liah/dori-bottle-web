@@ -6,7 +6,6 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { MOTION } from '@/constants/MotionConstants';
 import useAuth from '@/hooks/useAuth';
-import useProfile from '@/hooks/useProfile';
 import useToast from '@/hooks/useToast';
 
 interface IMenuBarProps {
@@ -90,7 +89,7 @@ const Divider = tw.div`
 
 const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const router = useRouter();
-  const { profile } = useProfile();
+  const { user } = useAuth();
   const { openToast } = useToast();
   const { logout } = useAuth();
 
@@ -159,7 +158,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
             <Custom.Dimmed onClick={onClose} />
             <MenuWrapper {...MOTION.DRAWER}>
               <ProfileWrapper onClick={openPreparingToast}>
-                <ProfileText>{profile?.name}님</ProfileText>
+                <ProfileText>{user?.name}님</ProfileText>
                 <ChevronRightIcon />
               </ProfileWrapper>
               <MenuListWrapper>

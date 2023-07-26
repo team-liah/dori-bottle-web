@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -6,8 +7,7 @@ import VerifyInputLayer from '@/components/login/VerifyInputLayer';
 import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
 import api from '@/service/api';
-import { fetcher } from '@/service/fetch';
-import { ILoginFormInputs } from '@/types/user';
+import { IAuth, ILoginFormInputs } from '@/types/user';
 import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
@@ -55,7 +55,22 @@ const Confirmation = () => {
 
   const onSubmitVerifyToken = async () => {
     try {
-      await login(methods.getValues());
+      const response = await login(methods.getValues());
+      if (response.accessToken) {
+        const user = jwtDecode<IAuth>(response.accessToken);
+        if (user?.role === 'ROLE_GUEST') {
+          router.push('/join');
+        } else if (user?.role === 'ROLE_USER') {
+          openToast({
+            component: `${user?.name}님 반갑습니다.`,
+          });
+          router.push((router.query.callbackUrl as string) || '/');
+        } else {
+          throw new Error('권한이 없습니다.');
+        }
+      } else {
+        throw new Error('로그인에 실패하였습니다.');
+      }
     } catch (error) {
       methods.setError('loginPassword', {
         type: 'manual',
@@ -64,35 +79,11 @@ const Confirmation = () => {
     }
   };
 
-  const handleAfterSubmit = async () => {
-    try {
-      const profile = await fetcher('/api/me/profile');
-
-      if (profile) {
-        openToast({
-          component: `${profile.name}님 반갑습니다.`,
-        });
-        router.push((router.query.callbackUrl as string) || '/');
-      } else {
-        throw new Error('프로필 정보를 가져오지 못했습니다.');
-      }
-    } catch (error: any) {
-      if (error.response.status === 403) {
-        router.push('/join');
-      } else {
-        openToast({
-          component: getErrorMessage(error),
-        });
-      }
-    }
-  };
-
   const onSubmit = async () => {
     if (step === 0) {
       await onSendVerificationCode();
     } else {
       await onSubmitVerifyToken();
-      await handleAfterSubmit();
     }
   };
 

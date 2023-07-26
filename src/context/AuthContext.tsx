@@ -6,8 +6,8 @@ interface AuthProviderProps {
 }
 
 interface AuthContextType {
-  auth?: IAuth;
-  setAuth: (auth?: IAuth) => void;
+  user?: IAuth;
+  setUser: (user?: IAuth) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -15,14 +15,14 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<IAuth>();
+  const [user, setUser] = useState<IAuth>();
 
-  const handleAuth = (auth?: IAuth) => {
-    setAuth(auth);
+  const handleUser = (user?: IAuth) => {
+    setUser(user);
   };
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth: handleAuth }}>
+    <AuthContext.Provider value={{ user, setUser: handleUser }}>
       {children}
     </AuthContext.Provider>
   );
