@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import mem from 'mem';
 
 const api = axios.create({
@@ -21,6 +22,8 @@ api.interceptors.response.use(
         return api(originalConfig);
       } catch (error) {
         // if refresh fails, redirect to login page
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
         window.location.href = `/login?callbackUrl=${window.location.pathname}`;
       }
     }
