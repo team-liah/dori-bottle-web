@@ -48,7 +48,14 @@ const RegisterInputLayer = () => {
   return (
     <Layer
       title="기본정보 입력"
-      footer={<Custom.Button type="submit">다음</Custom.Button>}
+      footer={
+        <Custom.Button
+          type="submit"
+          disabled={!watch('name') || !watch('birthDate') || !watch('gender')}
+        >
+          다음
+        </Custom.Button>
+      }
     >
       <Wrapper>
         <Controller
