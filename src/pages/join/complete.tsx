@@ -1,11 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
-import { fetcher } from '@/service/fetch';
-import { IProfile } from '@/types/user';
+import useAuth from '@/hooks/useAuth';
 
 //#region Styled Component
 
@@ -100,17 +98,12 @@ const LaterButton = tw.div`
 
 export default function Complete() {
   const router = useRouter();
-  const { data: profile } = useQuery<IProfile>({
-    queryKey: ['profile'],
-    queryFn: () => fetcher('/api/me/profile'),
-  });
-
-  if (!profile) return null;
+  const { user } = useAuth();
 
   return (
     <Wrapper>
       <Title>
-        <b>{profile.name}</b>
+        <b>{user?.name}</b>
         {'님,\n도리보틀 회원가입을\n축하합니다!'}
       </Title>
       <ContentWrapper>
@@ -137,26 +130,3 @@ export default function Complete() {
     </Wrapper>
   );
 }
-
-// TODO: Axios Aggregate Error 원인 파악
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const queryClient = new QueryClient();
-
-//   try {
-//     await queryClient.prefetchQuery(['profile'], () =>
-//       fetcher('/api/me/profile'),
-//     );
-
-//     return {
-//       props: {
-//         dehydratedProps: dehydrate(queryClient),
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       notFound: true,
-//     };
-//   } finally {
-//     queryClient.clear();
-//   }
-// };

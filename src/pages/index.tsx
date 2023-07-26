@@ -4,8 +4,8 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeModal from '@/components/main/QrcodeModal';
+import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
-import useProfile from '@/hooks/useProfile';
 import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
@@ -97,7 +97,7 @@ const BubbleText = tw.span`
 //#endregion
 
 export default function Home() {
-  const { profile } = useProfile();
+  const { user } = useAuth();
   const { openToast } = useToast();
   const { openModal } = useModals();
   const { data: remainBubble } = useQuery<IRemainPoint>({
@@ -127,7 +127,7 @@ export default function Home() {
       <ContentWrapper>
         <ButtonWrapper>
           <BubbleButton>
-            <Name>{profile?.name}님의 버블</Name>
+            <Name>{user?.name}님의 버블</Name>
             <BubbleText>
               {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
             </BubbleText>
