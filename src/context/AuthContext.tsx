@@ -19,7 +19,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data } = useQuery<IAuth>({
     queryKey: ['me'],
     queryFn: () => fetcher('/api/me'),
-    staleTime: 1000 * 60 * 5,
   });
 
   return (
