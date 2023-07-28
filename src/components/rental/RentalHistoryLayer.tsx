@@ -56,7 +56,6 @@ const RentalHistoryLayer = () => {
       queryFn: ({ pageParam = 0 }) =>
         fetcher('/api/rental', {
           page: pageParam,
-          size: 1,
           status: status !== 'ALL' ? status : '',
         }),
       getNextPageParam: (lastPage) => {
