@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
+import api from '@/service/api';
+import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
 const Wrapper = tw(Custom.MobileWrapper)`
@@ -36,6 +38,17 @@ const LinkWrapper = tw(Link)`
   w-full
 `;
 
+const BottomContainer = tw.div`
+  flex
+  w-full
+  flex-col
+  gap-4
+`;
+
+const TestLoginButton = tw(Custom.Button)`
+  bg-unactivated
+`;
+
 //#endregion
 
 export default function Login() {
@@ -43,19 +56,33 @@ export default function Login() {
 
   const callbackUrl = router.query.callbackUrl as string;
 
+  const handleTestLogin = async () => {
+    try {
+      await api.post('/api/account/dummy-auth');
+      router.push('/');
+    } catch (error) {
+      alert(getErrorMessage(error));
+    }
+  };
+
   return (
     <Wrapper>
       <TopContainer>
         <img src="/svg/text_logo.svg" alt="Dori Bottle" />
         <LabelText>지금 회원가입하고 무료 이용권 받으세요 🎉</LabelText>
       </TopContainer>
-      <LinkWrapper
-        href={`/login/confirmation${
-          callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''
-        }`}
-      >
-        <Custom.Button>휴대폰번호로 시작하기</Custom.Button>
-      </LinkWrapper>
+      <BottomContainer>
+        <TestLoginButton onClick={handleTestLogin}>
+          테스트 로그인
+        </TestLoginButton>
+        <LinkWrapper
+          href={`/login/confirmation${
+            callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''
+          }`}
+        >
+          <Custom.Button>휴대폰번호로 시작하기</Custom.Button>
+        </LinkWrapper>
+      </BottomContainer>
     </Wrapper>
   );
 }
