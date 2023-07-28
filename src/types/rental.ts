@@ -1,8 +1,8 @@
-import { IPagination } from './common';
+import { IPageable } from './common';
 
 export interface IRentalList {
   content: IRental[];
-  pagination: IPagination;
+  pageable: IPageable;
 }
 
 export type RentalStatus = 'PROCEEDING' | 'SUCCEEDED' | 'FAILED';

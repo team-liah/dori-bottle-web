@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { Fragment, useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
@@ -176,61 +176,55 @@ const RentalListItem = ({ rental }: IRentalListItemProps) => {
           </RowBlock>
         </Content>
       </Wrapper>
-      <AnimatePresence>
-        {open && (
-          <OpenWrapper {...MOTION.DROPDOWN}>
+      {open && (
+        <OpenWrapper {...MOTION.FADE}>
+          <Content>
+            <MachineNoBlock>
+              <Disc />
+              <MachineNoText>자판기번호 {rental.fromMachine.no}</MachineNoText>
+            </MachineNoBlock>
+          </Content>
+          {rental.status === 'PROCEEDING' && (
             <Content>
               <MachineNoBlock>
                 <Disc />
-                <MachineNoText>
-                  자판기번호 {rental.fromMachine.no}
-                </MachineNoText>
+                <MachineNoText>반납기한</MachineNoText>
               </MachineNoBlock>
+              <DateTimeText>
+                {rental.expiredDate &&
+                  dayjs(rental.expiredDate).format('YYYY.MM.DD HH:mm')}
+              </DateTimeText>
             </Content>
-            {rental.status === 'PROCEEDING' && (
-              <Content>
-                <MachineNoBlock>
-                  <Disc />
-                  <MachineNoText>반납기한</MachineNoText>
-                </MachineNoBlock>
-                <DateTimeText>
-                  {rental.expiredDate &&
-                    dayjs(rental.expiredDate).format('YYYY.MM.DD HH:mm')}
-                </DateTimeText>
-              </Content>
-            )}
-            {rental.status === 'SUCCEEDED' && (
-              <Content>
-                <MachineNoBlock>
-                  <Disc />
-                  <MachineNoText>
-                    수거함번호 {rental.toMachine?.no}
-                  </MachineNoText>
-                </MachineNoBlock>
-                <DateTimeText>
-                  {rental.succeededDate &&
-                    dayjs(rental.succeededDate).format('YYYY.MM.DD HH:mm')}
-                </DateTimeText>
-              </Content>
-            )}
-            {rental.status === 'FAILED' && (
-              <Content>
-                <MachineNoBlock>
-                  <Disc />
-                  <MachineNoText>분실</MachineNoText>
-                </MachineNoBlock>
-                <DateTimeText>
-                  {rental.expiredDate &&
-                    dayjs(rental.expiredDate).format('YYYY.MM.DD HH:mm')}
-                </DateTimeText>
-              </Content>
-            )}
+          )}
+          {rental.status === 'SUCCEEDED' && (
             <Content>
-              <RentalNoText>no.{rental.id}</RentalNoText>
+              <MachineNoBlock>
+                <Disc />
+                <MachineNoText>수거함번호 {rental.toMachine?.no}</MachineNoText>
+              </MachineNoBlock>
+              <DateTimeText>
+                {rental.succeededDate &&
+                  dayjs(rental.succeededDate).format('YYYY.MM.DD HH:mm')}
+              </DateTimeText>
             </Content>
-          </OpenWrapper>
-        )}
-      </AnimatePresence>
+          )}
+          {rental.status === 'FAILED' && (
+            <Content>
+              <MachineNoBlock>
+                <Disc />
+                <MachineNoText>분실</MachineNoText>
+              </MachineNoBlock>
+              <DateTimeText>
+                {rental.expiredDate &&
+                  dayjs(rental.expiredDate).format('YYYY.MM.DD HH:mm')}
+              </DateTimeText>
+            </Content>
+          )}
+          <Content>
+            <RentalNoText>no.{rental.id}</RentalNoText>
+          </Content>
+        </OpenWrapper>
+      )}
     </Fragment>
   );
 };

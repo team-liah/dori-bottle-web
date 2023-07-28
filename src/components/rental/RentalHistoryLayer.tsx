@@ -1,11 +1,12 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import RentalListItem from './RentalListItem';
 import { Divider, Empty, ProgressBar } from '../common/CustomStyledComponent';
 import Error from '../common/Error';
 import SelectBottom from '../common/SelectBottom';
 import Layer from '@/components/common/Layer';
+import useScroll from '@/hooks/useScroll';
 import { fetcher } from '@/service/fetch';
 import { IRentalList, RentalStatus } from '@/types/rental';
 import { getErrorMessage } from '@/utils/error';
@@ -28,8 +29,10 @@ const SelectWrapper = tw.div`
 const RentalList = tw.div`
   mt-5
   flex
+  h-[calc(100dvh-150px)]
   w-full
   flex-col
+  overflow-y-scroll
 `;
 
 //#endregion
@@ -42,16 +45,32 @@ const selectItems = [
 ];
 
 const RentalHistoryLayer = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<RentalStatus | 'ALL'>('ALL');
 
-  const { data, isLoading, error } = useInfiniteQuery<IRentalList>({
-    queryKey: ['rental', status],
-    queryFn: ({ pageParam = 0 }) =>
-      fetcher('/api/rental', {
-        page: pageParam,
-        status: status !== 'ALL' ? status : '',
-      }),
-  });
+  const { handleScroll, isReachingEnd } = useScroll();
+
+  const { data, isLoading, error, fetchNextPage } =
+    useInfiniteQuery<IRentalList>({
+      queryKey: ['rental', status],
+      queryFn: ({ pageParam = 0 }) =>
+        fetcher('/api/rental', {
+          page: pageParam,
+          size: 1,
+          status: status !== 'ALL' ? status : '',
+        }),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.pageable.hasNext) {
+          return lastPage.pageable.page + 1;
+        }
+      },
+    });
+
+  useEffect(() => {
+    if (isReachingEnd) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, isReachingEnd]);
 
   return (
     <Layer title="이용내역" fullScreen={true}>
@@ -63,7 +82,10 @@ const RentalHistoryLayer = () => {
             onChange={(value) => setStatus(value as RentalStatus | 'ALL')}
           />
         </SelectWrapper>
-        <RentalList>
+        <RentalList
+          ref={scrollRef}
+          onScroll={() => scrollRef.current && handleScroll(scrollRef.current)}
+        >
           <Divider />
           {isLoading && <ProgressBar />}
           {!!error && <Error message={getErrorMessage(error)} />}
