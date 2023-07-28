@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import mem from 'mem';
 
 const api = axios.create({
@@ -16,14 +15,15 @@ api.interceptors.response.use(
 
     // if res.status is 401, refresh
     if (error.response.status === 401) {
+      if (originalConfig.url === '/api/me') {
+        return Promise.reject(error);
+      }
       try {
         await memorizedRefresh();
 
         return api(originalConfig);
       } catch (error) {
         // if refresh fails, redirect to login page
-        Cookies.remove('access_token');
-        Cookies.remove('refresh_token');
         window.location.href = `/login?callbackUrl=${window.location.pathname}`;
       }
     }
@@ -37,12 +37,12 @@ export default api;
 const memorizedRefresh = mem(
   async () => {
     try {
-      const response = await axios.post('/api/account/refresh-auth');
+      await axios.post('/api/account/refresh-auth');
       // 로컬에서 테스트 할때 내부 IP로 접속하면 Same-site 문제가 발생하여 강제로 쿠키 설정 (Only Dev)
-      if (process.env.NODE_ENV === 'development') {
-        document.cookie = `access_token=${response.data.accessToken}; path=/;`;
-        document.cookie = `refresh_token=${response.data.refreshToken}; path=/;`;
-      }
+      // if (process.env.NODE_ENV === 'development') {
+      //   document.cookie = `access_token=${response.data.accessToken}; path=/;`;
+      //   document.cookie = `refresh_token=${response.data.refreshToken}; path=/;`;
+      // }
     } catch (error) {
       throw error;
     }

@@ -28,5 +28,29 @@ export const Dimmed = tw.div`
     h-screen
     w-screen
     bg-black
-    opacity-60
+    opacity-10
+`;
+
+export const ProgressBar = tw.div`
+    h-[2px]
+    w-full
+    animate-pulse
+    bg-main-blue
+`;
+
+export const Divider = tw.div`
+  h-[1px]
+  w-full
+  bg-back-line
+`;
+
+export const Empty = tw.div`
+    h-full
+    flex
+    w-full
+    items-center
+    justify-center
+    pt-10
+    text-[14px]
+    text-gray2
 `;
