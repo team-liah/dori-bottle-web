@@ -28,5 +28,5 @@ export const Dimmed = tw.div`
     h-screen
     w-screen
     bg-black
-    opacity-60
+    opacity-30
 `;

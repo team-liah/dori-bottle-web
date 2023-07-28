@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
 import { useContext } from 'react';
 import tw from 'tailwind-styled-components';
+import { Dimmed } from './CustomStyledComponent';
 import Portal from './Portal';
 import { MOTION } from '@/constants/MotionConstants';
 import { FloatingContext } from '@/context/FloatingContext';
@@ -21,16 +22,6 @@ const ModalWrapper = tw.div`
   overflow-hidden
 `;
 
-const Dimmed = tw.div`
-  absolute
-  left-0
-  top-0
-  h-screen
-  w-screen
-  bg-black
-  bg-opacity-60
-`;
-
 const ModalContainer = tw(motion.div)`
   absolute
   w-fit
@@ -44,12 +35,35 @@ const BottomSheetContainer = tw(motion.div)`
   bottom-0
   rounded-t-[25px]
   overflow-hidden
+  bg-white
+  pt-[10px]
+`;
+
+const BottomSheetSlidebar = tw.div`
+  absolute
+  top-[10px]
+  left-[50%]
+  h-[4px]
+  w-[10vw]
+  -translate-x-1/2
+  transform
+  rounded-full
+  bg-gray2
 `;
 
 //#endregion
 
 const Modal = () => {
   const { openedModals, closeModal } = useContext(FloatingContext);
+
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleTouchMove = (component: React.FC<any>) => {
+    if (touchStart - touchEnd < -75) {
+      closeModal(component);
+    }
+  };
 
   return (
     <Portal>
@@ -61,7 +75,15 @@ const Modal = () => {
             <ModalWrapper key={index}>
               <Dimmed onClick={() => closeModal(Component)} />
               {modal.position === 'bottom' ? (
-                <BottomSheetContainer {...MOTION.POP}>
+                <BottomSheetContainer
+                  {...MOTION.POP}
+                  onTouchStart={(e) =>
+                    setTouchStart(e.targetTouches[0].clientY)
+                  }
+                  onTouchMove={(e) => setTouchEnd(e.changedTouches[0].clientY)}
+                  onTouchEnd={() => handleTouchMove(Component)}
+                >
+                  <BottomSheetSlidebar />
                   <Component {...props} />
                 </BottomSheetContainer>
               ) : (
