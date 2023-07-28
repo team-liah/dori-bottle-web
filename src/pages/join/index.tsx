@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputLayer from '@/components/join/RegisterInputLayer';
 import TermsInputLayer from '@/components/join/TermsInputLayer';
-import useAuth from '@/hooks/useAuth';
 import api from '@/service/api';
 import { IRegisterFormInputs } from '@/types/user';
 
@@ -12,7 +11,6 @@ import { IRegisterFormInputs } from '@/types/user';
 //#endregion
 
 const Join = () => {
-  const { setUserFromCookie } = useAuth();
   const router = useRouter();
   const methods = useForm<IRegisterFormInputs>();
 
@@ -31,10 +29,9 @@ const Join = () => {
       await methods.trigger('birthDate');
       setStep(1);
     } else {
-      const response = await api.post('/api/account/register', {
+      await api.post('/api/account/register', {
         ...methods.getValues(),
       });
-      setUserFromCookie(response.data.accessToken);
       router.push('/join/complete');
     }
   };
