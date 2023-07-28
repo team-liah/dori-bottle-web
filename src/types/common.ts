@@ -8,7 +8,7 @@ export interface ISort {
   direction: 'ASC' | 'DESC';
 }
 
-export interface IPagination {
+export interface IPageable {
   first: boolean;
   last: boolean;
   hasNext: boolean;
