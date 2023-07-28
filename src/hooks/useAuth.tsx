@@ -1,19 +1,10 @@
-import jwtDecode from 'jwt-decode';
 import { useContext } from 'react';
 import AuthContext from '@/context/AuthContext';
 import api from '@/service/api';
 import { ILoginFormInputs, ILoginResponse } from '@/types/user';
 
 const useAuth = () => {
-  const { user, setUser } = useContext(AuthContext);
-
-  const setUserFromCookie = (accessToken?: string) => {
-    if (accessToken) {
-      setUser(jwtDecode(accessToken));
-    } else {
-      setUser(undefined);
-    }
-  };
+  const { user } = useContext(AuthContext);
 
   const login = async (data: ILoginFormInputs) => {
     const response = await api.post<ILoginResponse>('/api/account/auth', data);
@@ -23,17 +14,15 @@ const useAuth = () => {
     //   document.cookie = `access_token=${response.data.accessToken}; path=/;`;
     //   document.cookie = `refresh_token=${response.data.refreshToken}; path=/;`;
     // }
-    setUserFromCookie(response.data.accessToken);
 
     return response.data;
   };
 
   const logout = async () => {
     await api.post('/api/account/logout');
-    setUserFromCookie();
   };
 
-  return { user, setUserFromCookie, login, logout };
+  return { user, login, logout };
 };
 
 export default useAuth;

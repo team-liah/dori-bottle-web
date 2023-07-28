@@ -2,11 +2,11 @@ import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { FiAlertCircle } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
-import { IRadioOption } from '@/types/common';
+import { IOption } from '@/types/common';
 
 interface IInputProps {
   id?: string;
-  options: IRadioOption[];
+  options: IOption[];
   label?: string;
   error?: string;
   field: ControllerRenderProps<any, any>;

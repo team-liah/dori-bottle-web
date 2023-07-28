@@ -8,6 +8,7 @@ interface ILayerProps {
   title: string;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  fullScreen?: boolean;
   onClickBack?: () => void;
 }
 
@@ -18,6 +19,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   pt-[20px]
   justify-between
+  px-0
 `;
 
 const TopWrapper = tw.div`
@@ -47,16 +49,28 @@ const BackButton = tw(Icon.FiArrowLeft)`
   cursor-pointer
   text-gray1
   absolute
+  left-[20px]
 `;
 
-const Body = tw.div`
+const Body = tw.div<{ $full?: boolean }>`
   flex
   w-full
+  ${({ $full }) => !$full && 'px-5'}
+`;
+
+const BottomWrapper = tw.div<{ $full?: boolean }>`
+${({ $full }) => !$full && 'px-5'}
 `;
 
 //#endregion
 
-const Layer = ({ title, children, footer, onClickBack }: ILayerProps) => {
+const Layer = ({
+  title,
+  children,
+  footer,
+  fullScreen,
+  onClickBack,
+}: ILayerProps) => {
   const router = useRouter();
 
   const handleBack = () => {
@@ -74,9 +88,9 @@ const Layer = ({ title, children, footer, onClickBack }: ILayerProps) => {
         <Header>
           <Title>{title}</Title>
         </Header>
-        <Body>{children}</Body>
+        <Body $full={fullScreen}>{children}</Body>
       </TopWrapper>
-      {footer}
+      <BottomWrapper>{footer}</BottomWrapper>
     </Wrapper>
   );
 };

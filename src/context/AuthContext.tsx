@@ -1,4 +1,6 @@
-import { createContext, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { createContext } from 'react';
+import { fetcher } from '@/service/fetch';
 import { IAuth } from '@/types/user';
 
 interface AuthProviderProps {
@@ -7,7 +9,6 @@ interface AuthProviderProps {
 
 interface AuthContextType {
   user?: IAuth;
-  setUser: (user?: IAuth) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -15,14 +16,14 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<IAuth>();
-
-  const handleUser = (user?: IAuth) => {
-    setUser(user);
-  };
+  const { data } = useQuery<IAuth>({
+    queryKey: ['me'],
+    queryFn: () => fetcher('/api/me'),
+    staleTime: 1000 * 60 * 5,
+  });
 
   return (
-    <AuthContext.Provider value={{ user, setUser: handleUser }}>
+    <AuthContext.Provider value={{ user: data }}>
       {children}
     </AuthContext.Provider>
   );
