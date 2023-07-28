@@ -72,7 +72,7 @@ const LabelText = tw.span`
   text-[14px]
   font-medium
   tracking-[-0.42px]
-  text-gray2
+  text-gray1
 `;
 
 //#endregion

@@ -37,6 +37,7 @@ const BottomSheetContainer = tw(motion.div)`
   overflow-hidden
   bg-white
   pt-[10px]
+  pb-[30px]
 `;
 
 const BottomSheetSlidebar = tw.div`
