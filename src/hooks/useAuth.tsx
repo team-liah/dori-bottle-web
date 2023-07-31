@@ -4,7 +4,7 @@ import api from '@/service/api';
 import { ILoginFormInputs, ILoginResponse } from '@/types/user';
 
 const useAuth = () => {
-  const { user } = useContext(AuthContext);
+  const { user, refreshUser } = useContext(AuthContext);
 
   const login = async (data: ILoginFormInputs) => {
     const response = await api.post<ILoginResponse>('/api/account/auth', data);
@@ -14,15 +14,17 @@ const useAuth = () => {
     //   document.cookie = `access_token=${response.data.accessToken}; path=/;`;
     //   document.cookie = `refresh_token=${response.data.refreshToken}; path=/;`;
     // }
+    refreshUser();
 
     return response.data;
   };
 
   const logout = async () => {
     await api.post('/api/account/logout');
+    refreshUser();
   };
 
-  return { user, login, logout };
+  return { user, refreshUser, login, logout };
 };
 
 export default useAuth;
