@@ -221,7 +221,7 @@ const RentalListItem = ({ rental }: IRentalListItemProps) => {
             </Content>
           )}
           <Content>
-            <RentalNoText>no.{rental.id}</RentalNoText>
+            <RentalNoText>no.{rental.no}</RentalNoText>
           </Content>
         </OpenWrapper>
       )}
