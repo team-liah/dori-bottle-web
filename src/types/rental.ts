@@ -9,6 +9,7 @@ export type RentalStatus = 'PROCEEDING' | 'SUCCEEDED' | 'FAILED';
 
 export interface IRental {
   id: string;
+  no: string;
   userId: string;
   cupId: string;
   fromMachine: IMachine;
