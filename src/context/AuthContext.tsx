@@ -9,6 +9,7 @@ interface AuthProviderProps {
 
 interface AuthContextType {
   user?: IAuth;
+  refreshUser: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -16,13 +17,13 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { data } = useQuery<IAuth>({
+  const { data, refetch } = useQuery<IAuth>({
     queryKey: ['me'],
     queryFn: () => fetcher('/api/me'),
   });
 
   return (
-    <AuthContext.Provider value={{ user: data }}>
+    <AuthContext.Provider value={{ user: data, refreshUser: refetch }}>
       {children}
     </AuthContext.Provider>
   );
