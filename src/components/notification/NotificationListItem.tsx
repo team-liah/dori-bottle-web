@@ -1,4 +1,3 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React from 'react';
 import tw from 'tailwind-styled-components';
@@ -6,6 +5,7 @@ import { INotification } from '@/types/notification';
 
 interface INotificationListItemProps {
   notification: INotification;
+  onClick: () => void;
 }
 
 //#region Styled Component
@@ -62,27 +62,12 @@ const Icon = tw.img`
 `;
 
 //#endregion
-const NotificationListItem = ({ notification }: INotificationListItemProps) => {
-  const queryClient = useQueryClient();
-  const { mutate: patchNotificationRead } = useMutation({
-    mutationFn: () => {
-      return fetch(`/api/notification/${notification.id}/read`, {
-        method: 'PATCH',
-      });
-    },
-    onSuccess: () => queryClient.invalidateQueries(['notification']),
-  });
-
-  const handleRead = () => {
-    if (!notification.read) {
-      patchNotificationRead();
-      // TODO: notification.targetId에 따라 페이지 이동
-      console.log(notification.targetId);
-    }
-  };
-
+const NotificationListItem = ({
+  notification,
+  onClick,
+}: INotificationListItemProps) => {
   return (
-    <Wrapper $read={notification.read} onClick={handleRead}>
+    <Wrapper $read={notification.read} onClick={onClick}>
       <Content>
         <RowBlock>
           {notification.type === 'POINT' && (
