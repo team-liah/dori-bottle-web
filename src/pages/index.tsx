@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
 import { FiArrowRight } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -144,3 +145,23 @@ export default function Home() {
     </Wrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  try {
+    await queryClient.prefetchQuery(['me'], () => fetcher('/api/me'));
+
+    return {
+      props: {
+        dehydratedProps: dehydrate(queryClient),
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  } finally {
+    queryClient.clear();
+  }
+};
