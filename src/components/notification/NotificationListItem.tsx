@@ -64,7 +64,7 @@ const Icon = tw.img`
 //#endregion
 const NotificationListItem = ({ notification }: INotificationListItemProps) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate: patchNotificationRead } = useMutation({
     mutationFn: () => {
       return fetch(`/api/notification/${notification.id}/read`, {
         method: 'PATCH',
@@ -74,10 +74,10 @@ const NotificationListItem = ({ notification }: INotificationListItemProps) => {
   });
 
   const handleRead = () => {
-    // TODO: notification.targetId에 따라 페이지 이동
-    console.log(notification.targetId);
     if (!notification.read) {
-      mutate();
+      patchNotificationRead();
+      // TODO: notification.targetId에 따라 페이지 이동
+      console.log(notification.targetId);
     }
   };
 
