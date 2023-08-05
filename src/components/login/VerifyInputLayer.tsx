@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -55,7 +55,11 @@ const VerifyInputLayer = ({
     formState: { errors },
   } = useFormContext<ILoginFormInputs>();
   const { openToast } = useToast();
-  const { seconds, handleSeconds } = useTimer(300);
+  const { seconds, handleSeconds } = useTimer();
+
+  useEffect(() => {
+    handleSeconds(300);
+  }, [handleSeconds]);
 
   const handleClickRefresh = () => {
     if (seconds > 290) {
