@@ -1,5 +1,6 @@
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { FiArrowRight } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -98,6 +99,7 @@ const BubbleText = tw.span`
 //#endregion
 
 export default function Home() {
+  const router = useRouter();
   const { user } = useAuth();
   const { openToast } = useToast();
   const { openModal } = useModals();
@@ -121,7 +123,7 @@ export default function Home() {
   return (
     <Wrapper>
       <NavigationBar />
-      <GuideButton onClick={openPreparingToast}>
+      <GuideButton onClick={() => router.push('/guide')}>
         <LabelText>도리보틀 이용가이드 📖</LabelText>
         <ArrowIcon />
       </GuideButton>

@@ -39,9 +39,9 @@ export const ProgressBar = tw.div`
 `;
 
 export const Divider = tw.div`
-  h-[1px]
-  w-full
-  bg-back-line
+    h-[1px]
+    w-full
+    bg-back-line
 `;
 
 export const Empty = tw.div`
@@ -53,4 +53,26 @@ export const Empty = tw.div`
     pt-10
     text-[14px]
     text-gray2
+`;
+
+export const TabWrapper = tw.div`
+    flex
+    flex-col
+    overflow-y-auto
+    px-5
+    pt-8
+    pb-[76px]
+`;
+
+export const GuideNumber = tw.div`
+    flex
+    h-[21px]
+    w-[21px]
+    items-center
+    justify-center
+    rounded-full
+    bg-main-blue
+    text-[14px]
+    font-medium
+    text-white
 `;

@@ -6,6 +6,7 @@
 
 body {
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 input:-webkit-autofill,
