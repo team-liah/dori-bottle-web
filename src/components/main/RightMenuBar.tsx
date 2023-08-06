@@ -123,7 +123,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     },
     {
       title: '이용방법',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/guide'),
     },
     {
       title: '초대장',
