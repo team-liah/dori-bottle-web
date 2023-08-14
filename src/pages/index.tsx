@@ -1,5 +1,6 @@
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FiArrowRight } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
@@ -8,7 +9,6 @@ import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeModal from '@/components/main/QrcodeModal';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
-import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
 
@@ -101,18 +101,11 @@ const BubbleText = tw.span`
 export default function Home() {
   const router = useRouter();
   const { user } = useAuth();
-  const { openToast } = useToast();
   const { openModal } = useModals();
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
   });
-
-  const openPreparingToast = () => {
-    openToast({
-      component: '준비 중입니다.',
-    });
-  };
 
   const openQrcode = () => {
     openModal({
@@ -140,9 +133,9 @@ export default function Home() {
             <img src="/svg/qrcode.svg" alt="QR" />
           </QrButton>
         </ButtonWrapper>
-        <Custom.Button onClick={openPreparingToast}>
-          버블 충전하기
-        </Custom.Button>
+        <Link href="/payment">
+          <Custom.Button>버블 충전하기</Custom.Button>
+        </Link>
       </ContentWrapper>
     </Wrapper>
   );
