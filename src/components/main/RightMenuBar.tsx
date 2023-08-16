@@ -111,7 +111,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     },
     {
       title: '버블충전',
-      onClick: () => router.push('/payment'),
+      onClick: () => router.push('/charge'),
     },
     {
       title: '이용내역',
