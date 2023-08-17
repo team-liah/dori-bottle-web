@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { Fragment } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import usePayment from '@/hooks/usePayment';
@@ -42,19 +42,25 @@ const Icon = tw.img`
 //#endregion
 
 const PaymentCreatModal = () => {
+  const MULTIPLE_PAYMENT = false;
+
   const { addTossPayment, addKakaoPay, addNaverPay } = usePayment();
 
   return (
     <SelectList>
       <Custom.Button onClick={addTossPayment}>신용카드 추가</Custom.Button>
-      <KakaoButton onClick={addKakaoPay}>
-        <Icon src="/svg/kakao_pay.svg" alt="kakaopay" />
-        추가
-      </KakaoButton>
-      <NaverButton onClick={addNaverPay}>
-        <Icon src="/svg/naver_pay.svg" alt="naverpay" />
-        추가
-      </NaverButton>
+      {MULTIPLE_PAYMENT && (
+        <Fragment>
+          <KakaoButton onClick={addKakaoPay}>
+            <Icon src="/svg/kakao_pay.svg" alt="kakaopay" />
+            추가
+          </KakaoButton>
+          <NaverButton onClick={addNaverPay}>
+            <Icon src="/svg/naver_pay.svg" alt="naverpay" />
+            추가
+          </NaverButton>
+        </Fragment>
+      )}
     </SelectList>
   );
 };
