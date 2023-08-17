@@ -5,7 +5,7 @@ import PaymentLayer from '@/components/payment/PaymentLayer';
 
 //#endregion
 
-export default function Charge() {
+export default function Payment() {
   return (
     <Fragment>
       <PaymentLayer />

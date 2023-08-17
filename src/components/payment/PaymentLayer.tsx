@@ -2,6 +2,7 @@ import React from 'react';
 import { BiPlus } from 'react-icons/bi';
 import tw from 'tailwind-styled-components';
 import PaymentListItem from './PaymentListItem';
+import PaymentCreatModal from '../common/modal/PaymentCreatModal';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Layer from '@/components/common/Layer';
 import AlertModal from '@/components/common/modal/AlertModal';
@@ -63,36 +64,18 @@ const PaymentListWrapper = tw.div`
   flex-col
   gap-3
 `;
+
 //#endregion
 
 const PaymentLayer = () => {
   const { openModal, closeModal } = useModals();
-  const { paymentMethods } = usePayment();
+  const { paymentMethods, changeDefaultPayment, removePayment } = usePayment();
 
-  const handleAddNewPayment = () => {
-    console.log('add');
-  };
-
-  const handlePaymentSelect = (payment: IPayment) => {
-    console.log('select', payment);
-  };
-
-  const handleRemove = (payment: IPayment) => {
-    if (payment.isDefault) {
-      setTimeout(() => {
-        openModal({
-          component: AlertModal,
-          props: {
-            children:
-              '대여 중인 컵이 있어\n결제수단을 삭제할 수 없습니다.\n컵을 먼저 반납해주세요!',
-            confirmText: '닫기',
-            onClose: () => closeModal(AlertModal),
-          },
-        });
-      }, 0);
-    } else {
-      console.log('remove', payment);
-    }
+  const openNewPaymentModal = () => {
+    openModal({
+      position: 'bottom',
+      component: PaymentCreatModal,
+    });
   };
 
   const openRemoveModal = (payment: IPayment) => {
@@ -101,7 +84,7 @@ const PaymentLayer = () => {
       props: {
         children: '결제수단을 삭제하시겠습니까?',
         confirmText: '삭제하기',
-        onConfirm: () => handleRemove(payment),
+        onConfirm: () => removePayment(payment),
         onClose: () => closeModal(AlertModal),
       },
     });
@@ -111,7 +94,7 @@ const PaymentLayer = () => {
     <Layer title="결제수단 관리" fullScreen={true}>
       <Wrapper>
         <TopWrapper>
-          <Custom.Button $style="default" onClick={handleAddNewPayment}>
+          <Custom.Button $style="default" onClick={openNewPaymentModal}>
             <PlusIcon /> 결제수단 추가하기
           </Custom.Button>
           <PaymentListWrapper>
@@ -120,7 +103,7 @@ const PaymentLayer = () => {
                 <PaymentListItem
                   key={item.id}
                   payment={item}
-                  onClick={() => handlePaymentSelect(item)}
+                  onClick={() => changeDefaultPayment(item)}
                   onRemove={() => openRemoveModal(item)}
                 />
               );
