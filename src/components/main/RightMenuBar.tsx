@@ -107,7 +107,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const menuList = [
     {
       title: '결제수단',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/payment'),
     },
     {
       title: '버블충전',
