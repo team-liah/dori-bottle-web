@@ -6,6 +6,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   output: 'standalone',
   reactStrictMode: true,
+  publicRuntimeConfig: {
+    hostUrl: process.env.HOST_URL || 'https://api.doribottle-id.co.kr',
+    tossPaymentClientKey: process.env.TOSS_PAYMENT_CLIENT_KEY,
+  },
   async rewrites() {
     return [
       {
