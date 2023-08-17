@@ -14,7 +14,7 @@ api.interceptors.response.use(
     const originalConfig = error.config;
 
     // if res.status is 401, refresh
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       if (originalConfig.url === '/api/me') {
         return Promise.reject(error);
       }

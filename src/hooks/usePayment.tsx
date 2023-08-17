@@ -33,6 +33,7 @@ const usePayment = () => {
   // TODO: API 연동
   const changeDefaultPayment = (payment: IPayment) => {
     console.log('select', payment);
+    console.log(publicRuntimeConfig);
   };
 
   // TODO: API 연동
