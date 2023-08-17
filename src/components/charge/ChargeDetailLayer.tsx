@@ -5,7 +5,8 @@ import ProductListItem from './ProductListItem';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Layer from '@/components/common/Layer';
 import { IProductFormInputs } from '@/types/product';
-interface IPaymentDetailLayerProps {
+
+interface IChargeDetailLayerProps {
   onClickBack: () => void;
 }
 
@@ -73,7 +74,7 @@ const bulletList = [
   <p>무료버블은 환불할 수 없습니다.</p>,
 ];
 
-const PaymentDetailLayer = ({ onClickBack }: IPaymentDetailLayerProps) => {
+const ChargeDetailLayer = ({ onClickBack }: IChargeDetailLayerProps) => {
   const {
     watch,
     formState: { submitCount },
@@ -107,4 +108,4 @@ const PaymentDetailLayer = ({ onClickBack }: IPaymentDetailLayerProps) => {
   );
 };
 
-export default PaymentDetailLayer;
+export default ChargeDetailLayer;

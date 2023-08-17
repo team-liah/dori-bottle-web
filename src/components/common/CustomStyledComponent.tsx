@@ -1,15 +1,26 @@
 import tw from 'tailwind-styled-components';
 
-export const Button = tw.button`
+export const Button = tw.button<{ $style?: 'primary' | 'default' | 'disable' }>`
+    flex
     h-[54px]
     w-full
+    items-center
+    justify-center
     rounded-[15px]
-    bg-main-blue
     text-[16px]
     font-medium
-    text-white
     transition-colors
     disabled:bg-unactivated
+    ${(props) => {
+      switch (props.$style) {
+        case 'default':
+          return 'border border-main-blue bg-white text-main-blue rounded-[8px]';
+        case 'disable':
+          return 'bg-unactivated text-white';
+        default:
+          return 'bg-main-blue text-white';
+      }
+    }}
 `;
 
 export const MobileWrapper = tw.div`

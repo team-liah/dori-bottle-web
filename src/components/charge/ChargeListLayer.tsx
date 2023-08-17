@@ -31,7 +31,7 @@ const ProductList = tw.div`
 
 //#endregion
 
-const PaymentListLayer = () => {
+const ChargeListLayer = () => {
   const { control, watch } = useFormContext<IProductFormInputs>();
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -97,4 +97,4 @@ const PaymentListLayer = () => {
   );
 };
 
-export default PaymentListLayer;
+export default ChargeListLayer;
