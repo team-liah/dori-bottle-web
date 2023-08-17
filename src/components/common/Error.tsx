@@ -25,6 +25,7 @@ const AlertCircleIcon = tw(FiAlertCircle)`
 `;
 
 const AlertText = tw.div`
+  text-center
   text-unactivated
 `;
 

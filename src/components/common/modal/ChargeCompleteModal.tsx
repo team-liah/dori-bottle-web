@@ -3,7 +3,7 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { IProduct } from '@/types/product';
 
-interface IPaymentCompleteModalProps {
+interface IChargeCompleteModalProps {
   product: IProduct;
   onClickHome: () => void;
 }
@@ -36,10 +36,10 @@ const TitleText = tw.div`
 
 //#endregion
 
-const PaymentCompleteModal = ({
+const ChargeCompleteModal = ({
   product,
   onClickHome,
-}: IPaymentCompleteModalProps) => {
+}: IChargeCompleteModalProps) => {
   return (
     <Wrapper>
       <BubbleIcon src="/svg/bubble.svg" alt="next" />
@@ -49,4 +49,4 @@ const PaymentCompleteModal = ({
   );
 };
 
-export default PaymentCompleteModal;
+export default ChargeCompleteModal;

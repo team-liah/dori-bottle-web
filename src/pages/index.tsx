@@ -133,7 +133,7 @@ export default function Home() {
             <img src="/svg/qrcode.svg" alt="QR" />
           </QrButton>
         </ButtonWrapper>
-        <Link href="/payment">
+        <Link href="/charge">
           <Custom.Button>버블 충전하기</Custom.Button>
         </Link>
       </ContentWrapper>
