@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { BiPlus } from 'react-icons/bi';
 import tw from 'tailwind-styled-components';
@@ -68,6 +69,7 @@ const PaymentListWrapper = tw.div`
 //#endregion
 
 const PaymentLayer = () => {
+  const router = useRouter();
   const { openModal, closeModal } = useModals();
   const { paymentMethods, changeDefaultPayment, removePayment } = usePayment();
 
@@ -91,7 +93,11 @@ const PaymentLayer = () => {
   };
 
   return (
-    <Layer title="결제수단 관리" fullScreen={true}>
+    <Layer
+      title="결제수단 관리"
+      fullScreen={true}
+      onClickBack={() => router.push('/')}
+    >
       <Wrapper>
         <TopWrapper>
           <Custom.Button $style="default" onClick={openNewPaymentModal}>
