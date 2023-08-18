@@ -8,7 +8,7 @@ const config = {
   reactStrictMode: true,
   publicRuntimeConfig: {
     hostUrl: isProduction
-      ? 'https://doribottle-id.co.kr'
+      ? 'https://www.doribottle-id.co.kr'
       : 'http://localhost:4000',
     tossPaymentClientKey: process.env.TOSS_PAYMENT_CLIENT_KEY,
   },
