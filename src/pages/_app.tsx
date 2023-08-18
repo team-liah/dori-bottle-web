@@ -71,3 +71,12 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+// TODO: Runtime 환경변수를 사용하기 위한 임시 조치
+App.getInitialProps = async () => {
+  const ssr = true;
+
+  return {
+    ssr,
+  };
+};
