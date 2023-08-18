@@ -7,9 +7,10 @@ const config = {
   output: 'standalone',
   reactStrictMode: true,
   publicRuntimeConfig: {
-    hostUrl:
-      process.env.NEXT_PUBLIC_HOST_URL || 'https://api.doribottle-id.co.kr',
-    tossPaymentClientKey: process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY,
+    hostUrl: isProduction
+      ? 'https://api.doribottle-id.co.kr'
+      : 'http://localhost:4000',
+    tossPaymentClientKey: process.env.TOSS_PAYMENT_CLIENT_KEY,
   },
   async rewrites() {
     return [
