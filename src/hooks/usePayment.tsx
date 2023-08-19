@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import useModals from './useModals';
 import useToast from './useToast';
 import AlertModal from '@/components/common/modal/AlertModal';
-import { IPayment } from '@/types/payment';
+import { IPaymentMethod } from '@/types/payment';
 
 const usePayment = () => {
   const { user } = useAuth();
@@ -12,7 +12,7 @@ const usePayment = () => {
   const { openModal, closeModal } = useModals();
   const { publicRuntimeConfig } = getConfig();
   // TODO: API 연동
-  const paymentMethods: IPayment[] = [
+  const paymentMethods: IPaymentMethod[] = [
     {
       id: 1,
       type: 'CREDIT',
@@ -33,12 +33,12 @@ const usePayment = () => {
   ];
 
   // TODO: API 연동
-  const changeDefaultPayment = (payment: IPayment) => {
+  const changeDefaultPayment = (payment: IPaymentMethod) => {
     console.log('select', payment);
   };
 
   // TODO: API 연동
-  const removePayment = (payment: IPayment) => {
+  const removePayment = (payment: IPaymentMethod) => {
     if (payment.isDefault) {
       setTimeout(() => {
         openModal({

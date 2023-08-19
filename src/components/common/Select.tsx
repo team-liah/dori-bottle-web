@@ -15,6 +15,7 @@ interface ISelectProps {
 
 const Wrapper = tw.div`
   relative
+  z-[1]
 `;
 
 const SelectedWrapper = tw.div`
@@ -28,7 +29,8 @@ const SelectedWrapper = tw.div`
   border-[1px]
   border-solid
   border-back-line
-  p-[7px]
+  p-2
+  pl-3
 `;
 
 const ChevronIcon = tw(FiChevronDown)<{ $open: boolean }>`
@@ -43,7 +45,7 @@ const SelectList = tw(motion.div)`
   top-[32px]
   left-0
   flex
-  w-full
+  w-[95px]
   flex-col
   rounded-[10px]
   bg-white
@@ -56,7 +58,8 @@ const SelectItem = tw.div`
   flex-row
   items-center
   justify-between
-  p-[7px]
+  p-2
+  pl-3
 `;
 
 const LabelText = tw.span`

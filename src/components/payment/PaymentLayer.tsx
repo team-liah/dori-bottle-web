@@ -9,7 +9,7 @@ import Layer from '@/components/common/Layer';
 import AlertModal from '@/components/common/modal/AlertModal';
 import useModals from '@/hooks/useModals';
 import usePayment from '@/hooks/usePayment';
-import { IPayment } from '@/types/payment';
+import { IPaymentMethod } from '@/types/payment';
 
 //#region Styled Component
 
@@ -80,7 +80,7 @@ const PaymentLayer = () => {
     });
   };
 
-  const openRemoveModal = (payment: IPayment) => {
+  const openRemoveModal = (payment: IPaymentMethod) => {
     openModal({
       component: AlertModal,
       props: {

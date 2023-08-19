@@ -119,7 +119,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     },
     {
       title: '결제내역',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/payment/history'),
     },
     {
       title: '이용방법',
