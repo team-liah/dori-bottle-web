@@ -2,10 +2,10 @@ import React from 'react';
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from 'react-icons/md';
 import { PiX } from 'react-icons/pi';
 import tw from 'tailwind-styled-components';
-import { IPayment } from '@/types/payment';
+import { IPaymentMethod } from '@/types/payment';
 
 interface IPaymentListItemProps {
-  payment: IPayment;
+  payment: IPaymentMethod;
   onClick: () => void;
   onRemove: () => void;
 }

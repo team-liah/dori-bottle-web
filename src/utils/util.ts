@@ -1,4 +1,5 @@
 import { Regex } from '@/constants/Regex';
+import { PaymentHistoryType } from '@/types/payment';
 import { RentalStatus } from '@/types/rental';
 
 export const getHypenTel = (tel: string) => {
@@ -26,6 +27,17 @@ export const getRentalStatus = (status: RentalStatus) => {
       return '반납 완료';
     case 'FAILED':
       return '분실';
+    default:
+      return '';
+  }
+};
+
+export const getPaymentHistoryStatus = (status: PaymentHistoryType) => {
+  switch (status) {
+    case 'CHARGE':
+      return '버블 충전';
+    case 'LOST':
+      return '컵 분실';
     default:
       return '';
   }
