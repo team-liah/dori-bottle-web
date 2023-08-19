@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useRouter } from 'next/router';
-import React, { Fragment, useCallback, useEffect } from 'react';
+import getConfig from 'next/config';
+import React, { Fragment } from 'react';
 import Loading from '@/components/common/Loading';
 
 //#region Styled Component
@@ -8,41 +8,54 @@ import Loading from '@/components/common/Loading';
 //#endregion
 
 export default function PaymentSuccess() {
-  const router = useRouter();
-  const { query } = router;
-
-  const handleSuccess = useCallback(async () => {
-    const { customerKey, authKey } = query;
-
-    try {
-      if (customerKey && authKey) {
-        const options = {
-          method: 'POST',
-          url: 'https://api.tosspayments.com/v1/billing/authorizations/issue',
-          headers: {
-            Authorization:
-              'Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==',
-            'Content-Type': 'application/json',
-          },
-          data: query,
-        };
-        const response = await axios.request(options);
-        console.log(response.data);
-
-        router.push('/payment');
-      }
-    } catch (error) {
-      router.replace('/payment/toss/fail');
-    }
-  }, [query, router]);
-
-  useEffect(() => {
-    handleSuccess();
-  }, [handleSuccess]);
-
   return (
     <Fragment>
       <Loading />
     </Fragment>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  // TODO: 리팩토링 필요
+  const { query } = context;
+  const { customerKey, authKey } = query;
+  const { serverRuntimeConfig } = getConfig();
+
+  if (customerKey && authKey) {
+    try {
+      await axios.post(
+        `${serverRuntimeConfig.baseApiUrl}/api/v1/payment/method`,
+        {
+          providerType: 'TOSS_PAYMENTS',
+          customerKey,
+          authKey,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${context.req.cookies.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      return {
+        redirect: {
+          destination: '/payment',
+          permanent: true,
+        },
+      };
+    } catch (error) {
+      return {
+        redirect: {
+          destination: '/payment/toss/fail',
+          permanent: false,
+        },
+      };
+    }
+  } else {
+    return {
+      notFound: true,
+    };
+  }
+};
