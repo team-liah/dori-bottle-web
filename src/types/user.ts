@@ -13,9 +13,11 @@ export interface IRegisterFormInputs {
 }
 
 export interface IAuth {
+  id: React.Key;
   loginId: string;
   role: string;
   name: string;
+  alertCount: number;
 }
 
 export interface ILoginResponse {
