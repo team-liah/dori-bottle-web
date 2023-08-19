@@ -2,11 +2,15 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import PaymentHistoryListItem from './PaymentHistoryListItem';
-import { Divider, Empty, ProgressBar } from '../common/CustomStyledComponent';
-import Error from '../common/Error';
-import Select from '../common/Select';
-import AlertModal from '../common/modal/AlertModal';
+import {
+  Divider,
+  Empty,
+  ProgressBar,
+} from '@/components/common/CustomStyledComponent';
+import Error from '@/components/common/Error';
 import Layer from '@/components/common/Layer';
+import Select from '@/components/common/Select';
+import AlertModal from '@/components/common/modal/AlertModal';
 import useModals from '@/hooks/useModals';
 import useScroll from '@/hooks/useScroll';
 import api from '@/service/api';
