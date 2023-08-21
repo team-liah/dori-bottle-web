@@ -3,6 +3,12 @@ import React, { Fragment } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import usePayment from '@/hooks/usePayment';
+import { PaymentType } from '@/types/payment';
+
+interface IPaymentCreatModalProps {
+  onClose: () => void;
+}
+
 //#region Styled Component
 
 const SelectList = tw(motion.div)`
@@ -41,21 +47,42 @@ const Icon = tw.img`
 
 //#endregion
 
-const PaymentCreatModal = () => {
+const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
   const MULTIPLE_PAYMENT = false;
 
   const { addTossPayment, addKakaoPay, addNaverPay } = usePayment();
 
+  const handleAddPayment = (paymentType: PaymentType) => {
+    switch (paymentType) {
+      case 'CREDIT':
+        addTossPayment();
+        onClose();
+        break;
+      case 'KAKAO':
+        addKakaoPay();
+        onClose();
+        break;
+      case 'NAVER':
+        addNaverPay();
+        onClose();
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <SelectList>
-      <Custom.Button onClick={addTossPayment}>신용카드 추가</Custom.Button>
+      <Custom.Button onClick={() => handleAddPayment('CREDIT')}>
+        신용카드 추가
+      </Custom.Button>
       {MULTIPLE_PAYMENT && (
         <Fragment>
-          <KakaoButton onClick={addKakaoPay}>
+          <KakaoButton onClick={() => handleAddPayment('KAKAO')}>
             <Icon src="/svg/kakao_pay.svg" alt="kakaopay" />
             추가
           </KakaoButton>
-          <NaverButton onClick={addNaverPay}>
+          <NaverButton onClick={() => handleAddPayment('NAVER')}>
             <Icon src="/svg/naver_pay.svg" alt="naverpay" />
             추가
           </NaverButton>

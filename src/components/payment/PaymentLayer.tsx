@@ -77,6 +77,9 @@ const PaymentLayer = () => {
     openModal({
       position: 'bottom',
       component: PaymentCreatModal,
+      props: {
+        onClose: () => closeModal(PaymentCreatModal),
+      },
     });
   };
 
