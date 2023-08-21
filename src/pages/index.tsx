@@ -9,7 +9,7 @@ import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeModal from '@/components/main/QrcodeModal';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
-import { fetcher } from '@/service/fetch';
+import { fetcher, serverFetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
 
 //#region Styled Components
@@ -141,11 +141,19 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   try {
-    await queryClient.prefetchQuery(['me'], () => fetcher('/api/me'));
+    await queryClient.prefetchQuery(['me'], () =>
+      serverFetcher('/me', {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${context.req.cookies.access_token}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
 
     return {
       props: {
@@ -156,7 +164,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
       notFound: true,
     };
-  } finally {
-    queryClient.clear();
   }
 };

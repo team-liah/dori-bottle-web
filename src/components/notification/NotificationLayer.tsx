@@ -9,6 +9,7 @@ import NotificationListItem from './NotificationListItem';
 import { Divider, Empty } from '../common/CustomStyledComponent';
 import Error from '../common/Error';
 import Layer from '@/components/common/Layer';
+import useAuth from '@/hooks/useAuth';
 import useScroll from '@/hooks/useScroll';
 import { fetcher } from '@/service/fetch';
 import { INotification, INotificationList } from '@/types/notification';
@@ -36,6 +37,7 @@ const NotificationList = tw.div`
 //#endregion
 
 const NotificationLayer = () => {
+  const { refreshUser } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { handleScroll, isReachingEnd } = useScroll();
 
@@ -57,7 +59,7 @@ const NotificationLayer = () => {
   const { mutate: patchNotificationRead } = useMutation({
     mutationFn: (notification: INotification) => {
       return fetch(`/api/notification/${notification.id}/read`, {
-        method: 'PATCH',
+        method: 'PUT',
       });
     },
     onSuccess: () => queryClient.invalidateQueries(['notification']),
@@ -70,6 +72,10 @@ const NotificationLayer = () => {
       patchNotificationRead(notification);
     }
   };
+
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   useEffect(() => {
     if (isReachingEnd) {
