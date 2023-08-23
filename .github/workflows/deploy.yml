@@ -36,9 +36,15 @@ jobs:
       # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
       - name: Generate Environment Variables File for Production
         run: |
-          echo "TOSS_PAYMENT_CLIENT_KEY=$TOSS_PAYMENT_CLIENT_KEY" >> .env.production
+          echo "NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY=$NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY" >> .env.production
+          echo "NEXT_PUBLIC_KAKAO_PLUS_URL=$NEXT_PUBLIC_KAKAO_PLUS_URL" >> .env.production
+          echo "NEXT_PUBLIC_HOST_URL=$NEXT_PUBLIC_HOST_URL" >> .env.production
+          echo "BASE_API_URL=$BASE_API_URL" >> .env.production
         env:
-          TOSS_PAYMENT_CLIENT_KEY: ${{ secrets.TOSS_PAYMENT_CLIENT_KEY }}
+          NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY: ${{ vars.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY }}
+          NEXT_PUBLIC_KAKAO_PLUS_URL: ${{ vars.NEXT_PUBLIC_KAKAO_PLUS_URL }}
+          NEXT_PUBLIC_HOST_URL: ${{ vars.NEXT_PUBLIC_HOST_URL }}
+          BASE_API_URL: ${{ vars.BASE_API_URL }}
 
       - name: Build, tag, and push image to Amazon ECR
         run: |
