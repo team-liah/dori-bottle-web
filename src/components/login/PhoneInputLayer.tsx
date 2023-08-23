@@ -8,6 +8,10 @@ import { Regex } from '@/constants/Regex';
 import { ILoginFormInputs } from '@/types/user';
 import { getHypenTel } from '@/utils/util';
 
+interface IPhoneInputLayerProps {
+  title?: string;
+}
+
 //#region Styled Component
 
 const Wrapper = tw.div`
@@ -22,7 +26,7 @@ const Wrapper = tw.div`
 
 //#endregion
 
-const PhoneInputLayer = () => {
+const PhoneInputLayer = ({ title }: IPhoneInputLayerProps) => {
   const {
     control,
     watch,
@@ -32,7 +36,7 @@ const PhoneInputLayer = () => {
 
   return (
     <Layer
-      title="휴대폰번호 입력"
+      title={title ?? '휴대폰번호 입력'}
       footer={
         <Custom.Button type="submit" disabled={watch('loginId')?.length !== 13}>
           다음

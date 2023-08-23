@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
@@ -157,10 +158,12 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
           <Wrapper>
             <Custom.Dimmed onClick={onClose} />
             <MenuWrapper {...MOTION.DRAWER}>
-              <ProfileWrapper onClick={openPreparingToast}>
-                <ProfileText>{user?.name}님</ProfileText>
-                <ChevronRightIcon />
-              </ProfileWrapper>
+              <Link href="/mypage">
+                <ProfileWrapper>
+                  <ProfileText>{user?.name}님</ProfileText>
+                  <ChevronRightIcon />
+                </ProfileWrapper>
+              </Link>
               <MenuListWrapper>
                 {menuList.map((item) => (
                   <MenuItem key={item.title} onClick={item.onClick}>

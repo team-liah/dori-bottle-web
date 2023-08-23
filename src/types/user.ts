@@ -1,3 +1,5 @@
+export type GroupType = 'UNIVERSITY' | 'COMPANY';
+
 export interface ILoginFormInputs {
   loginId: string;
   loginPassword: string;
@@ -31,7 +33,18 @@ export interface IProfile {
   name: string;
   phoneNumber: string;
   invitationCode: string;
+  invitationCount: number;
+  inviterId: string;
   birthDate: string;
   gender: string;
   role: string;
+  registeredDate: string;
+  penaltyCount: number;
+  group: IGroup;
+}
+
+export interface IGroup {
+  id: string;
+  name: string;
+  type: GroupType;
 }
