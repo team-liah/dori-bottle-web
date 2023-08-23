@@ -125,7 +125,9 @@ const MypageLayer = () => {
             <InfoLabelText>전화번호</InfoLabelText>
             <InfoText>
               <span>{profile?.loginId}</span>
-              <Button>번호 변경</Button>
+              <Link href="/mypage/change">
+                <Button>번호 변경</Button>
+              </Link>
             </InfoText>
           </InfoWrapper>
           <InfoWrapper>
