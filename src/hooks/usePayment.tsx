@@ -1,5 +1,4 @@
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import getConfig from 'next/config';
 import useAuth from './useAuth';
 import useModals from './useModals';
 import useToast from './useToast';
@@ -10,7 +9,6 @@ const usePayment = () => {
   const { user } = useAuth();
   const { openToast } = useToast();
   const { openModal, closeModal } = useModals();
-  const { publicRuntimeConfig } = getConfig();
   // TODO: API 연동
   const paymentMethods: IPaymentMethod[] = [
     {
@@ -57,8 +55,8 @@ const usePayment = () => {
   };
 
   const addTossPayment = async () => {
-    if (publicRuntimeConfig?.tossPaymentClientKey && user) {
-      loadTossPayments(publicRuntimeConfig?.tossPaymentClientKey).then(
+    if (process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY && user) {
+      loadTossPayments(process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY).then(
         (tossPayments) => {
           // ------ 카드 등록창 호출 ------
           tossPayments
@@ -68,8 +66,8 @@ const usePayment = () => {
               // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
               // https://docs.tosspayments.com/reference/js-sdk#requestbillingauth카드-결제-정보
               customerKey: user.id as string, // 고객 ID로 상점에서 만들어야 합니다. 빌링키와 매핑됩니다. 자세한 파라미터 설명은 결제 정보 파라미터 설명을 참고하세요.
-              successUrl: `${publicRuntimeConfig?.hostUrl}/payment/toss/success`, // 카드 등록에 성공하면 이동하는 페이지(직접 만들어주세요)
-              failUrl: `${publicRuntimeConfig?.hostUrl}/payment/toss/fail`, // 카드 등록에 실패하면 이동하는 페이지(직접 만들어주세요)
+              successUrl: `${process.env.NEXT_PUBLIC_HOST_URL}/payment/toss/success`, // 카드 등록에 성공하면 이동하는 페이지(직접 만들어주세요)
+              failUrl: `${process.env.NEXT_PUBLIC_HOST_URL}/payment/toss/fail`, // 카드 등록에 실패하면 이동하는 페이지(직접 만들어주세요)
             })
             // ------ 결제창을 띄울 수 없는 에러 처리 ------
             // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.

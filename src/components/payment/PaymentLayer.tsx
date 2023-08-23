@@ -15,7 +15,7 @@ import { IPaymentMethod } from '@/types/payment';
 
 const Wrapper = tw.div`
   flex
-  h-[calc(100vh-40px)]
+  h-[calc(100dvh-40px)]
   w-full
   flex-col
   pt-8
