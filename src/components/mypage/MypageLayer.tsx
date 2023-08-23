@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import React from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import tw from 'tailwind-styled-components';
@@ -133,7 +134,9 @@ const MypageLayer = () => {
               <span>
                 {profile?.group?.name || '기관이 등록되어 있지 않습니다'}
               </span>
-              <Button $style="primary">인증하기</Button>
+              <Link href="/mypage/department">
+                <Button $style="primary">인증하기</Button>
+              </Link>
             </InfoText>
           </InfoWrapper>
           <InfoWrapper>
