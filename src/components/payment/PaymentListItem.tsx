@@ -65,9 +65,9 @@ const PaymentListItem = ({
   return (
     <Wrapper onClick={onClick}>
       <SelectWrapper>
-        {payment.isDefault ? <RadioSelected /> : <Radio />}
-        {payment.type === 'CREDIT' && (
-          <div>{`${payment.cardName}(${payment.cardNum})`}</div>
+        {payment.default ? <RadioSelected /> : <Radio />}
+        {payment.type === 'CARD' && (
+          <div>{`${payment.card?.acquirer}(${payment.card?.number})`}</div>
         )}
         {payment.type === 'KAKAO' && (
           <Icon src="/svg/kakao_pay.svg" alt="bubble" />

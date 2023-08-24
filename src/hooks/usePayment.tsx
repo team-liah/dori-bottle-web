@@ -1,58 +1,52 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import useAuth from './useAuth';
 import useModals from './useModals';
 import useToast from './useToast';
 import AlertModal from '@/components/common/modal/AlertModal';
+import api from '@/service/api';
 import { IPaymentMethod } from '@/types/payment';
+import { getErrorMessage } from '@/utils/error';
 
 const usePayment = () => {
   const { user } = useAuth();
   const { openToast } = useToast();
   const { openModal, closeModal } = useModals();
-  // TODO: API 연동
-  const paymentMethods: IPaymentMethod[] = [
-    {
-      id: 1,
-      type: 'CREDIT',
-      cardName: '신한카드',
-      cardNum: '3477',
-      isDefault: true,
+  const queryClient = useQueryClient();
+
+  const { mutate: changeDefaultPayment } = useMutation({
+    mutationFn: (payment: IPaymentMethod) => {
+      return api.post(`/api/payment/method/${payment.id}/default`);
     },
-    // {
-    //   id: 2,
-    //   type: 'KAKAO',
-    //   isDefault: false,
-    // },
-    // {
-    //   id: 3,
-    //   type: 'NAVER',
-    //   isDefault: false,
-    // },
-  ];
+    onSuccess: () => queryClient.invalidateQueries(['payment', 'method']),
+    onError: (error) => {
+      openModal({
+        component: AlertModal,
+        props: {
+          children: getErrorMessage(error),
+          confirmText: '닫기',
+          onClose: () => closeModal(AlertModal),
+        },
+      });
+    },
+  });
 
-  // TODO: API 연동
-  const changeDefaultPayment = (payment: IPaymentMethod) => {
-    console.log('select', payment);
-  };
-
-  // TODO: API 연동
-  const removePayment = (payment: IPaymentMethod) => {
-    if (payment.isDefault) {
-      setTimeout(() => {
-        openModal({
-          component: AlertModal,
-          props: {
-            children:
-              '대여 중인 컵이 있어\n결제수단을 삭제할 수 없습니다.\n컵을 먼저 반납해주세요!',
-            confirmText: '닫기',
-            onClose: () => closeModal(AlertModal),
-          },
-        });
-      }, 0);
-    } else {
-      console.log('remove', payment);
-    }
-  };
+  const { mutate: removePayment } = useMutation({
+    mutationFn: (payment: IPaymentMethod) => {
+      return api.delete(`/api/payment/method/${payment.id}`);
+    },
+    onSuccess: () => queryClient.invalidateQueries(['payment', 'method']),
+    onError: (error) => {
+      openModal({
+        component: AlertModal,
+        props: {
+          children: getErrorMessage(error),
+          confirmText: '닫기',
+          onClose: () => closeModal(AlertModal),
+        },
+      });
+    },
+  });
 
   const addTossPayment = async () => {
     if (process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY && user) {
@@ -106,7 +100,6 @@ const usePayment = () => {
   };
 
   return {
-    paymentMethods,
     changeDefaultPayment,
     removePayment,
     addTossPayment,

@@ -1,14 +1,23 @@
 import { IPageable } from './common';
 
-export type PaymentType = 'CREDIT' | 'KAKAO' | 'NAVER';
+export type PaymentType = 'CARD' | 'KAKAO' | 'NAVER';
 export type PaymentHistoryType = 'CHARGE' | 'LOST';
 
+interface ICard {
+  acquirer: string;
+  number: string;
+  ownerType: string;
+  type: string;
+}
+export interface IPaymentMethodList {
+  content: IPaymentMethod[];
+  pageable: IPageable;
+}
 export interface IPaymentMethod {
   id: React.Key;
   type: PaymentType;
-  cardName?: string;
-  cardNum?: string;
-  isDefault: boolean;
+  default: boolean;
+  card?: ICard;
 }
 
 export interface IPaymentHistoryList {

@@ -146,8 +146,8 @@ const PaymentHistoryListItem = ({
           <Content>
             <MachineNoText>결제 수단</MachineNoText>
             <MachineNoText>
-              {history.paymentMethod?.cardName}({history.paymentMethod?.cardNum}
-              )
+              {history.paymentMethod?.card?.acquirer}(
+              {history.paymentMethod?.card?.number})
             </MachineNoText>
           </Content>
           {history.type !== 'LOST' && (
