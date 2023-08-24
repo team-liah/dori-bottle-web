@@ -11,6 +11,7 @@ import Error from '../common/Error';
 import Layer from '@/components/common/Layer';
 import useAuth from '@/hooks/useAuth';
 import useScroll from '@/hooks/useScroll';
+import api from '@/service/api';
 import { fetcher } from '@/service/fetch';
 import { INotification, INotificationList } from '@/types/notification';
 import { getErrorMessage } from '@/utils/error';
@@ -58,9 +59,7 @@ const NotificationLayer = () => {
 
   const { mutate: patchNotificationRead } = useMutation({
     mutationFn: (notification: INotification) => {
-      return fetch(`/api/notification/${notification.id}/read`, {
-        method: 'PUT',
-      });
+      return api.put(`/api/notification/${notification.id}/read`);
     },
     onSuccess: () => queryClient.invalidateQueries(['notification']),
   });

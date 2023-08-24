@@ -54,7 +54,7 @@ const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
 
   const handleAddPayment = (paymentType: PaymentType) => {
     switch (paymentType) {
-      case 'CREDIT':
+      case 'CARD':
         addTossPayment();
         onClose();
         break;
@@ -73,7 +73,7 @@ const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
 
   return (
     <SelectList>
-      <Custom.Button onClick={() => handleAddPayment('CREDIT')}>
+      <Custom.Button onClick={() => handleAddPayment('CARD')}>
         신용카드 추가
       </Custom.Button>
       {MULTIPLE_PAYMENT && (
