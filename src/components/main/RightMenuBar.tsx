@@ -7,7 +7,6 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { MOTION } from '@/constants/MotionConstants';
 import useAuth from '@/hooks/useAuth';
-import useDeviceDetect from '@/hooks/useDeviceDetect';
 import useInstalltaion from '@/hooks/useInstallation';
 import useToast from '@/hooks/useToast';
 
@@ -96,7 +95,6 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const { openToast } = useToast();
   const { logout } = useAuth();
   const { handleClickShare } = useInstalltaion();
-  const { isIos } = useDeviceDetect();
 
   const openPreparingToast = () => {
     openToast({
@@ -175,15 +173,11 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
                   </MenuItem>
                 ))}
                 <Divider />
-                {menuListSmall
-                  .filter((item) =>
-                    isIos ? item.title !== '홈 화면에 아이콘 추가' : true,
-                  )
-                  .map((item) => (
-                    <MenuItemSmall key={item.title} onClick={item.onClick}>
-                      {item.title}
-                    </MenuItemSmall>
-                  ))}
+                {menuListSmall.map((item) => (
+                  <MenuItemSmall key={item.title} onClick={item.onClick}>
+                    {item.title}
+                  </MenuItemSmall>
+                ))}
               </MenuListWrapper>
             </MenuWrapper>
           </Wrapper>
