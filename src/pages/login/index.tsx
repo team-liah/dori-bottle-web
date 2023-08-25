@@ -56,9 +56,14 @@ export default function Login() {
 
   const callbackUrl = router.query.callbackUrl as string;
 
+  // TODO: 테스트 로그인 버튼 삭제
   const handleTestLogin = async () => {
     try {
-      await api.post('/api/account/dummy-auth');
+      const response = await api.post('/api/account/dummy-auth');
+      const { accessToken, refreshToken } = response.data;
+      document.cookie = `access_token=${accessToken}; path=/;`;
+      document.cookie = `refresh_token=${refreshToken}; path=/;`;
+
       router.push('/');
     } catch (error) {
       alert(getErrorMessage(error));
