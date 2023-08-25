@@ -2,12 +2,14 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeModal from '@/components/main/QrcodeModal';
 import useAuth from '@/hooks/useAuth';
+import useInstalltaion from '@/hooks/useInstallation';
 import useModals from '@/hooks/useModals';
 import { fetcher, serverFetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
@@ -102,6 +104,7 @@ export default function Home() {
   const router = useRouter();
   const { user } = useAuth();
   const { openModal } = useModals();
+  const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -112,6 +115,17 @@ export default function Home() {
       component: QrcodeModal,
     });
   };
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener(
+        'beforeinstallprompt',
+        handleBeforeInstallPrompt,
+      );
+    };
+  }, [handleBeforeInstallPrompt]);
 
   return (
     <Wrapper>
