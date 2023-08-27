@@ -137,7 +137,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const menuListSmall = [
     {
       title: '공지사항',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/notice'),
     },
     {
       title: '문의하기',
