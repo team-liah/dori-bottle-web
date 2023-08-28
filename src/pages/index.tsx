@@ -102,7 +102,7 @@ const BubbleText = tw.span`
 
 export default function Home() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { openModal } = useModals();
   const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
@@ -126,6 +126,10 @@ export default function Home() {
       );
     };
   }, [handleBeforeInstallPrompt]);
+
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   return (
     <Wrapper>
