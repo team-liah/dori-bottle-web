@@ -35,7 +35,6 @@ const GuideButton = tw.div`
 `;
 
 const LabelText = tw.div`
-  h-[20px]
   text-center
   text-[16px]
   font-bold
