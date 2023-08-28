@@ -141,7 +141,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     },
     {
       title: '문의하기',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/faq'),
     },
     {
       title: '홈 화면에 아이콘 추가',
