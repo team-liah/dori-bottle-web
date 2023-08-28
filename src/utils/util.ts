@@ -34,10 +34,12 @@ export const getRentalStatus = (status: RentalStatus) => {
 
 export const getPaymentHistoryStatus = (status: PaymentHistoryType) => {
   switch (status) {
-    case 'CHARGE':
+    case 'SAVE_POINT':
       return '버블 충전';
-    case 'LOST':
+    case 'LOST_CUP':
       return '컵 분실';
+    case 'UNBLOCK_ACCOUNT':
+      return '블락 해제';
     default:
       return '';
   }
