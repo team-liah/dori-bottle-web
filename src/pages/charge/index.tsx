@@ -4,19 +4,18 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ChargeDetailLayer from '@/components/charge/ChargeDetailLayer';
 import ChargeListLayer from '@/components/charge/ChargeListLayer';
 import ChargeCompleteModal from '@/components/common/modal/ChargeCompleteModal';
-import NotPaymentModal from '@/components/common/modal/NotPaymentModal';
+import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
+import api from '@/service/api';
 import { IProductFormInputs } from '@/types/product';
+import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
 
 //#endregion
 
 export default function Charge() {
-  // TODO: 결제수단 등록이 필요한 경우
-  const payment = true;
-
   const router = useRouter();
   const { openModal, closeModal } = useModals();
   const { openToast } = useToast();
@@ -30,28 +29,34 @@ export default function Charge() {
 
   const onSubmitCharge = async () => {
     try {
-      if (payment) {
-        // TODO: 버블 충전
+      await api.post('/api/payment/save-point', {
+        categoryId: methods.getValues('product').id,
+      });
+
+      openModal({
+        component: ChargeCompleteModal,
+        props: {
+          product: methods.getValues('product'),
+          onClickHome: () => {
+            router.replace('/');
+            closeModal(ChargeCompleteModal);
+          },
+        },
+      });
+    } catch (error: any) {
+      if (error.response.status === 404) {
         openModal({
-          component: ChargeCompleteModal,
+          position: 'bottom',
+          component: PaymentCreatModal,
           props: {
-            product: methods.getValues('product'),
-            onClickHome: () => {
-              router.replace('/');
-              closeModal(ChargeCompleteModal);
-            },
+            onClose: () => closeModal(PaymentCreatModal),
           },
         });
       } else {
-        openModal({
-          position: 'bottom',
-          component: NotPaymentModal,
+        openToast({
+          component: getErrorMessage(error),
         });
       }
-    } catch (error) {
-      openToast({
-        component: '버블 충전에 실패했습니다.',
-      });
     }
   };
 

@@ -72,7 +72,7 @@ const SquareButton = tw.div`
   items-center
   justify-center
   rounded-[16px]
-`;
+  `;
 
 const BubbleButton = tw(SquareButton)`
   bg-white
@@ -102,7 +102,7 @@ const BubbleText = tw.span`
 
 export default function Home() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { openModal } = useModals();
   const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
@@ -127,6 +127,10 @@ export default function Home() {
     };
   }, [handleBeforeInstallPrompt]);
 
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
+
   return (
     <Wrapper>
       <NavigationBar />
@@ -137,7 +141,7 @@ export default function Home() {
       <ContentWrapper>
         <ButtonWrapper>
           <BubbleButton>
-            <Name>{user?.name}님의 버블</Name>
+            <Name>{user?.name || '사용자'}님의 버블</Name>
             <BubbleText>
               {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
             </BubbleText>

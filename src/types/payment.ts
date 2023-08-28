@@ -1,7 +1,8 @@
 import { IPageable } from './common';
 
 export type PaymentType = 'CARD' | 'KAKAO' | 'NAVER';
-export type PaymentHistoryType = 'CHARGE' | 'LOST';
+export type PaymentHistoryType = 'SAVE_POINT' | 'LOST_CUP' | 'UNBLOCK_ACCOUNT';
+export type PaymentHistoryStatus = 'SUCCEEDED' | 'CANCELED';
 
 interface ICard {
   acquirer: string;
@@ -27,12 +28,12 @@ export interface IPaymentHistoryList {
 
 export interface IPaymentHistory {
   id: string;
-  paymentMethod: IPaymentMethod;
-  userId: string;
   price: number;
-  amount?: number;
-  remainingAmount?: number;
+  remainPointAmounts?: number;
+  savePointAmounts?: number;
+  status: PaymentHistoryStatus;
   type: PaymentHistoryType;
-  refunded?: boolean;
+  userId: string;
+  card: ICard;
   createdDate: string;
 }

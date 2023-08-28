@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import PaymentHistoryListItem from './PaymentHistoryListItem';
@@ -50,106 +50,25 @@ const RentalList = tw.div`
 
 const selectItems = [
   { value: 'ALL', label: '전체내역' },
-  { value: 'CHARGE', label: '버블 충전' },
-  { value: 'LOST', label: '컵 분실' },
-];
-
-// TODO: Remove tempData
-const tempData: IPaymentHistory[] = [
-  {
-    id: '0a0f8bd8-4f03-4c89-974c-d5c294b48358',
-    paymentMethod: {
-      id: 1,
-      type: 'CARD',
-      card: {
-        acquirer: '신한',
-        number: '3477',
-        type: '체크',
-        ownerType: '개인',
-      },
-      default: true,
-    },
-    userId: '0a0f8bd8-4f03-4c89-974c-d5c294b48352',
-    price: 36000,
-    amount: 100,
-    remainingAmount: 100,
-    type: 'CHARGE',
-    createdDate: '2023-06-10T18:00:00',
-  },
-  {
-    id: '0a0f8bd8-4f03-4c89-974c-d5c294b482458',
-    paymentMethod: {
-      id: 1,
-      type: 'CARD',
-      card: {
-        acquirer: '신한',
-        number: '3477',
-        type: '체크',
-        ownerType: '개인',
-      },
-      default: true,
-    },
-    userId: '0a0f8bd8-4f03-4c89-974c-d5c294b48352',
-    price: 36000,
-    amount: 100,
-    remainingAmount: 100,
-    type: 'CHARGE',
-    refunded: true,
-    createdDate: '2023-06-10T18:00:00',
-  },
-  {
-    id: '0a0f8bd8-4f03-4c89-974c-d5c294bss8358',
-    paymentMethod: {
-      id: 1,
-      type: 'CARD',
-      card: {
-        acquirer: '신한',
-        number: '3477',
-        type: '체크',
-        ownerType: '개인',
-      },
-      default: true,
-    },
-    userId: '0a0f8bd8-4f03-4c89-974c-d5c294b48352',
-    price: 8100,
-    amount: 100,
-    remainingAmount: 99,
-    type: 'CHARGE',
-    createdDate: '2023-02-25T18:00:00',
-  },
-  {
-    id: '0a0f8bd8-4f03-4c89-974c-d5c221b48358',
-    paymentMethod: {
-      id: 1,
-      type: 'CARD',
-      card: {
-        acquirer: '신한',
-        number: '3477',
-        type: '체크',
-        ownerType: '개인',
-      },
-      default: true,
-    },
-    userId: '0a0f8bd8-4f03-4c89-974c-d5c294b4342',
-    price: 5000,
-    type: 'LOST',
-    createdDate: '2023-01-20T18:00:00',
-  },
+  { value: 'SAVE_POINT', label: '버블 충전' },
+  { value: 'LOST_CUP', label: '컵 분실' },
+  { value: 'UNBLOCK_ACCOUNT', label: '블락 해제' },
 ];
 
 const PaymentHistoryLayer = () => {
+  const queryClient = useQueryClient();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState<PaymentHistoryType | 'ALL'>('ALL');
+  const [type, setType] = useState<PaymentHistoryType | 'ALL'>('ALL');
   const { openModal, closeModal } = useModals();
 
   const { handleScroll, isReachingEnd } = useScroll();
   const { data, isLoading, error, fetchNextPage } =
     useInfiniteQuery<IPaymentHistoryList>({
-      queryKey: ['rental', status],
+      queryKey: ['rental', type],
       queryFn: ({ pageParam = 0 }) =>
-        fetcher('/api/payment/history', {
+        fetcher('/api/payment', {
           page: pageParam,
-          status: status !== 'ALL' ? status : '',
+          type: type !== 'ALL' ? type : '',
         }),
       getNextPageParam: (lastPage) => {
         if (lastPage.pageable.hasNext) {
@@ -171,7 +90,9 @@ const PaymentHistoryLayer = () => {
 
   const handleRefund = async (history: IPaymentHistory) => {
     try {
-      await api.patch(`/api/payment/history/${history.id}/refund`);
+      await api.post(`/api/payment/${history.id}/cancel`);
+      await queryClient.invalidateQueries(['rental', 'ALL']);
+      await queryClient.invalidateQueries(['rental', type]);
 
       openModal({
         component: AlertModal,
@@ -205,8 +126,8 @@ const PaymentHistoryLayer = () => {
         <SelectWrapper>
           <Select
             items={selectItems}
-            value={status}
-            onChange={(value) => setStatus(value as PaymentHistoryType | 'ALL')}
+            value={type}
+            onChange={(value) => setType(value as PaymentHistoryType | 'ALL')}
           />
         </SelectWrapper>
         <RentalList
@@ -230,15 +151,6 @@ const PaymentHistoryLayer = () => {
               </Fragment>
             )),
           )}
-          {tempData.map((history) => (
-            <Fragment key={history.id}>
-              <PaymentHistoryListItem
-                history={history}
-                onRefund={() => openRefundModal(history)}
-              />
-              <Divider />
-            </Fragment>
-          ))}
         </RentalList>
       </Wrapper>
     </Layer>

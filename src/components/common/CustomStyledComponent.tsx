@@ -51,6 +51,7 @@ export const ProgressBar = tw.div`
 
 export const Divider = tw.div`
     h-[1px]
+    min-h-[1px]
     w-full
     bg-back-line
 `;

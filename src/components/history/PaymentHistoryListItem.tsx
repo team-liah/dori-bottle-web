@@ -127,10 +127,13 @@ const PaymentHistoryListItem = ({
         </Content>
         <Content>
           <RowBlock>
-            {history.type === 'CHARGE' && (
+            {history.type === 'SAVE_POINT' && (
               <BubbleIcon src="/svg/bubble.svg" alt="next" />
             )}
-            {history.type === 'LOST' && (
+            {history.type === 'LOST_CUP' && (
+              <BubbleIcon src="/svg/lost_cup.svg" alt="next" />
+            )}
+            {history.type === 'UNBLOCK_ACCOUNT' && (
               <BubbleIcon src="/svg/lost_cup.svg" alt="next" />
             )}
             <Title>{getPaymentHistoryStatus(history.type)}</Title>
@@ -146,23 +149,23 @@ const PaymentHistoryListItem = ({
           <Content>
             <MachineNoText>결제 수단</MachineNoText>
             <MachineNoText>
-              {history.paymentMethod?.card?.acquirer}(
-              {history.paymentMethod?.card?.number})
+              {history.card?.acquirer}({history.card?.number})
             </MachineNoText>
           </Content>
-          {history.type !== 'LOST' && (
+          {history.type === 'SAVE_POINT' && (
             <Fragment>
               <Content>
                 <MachineNoText>충전 개수</MachineNoText>
-                <MachineNoText>{history.amount}개</MachineNoText>
+                <MachineNoText>{history.savePointAmounts}개</MachineNoText>
               </Content>
               <Content>
                 <MachineNoText>잔여 개수</MachineNoText>
-                <MachineNoText>{history.remainingAmount}개</MachineNoText>
+                <MachineNoText>{history.remainPointAmounts}개</MachineNoText>
               </Content>
-              {history.amount === history.remainingAmount && (
+              {(history.status === 'CANCELED' ||
+                history.savePointAmounts === history.remainPointAmounts) && (
                 <Content>
-                  {history.refunded ? (
+                  {history.status === 'CANCELED' ? (
                     <Tag $style="disabled">환불완료</Tag>
                   ) : (
                     <Tag $style="default" onClick={onRefund}>
