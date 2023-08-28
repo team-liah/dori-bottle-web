@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
-import localFont from 'next/font/local';
+import { Noto_Sans_KR } from 'next/font/google';
 import Head from 'next/head';
 import { useState } from 'react';
 import Modal from '@/components/common/Modal';
@@ -15,34 +15,9 @@ import { AuthProvider } from '@/context/AuthContext';
 import FloatingProvider from '@/context/FloatingContext';
 import 'dayjs/locale/ko';
 
-const myFont = localFont({
-  src: [
-    {
-      path: './SpoqaHanSansNeo-Thin.otf',
-      weight: '200',
-      style: 'normal',
-    },
-    {
-      path: './SpoqaHanSansNeo-Light.otf',
-      weight: '300',
-      style: 'normal',
-    },
-    {
-      path: './SpoqaHanSansNeo-Regular.otf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './SpoqaHanSansNeo-Medium.otf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: './SpoqaHanSansNeo-Bold.otf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+const font = Noto_Sans_KR({
+  weight: ['300', '400', '500', '700'],
+  subsets: ['latin'],
 });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -59,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ReactQueryDevtools initialIsOpen={false} />
           <FloatingProvider>
             <AuthProvider>
-              <main className={myFont.className}>
+              <main className={font.className}>
                 <Component {...pageProps} />
                 <Modal />
                 <Toast />
