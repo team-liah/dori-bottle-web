@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { ITab } from '@/types/common';
@@ -51,7 +51,7 @@ const Tab = ({ tabs }: ITabProps) => {
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 });
 
-  const handleTouchMove = () => {
+  const handleTouchMove = useCallback(() => {
     if (touchStart.x - touchEnd.x < -75) {
       setActiveTab(
         (prev) =>
@@ -69,11 +69,16 @@ const Tab = ({ tabs }: ITabProps) => {
             : tabs[tabs.indexOf(prev) + 1]),
       );
     }
-  };
+  }, [tabs, touchEnd.x, touchStart.x]);
 
   useEffect(() => {
     setActiveTab(tabs[0]);
   }, [tabs]);
+
+  useEffect(() => {
+    handleTouchMove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [touchEnd]);
 
   return (
     <Wrapper
@@ -83,13 +88,12 @@ const Tab = ({ tabs }: ITabProps) => {
           y: e.changedTouches[0].clientY,
         })
       }
-      onTouchMove={(e) =>
+      onTouchEnd={(e) => {
         setTouchEnd({
           x: e.changedTouches[0].clientX,
           y: e.changedTouches[0].clientY,
-        })
-      }
-      onTouchEnd={() => handleTouchMove()}
+        });
+      }}
     >
       <TabButtonContainer>
         {tabs.map((tab) => (
