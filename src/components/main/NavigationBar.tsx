@@ -35,7 +35,7 @@ const NotificationBadge = tw.div`
   w-[6px]
   animate-pulse
   rounded-full
-  bg-main-blue
+  bg-alert
 `;
 
 const MenuButton = tw(BiMenu)`
@@ -63,7 +63,6 @@ const NavigationBar = () => {
           {user && user?.alertCount > 0 && <NotificationBadge />}
         </NotificationButton>
       </Link>
-      <img src="/svg/text_logo.svg" alt="Dori Bottle" />
       <MenuButton onClick={toggleRightMenu} />
       <RightMenuBar open={rightMenu} onClose={toggleRightMenu} />
     </Wrapper>

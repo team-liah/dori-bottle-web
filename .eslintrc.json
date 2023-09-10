@@ -19,7 +19,12 @@
     }
   },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "react-hooks/rules-of-hooks": "error",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
     "comma-dangle": ["error", "always-multiline"],

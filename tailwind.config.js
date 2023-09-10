@@ -28,6 +28,11 @@ module.exports = {
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
+      spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
+      jalnan: ['jalnan'],
+    },
+    dropShadow: {
+      main: '2px 4px 4px rgba(0, 0, 0, 0.25)',
     },
     height: {
       screen: '100dvh',

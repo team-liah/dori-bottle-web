@@ -2,8 +2,8 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { IoArrowForward } from 'react-icons/io5';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import NavigationBar from '@/components/main/NavigationBar';
@@ -19,44 +19,33 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex
   flex-col
   items-center
+  justify-between
   pt-[64px]
+  px-[28px]
+  relative
+  pb-[0px]
 `;
 
-const GuideButton = tw.div`
+const BubbleWrapper = tw.div`
   flex
-  h-[50px]
   w-full
   cursor-pointer
   items-center
   justify-center
-  rounded-[16px]
+  gap-4
+  rounded-[25px]
   bg-white
-  shadow-[0_0_11px_0px_rgba(17,17,17,0.15)]
+  py-[40px]
+  shadow-[0_0_8px_0px_rgba(17,17,17,0.12)]
 `;
 
-const LabelText = tw.div`
-  text-center
-  text-[16px]
-  font-bold
-  text-gray2
-`;
-
-const ArrowIcon = tw(FiArrowRight)`
-  w-[20px]
-  h-[20px]
-  text-gray2
-  ml-1
-`;
-
-const ContentWrapper = tw.div`
-  mt-auto
-  flex
-  w-full
-  flex-col
-  gap-5
+const BubbleIcon = tw.img`
+  h-[50px]
+  w-[50px]
 `;
 
 const ButtonWrapper = tw.div`
+  my-[22px]
   flex
   w-full
   flex-row
@@ -73,28 +62,75 @@ const SquareButton = tw.div`
   rounded-[16px]
   `;
 
-const BubbleButton = tw(SquareButton)`
-  bg-white
-  px-[14px]
-  pt-5
-  pb-[14px]
-  shadow-[0_0_11px_0px_rgba(17,17,17,0.15)]
+const FullLink = tw(Link)`
+  flex-1
+  w-full
+`;
+
+const HistoryButton = tw(Custom.Button)`
+  bg-point-yellow
 `;
 
 const QrButton = tw(SquareButton)`
-  bg-[#8A8A8A]
+  w-full
+  bg-[#F2F3F8]
+  shadow-[0_0_6px_0px_rgba(17,17,17,0.12)]
+  mb-8
+  py-4
 `;
 
-const Name = tw.span`
-  text-[16px]
+const Name = tw.div`
+  mb-4
+  w-full
+  text-left
+  text-[20px]
   font-medium
-  tracking-[-0.8px]
-  text-gray1  
+  tracking-[-0.6px]
+  text-white
 `;
 
 const BubbleText = tw.span`
-  text-[26px]
+  text-[30px]
   font-bold
+  text-gray1
+`;
+
+const BottomContainer = tw.div`
+  flex
+  w-screen
+  flex-row
+  items-center
+  justify-between
+  bg-[#E2EFFF]
+  py-7
+  px-5
+`;
+
+const GuideButton = tw.div`
+  flex
+  flex-row
+  items-center
+`;
+
+const GuideText = tw.div`
+  text-[13px]
+  font-bold
+  text-main-blue
+  underline
+`;
+
+const ArrowIcon = tw(IoArrowForward)`
+  text-main-blue
+  w-[16px]
+  h-[16px]
+`;
+
+const InfoText = tw.div`
+  whitespace-pre-line
+  break-words
+  text-center
+  text-[14px]
+  font-medium
   text-gray1
 `;
 //#endregion
@@ -109,11 +145,31 @@ export default function Home() {
     queryFn: () => fetcher('/api/point/remain-point'),
   });
 
+  const [infoText, setInfoText] = useState<string>('');
+
   const openQrcode = () => {
     openModal({
       component: QrcodeModal,
     });
   };
+
+  const getInfoText = () => {
+    const random = Math.floor(Math.random() * 3);
+    switch (random) {
+      case 0:
+        return '홈화면에 도리보틀을 추가하면\n더 편하게 이용할 수 있어요!';
+      case 1:
+        return '친구를 초대하면 버블을\n계속 모을 수 있어요!';
+      case 2:
+        return '커피믹스 등을 이용하면\n커피값을 절약할 수 있어요!';
+      default:
+        return '';
+    }
+  };
+
+  useEffect(() => {
+    setInfoText(getInfoText());
+  }, []);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -131,29 +187,46 @@ export default function Home() {
   }, [refreshUser]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        background: 'linear-gradient(180deg, #056BF1 243px, #FFFFFF 100px)',
+      }}
+    >
       <NavigationBar />
-      <GuideButton onClick={() => router.push('/guide')}>
-        <LabelText>도리보틀 이용가이드 📖</LabelText>
-        <ArrowIcon />
-      </GuideButton>
-      <ContentWrapper>
-        <ButtonWrapper>
-          <BubbleButton>
-            <Name>{user?.name || '사용자'}님의 버블</Name>
-            <BubbleText>
-              {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
-            </BubbleText>
-            <img src="/svg/bubble.svg" alt="버블" />
-          </BubbleButton>
-          <QrButton onClick={openQrcode}>
-            <img src="/svg/qrcode.svg" alt="QR" />
-          </QrButton>
-        </ButtonWrapper>
-        <Link href="/charge">
+
+      <Name>{user?.name || '사용자'}님의 버블</Name>
+      <BubbleWrapper onClick={() => router.push('/guide')}>
+        <BubbleIcon src="/svg/bubble.svg" alt="버블" />
+        <BubbleText>
+          {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
+        </BubbleText>
+      </BubbleWrapper>
+      <ButtonWrapper>
+        <FullLink href="/charge">
+          <HistoryButton>버블 내역</HistoryButton>
+        </FullLink>
+        <FullLink href="/charge">
           <Custom.Button>버블 충전하기</Custom.Button>
-        </Link>
-      </ContentWrapper>
+        </FullLink>
+      </ButtonWrapper>
+      <QrButton onClick={openQrcode}>
+        <img src="/svg/qrcode.svg" className="h-1/2" alt="QR" />
+      </QrButton>
+
+      <BottomContainer>
+        <img src="/assets/Character.png" className="h-[130px]" alt="QR" />
+        <div className="flex flex-col items-end justify-start gap-[30px]">
+          <Link href="/guide">
+            <GuideButton>
+              <GuideText>이용가이드 보러가기</GuideText>
+              <ArrowIcon />
+            </GuideButton>
+          </Link>
+          <Link href="/guide">
+            <InfoText>{infoText}</InfoText>
+          </Link>
+        </div>
+      </BottomContainer>
     </Wrapper>
   );
 }
