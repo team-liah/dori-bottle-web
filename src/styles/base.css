@@ -16,3 +16,13 @@ input:-webkit-autofill:active {
   -webkit-background-clip: text;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+@font-face {
+  font-family: 'jalnan';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
