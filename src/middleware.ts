@@ -13,5 +13,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/join/:path*', '/charge', '/complete', '/mypage/:path*'],
+  matcher: [
+    '/',
+    '/join/:path*',
+    '/bubble/:path*',
+    '/complete',
+    '/mypage/:path*',
+  ],
 };

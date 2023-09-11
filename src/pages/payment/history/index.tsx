@@ -1,5 +1,5 @@
 import React from 'react';
-import PaymentHistoryLayer from '@/components/history/PaymentHistoryLayer';
+import PaymentHistoryLayer from '@/components/payment/history/PaymentHistoryLayer';
 
 //#region Styled Component
 

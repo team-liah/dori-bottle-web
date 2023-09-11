@@ -9,7 +9,7 @@ import {
 } from '@/components/common/CustomStyledComponent';
 import Error from '@/components/common/Error';
 import Layer from '@/components/common/Layer';
-import Select from '@/components/common/Select';
+import SelectBottom from '@/components/common/SelectBottom';
 import AlertModal from '@/components/common/modal/AlertModal';
 import useModals from '@/hooks/useModals';
 import useScroll from '@/hooks/useScroll';
@@ -124,7 +124,7 @@ const PaymentHistoryLayer = () => {
     <Layer title="결제내역" fullScreen={true}>
       <Wrapper>
         <SelectWrapper>
-          <Select
+          <SelectBottom
             items={selectItems}
             value={type}
             onChange={(value) => setType(value as PaymentHistoryType | 'ALL')}
