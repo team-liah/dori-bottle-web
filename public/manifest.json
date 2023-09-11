@@ -1,8 +1,8 @@
 {
   "name": "도리보틀",
   "short_name": "도리보틀",
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
+  "theme_color": "#056BF1",
+  "background_color": "#056BF1",
   "display": "standalone",
   "scope": "./",
   "start_url": "/",
