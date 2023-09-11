@@ -12,7 +12,6 @@ interface IBubbleHistoryListItemProps {
 
 const Wrapper = tw.div`
   flex
-  h-[92px]
   w-full
   flex-col
   justify-between
