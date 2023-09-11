@@ -16,6 +16,8 @@ const Wrapper = tw.div<{ $read?: boolean }>`
   flex-col
   justify-between
   gap-2
+  rounded-[15px]
+  bg-white
   px-5
   py-[23px]
   ${(props) => !props.$read && 'bg-[#FAFAFF]'}
@@ -73,11 +75,23 @@ const NotificationListItem = ({
           {notification.type === 'POINT' && (
             <Icon src="/svg/bubble2.svg" alt="bubble" />
           )}
-          {notification.type === 'PROMOTION' && (
-            <Icon src="/svg/party.svg" alt="bubble" />
+          {notification.type === 'REFUND' && (
+            <Icon src="/svg/bill.svg" alt="bubble" />
           )}
           {notification.type === 'NOTICE' && (
             <Icon src="/svg/notification.svg" alt="bubble" />
+          )}
+          {notification.type === 'PROMOTION' && (
+            <Icon src="/svg/party.svg" alt="bubble" />
+          )}
+          {notification.type === 'PENALTY' && (
+            <Icon src="/svg/alert_card.svg" alt="bubble" />
+          )}
+          {notification.type === 'LOST_CUP' && (
+            <Icon src="/svg/empty_cup.svg" alt="bubble" />
+          )}
+          {notification.type === 'NEAR_EXPIRATION' && (
+            <Icon src="/svg/alert.svg" alt="bubble" />
           )}
           <TitleText>{notification.title}</TitleText>
         </RowBlock>

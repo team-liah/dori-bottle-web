@@ -6,7 +6,7 @@ import {
 import React, { Fragment, useEffect, useRef } from 'react';
 import tw from 'tailwind-styled-components';
 import NotificationListItem from './NotificationListItem';
-import { Divider, Empty } from '../common/CustomStyledComponent';
+import { Empty } from '../common/CustomStyledComponent';
 import Error from '../common/Error';
 import Layer from '@/components/common/Layer';
 import useAuth from '@/hooks/useAuth';
@@ -32,7 +32,11 @@ const NotificationList = tw.div`
   h-[calc(100dvh-150px)]
   w-full
   flex-col
+  gap-3
   overflow-y-scroll
+  bg-back-color
+  py-[22px]
+  px-[18px]
 `;
 
 //#endregion
@@ -98,7 +102,6 @@ const NotificationLayer = () => {
                   notification={notification}
                   onClick={() => handleRead(notification)}
                 />
-                <Divider />
               </Fragment>
             )),
           )}

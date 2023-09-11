@@ -5,7 +5,14 @@ export interface INotificationList {
   pageable: IPageable;
 }
 
-export type NotificationType = 'POINT' | 'NOTICE' | 'PROMOTION';
+export type NotificationType =
+  | 'POINT'
+  | 'REFUND'
+  | 'NOTICE'
+  | 'PROMOTION'
+  | 'PENALTY'
+  | 'LOST_CUP'
+  | 'NEAR_EXPIRATION';
 
 export interface INotification {
   id: string;
