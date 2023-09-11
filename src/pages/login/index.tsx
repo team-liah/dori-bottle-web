@@ -1,6 +1,7 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { Fragment } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import api from '@/service/api';
@@ -105,27 +106,34 @@ export default function Login() {
   };
 
   return (
-    <Wrapper>
-      <TextWrapper>
-        <MainSubText>손쉬운 얼음라이프</MainSubText>
-        <MainText>도리보틀</MainText>
-      </TextWrapper>
-      <MainImage src="/svg/main.svg" alt="next" />
-      <BottomContainer>
-        <TestLoginButton onClick={handleTestLogin}>
-          테스트 로그인
-        </TestLoginButton>
-        <LinkWrapper
-          href={`/login/confirmation${
-            callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''
-          }`}
-        >
-          <LoginButton>
-            <LabelText>🎉 가입하고 무료이용권 받자!</LabelText>
-            휴대폰번호로 시작하기
-          </LoginButton>
-        </LinkWrapper>
-      </BottomContainer>
-    </Wrapper>
+    <Fragment>
+      <Head>
+        <meta name="theme-color" content="#056BF1" />
+      </Head>
+      <Wrapper>
+        <TextWrapper>
+          <MainSubText>손쉬운 얼음라이프</MainSubText>
+          <MainText>도리보틀</MainText>
+        </TextWrapper>
+        <MainImage src="/svg/main.svg" alt="next" />
+        <BottomContainer>
+          <TestLoginButton onClick={handleTestLogin}>
+            테스트 로그인
+          </TestLoginButton>
+          <LinkWrapper
+            href={`/login/confirmation${
+              callbackUrl
+                ? `?callbackUrl=${encodeURIComponent(callbackUrl)}`
+                : ''
+            }`}
+          >
+            <LoginButton>
+              <LabelText>🎉 가입하고 무료이용권 받자!</LabelText>
+              휴대폰번호로 시작하기
+            </LoginButton>
+          </LinkWrapper>
+        </BottomContainer>
+      </Wrapper>
+    </Fragment>
   );
 }

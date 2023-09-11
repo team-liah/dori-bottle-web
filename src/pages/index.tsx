@@ -1,8 +1,9 @@
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -20,7 +21,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   items-center
   justify-between
-  pt-[64px]
+  pt-[48px]
   px-[28px]
   relative
   pb-[0px]
@@ -84,7 +85,7 @@ const Name = tw.div`
   w-full
   text-left
   text-[20px]
-  font-medium
+  font-bold
   tracking-[-0.6px]
   text-white
 `;
@@ -187,47 +188,52 @@ export default function Home() {
   }, [refreshUser]);
 
   return (
-    <Wrapper
-      style={{
-        background: 'linear-gradient(180deg, #056BF1 243px, #FFFFFF 100px)',
-      }}
-    >
-      <NavigationBar />
+    <Fragment>
+      <Head>
+        <meta name="theme-color" content="#056BF1" />
+      </Head>
+      <Wrapper
+        style={{
+          background: 'linear-gradient(180deg, #056BF1 220px, #FFFFFF 100px)',
+        }}
+      >
+        <NavigationBar />
 
-      <Name>{user?.name || '사용자'}님의 버블</Name>
-      <BubbleWrapper onClick={() => router.push('/guide')}>
-        <BubbleIcon src="/svg/bubble.svg" alt="버블" />
-        <BubbleText>
-          {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
-        </BubbleText>
-      </BubbleWrapper>
-      <ButtonWrapper>
-        <FullLink href="/charge">
-          <HistoryButton>버블 내역</HistoryButton>
-        </FullLink>
-        <FullLink href="/charge">
-          <Custom.Button>버블 충전하기</Custom.Button>
-        </FullLink>
-      </ButtonWrapper>
-      <QrButton onClick={openQrcode}>
-        <img src="/svg/qrcode.svg" className="h-1/2" alt="QR" />
-      </QrButton>
+        <Name>{user?.name || '사용자'}님의 버블</Name>
+        <BubbleWrapper onClick={() => router.push('/guide')}>
+          <BubbleIcon src="/svg/bubble.svg" alt="버블" />
+          <BubbleText>
+            {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개
+          </BubbleText>
+        </BubbleWrapper>
+        <ButtonWrapper>
+          <FullLink href="/charge">
+            <HistoryButton>버블 내역</HistoryButton>
+          </FullLink>
+          <FullLink href="/charge">
+            <Custom.Button>버블 충전하기</Custom.Button>
+          </FullLink>
+        </ButtonWrapper>
+        <QrButton onClick={openQrcode}>
+          <img src="/svg/qrcode.svg" className="h-1/2" alt="QR" />
+        </QrButton>
 
-      <BottomContainer>
-        <img src="/assets/Character.png" className="h-[130px]" alt="QR" />
-        <div className="flex flex-col items-end justify-start gap-[30px]">
-          <Link href="/guide">
-            <GuideButton>
-              <GuideText>이용가이드 보러가기</GuideText>
-              <ArrowIcon />
-            </GuideButton>
-          </Link>
-          <Link href="/guide">
-            <InfoText>{infoText}</InfoText>
-          </Link>
-        </div>
-      </BottomContainer>
-    </Wrapper>
+        <BottomContainer>
+          <img src="/assets/Character.png" className="h-[130px]" alt="QR" />
+          <div className="flex flex-col items-end justify-start gap-[30px]">
+            <Link href="/guide">
+              <GuideButton>
+                <GuideText>이용가이드 보러가기</GuideText>
+                <ArrowIcon />
+              </GuideButton>
+            </Link>
+            <Link href="/guide">
+              <InfoText>{infoText}</InfoText>
+            </Link>
+          </div>
+        </BottomContainer>
+      </Wrapper>
+    </Fragment>
   );
 }
 
