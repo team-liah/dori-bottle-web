@@ -207,10 +207,10 @@ export default function Home() {
           </BubbleText>
         </BubbleWrapper>
         <ButtonWrapper>
-          <FullLink href="/charge">
+          <FullLink href="/bubble/history">
             <HistoryButton>버블 내역</HistoryButton>
           </FullLink>
-          <FullLink href="/charge">
+          <FullLink href="/bubble/charge">
             <Custom.Button>버블 충전하기</Custom.Button>
           </FullLink>
         </ButtonWrapper>

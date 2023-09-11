@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import ChargeDetailLayer from '@/components/charge/ChargeDetailLayer';
-import ChargeListLayer from '@/components/charge/ChargeListLayer';
+import ChargeDetailLayer from '@/components/bubble/charge/ChargeDetailLayer';
+import ChargeListLayer from '@/components/bubble/charge/ChargeListLayer';
 import ChargeCompleteModal from '@/components/common/modal/ChargeCompleteModal';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import useModals from '@/hooks/useModals';

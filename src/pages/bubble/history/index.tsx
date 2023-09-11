@@ -5,8 +5,8 @@ import PaymentHistoryLayer from '@/components/payment/history/PaymentHistoryLaye
 
 //#endregion
 
-const PaymentHistory = () => {
+const BubbleHistory = () => {
   return <PaymentHistoryLayer />;
 };
 
-export default PaymentHistory;
+export default BubbleHistory;
