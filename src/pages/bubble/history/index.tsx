@@ -1,12 +1,12 @@
 import React from 'react';
-import PaymentHistoryLayer from '@/components/payment/history/PaymentHistoryLayer';
+import BubbleHistoryLayer from '@/components/bubble/history/BubbleHistoryLayer';
 
 //#region Styled Component
 
 //#endregion
 
 const BubbleHistory = () => {
-  return <PaymentHistoryLayer />;
+  return <BubbleHistoryLayer />;
 };
 
 export default BubbleHistory;

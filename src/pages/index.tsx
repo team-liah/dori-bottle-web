@@ -2,7 +2,6 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
 import tw from 'tailwind-styled-components';
@@ -137,7 +136,6 @@ const InfoText = tw.div`
 //#endregion
 
 export default function Home() {
-  const router = useRouter();
   const { user, refreshUser } = useAuth();
   const { openModal } = useModals();
   const { handleBeforeInstallPrompt } = useInstalltaion();
@@ -200,7 +198,7 @@ export default function Home() {
         <NavigationBar />
 
         <Name>{user?.name || '사용자'}님의 버블</Name>
-        <BubbleWrapper onClick={() => router.push('/guide')}>
+        <BubbleWrapper>
           <BubbleIcon src="/svg/bubble.svg" alt="버블" />
           <BubbleText>
             {(remainBubble?.freePoint ?? 0) + (remainBubble?.payPoint ?? 0)}개

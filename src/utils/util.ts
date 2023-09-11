@@ -1,5 +1,6 @@
 import { Regex } from '@/constants/Regex';
 import { PaymentHistoryType } from '@/types/payment';
+import { BubbleHistoryType } from '@/types/point';
 import { RentalStatus } from '@/types/rental';
 
 export const getHypenTel = (tel: string) => {
@@ -40,6 +41,27 @@ export const getPaymentHistoryStatus = (status: PaymentHistoryType) => {
       return '컵 분실';
     case 'UNBLOCK_ACCOUNT':
       return '블락 해제';
+    default:
+      return '';
+  }
+};
+
+export const getBubbleHistoryStatus = (status: BubbleHistoryType) => {
+  switch (status) {
+    case 'SAVE_REGISTER_REWARD':
+      return '회원가입 보상';
+    case 'SAVE_REGISTER_INVITER_REWARD':
+      return '초대코드 입력 보상';
+    case 'SAVE_INVITE_REWARD':
+      return '친구초대 보상';
+    case 'SAVE_PAY':
+      return '버블 충전';
+    case 'CANCEL_SAVE':
+      return '적립 취소';
+    case 'USE_CUP':
+      return '컵 사용';
+    case 'DISAPPEAR':
+      return '소멸';
     default:
       return '';
   }
