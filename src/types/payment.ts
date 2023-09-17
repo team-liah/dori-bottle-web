@@ -37,3 +37,10 @@ export interface IPaymentHistory {
   card: ICard;
   createdDate: string;
 }
+
+export interface IPaymentRefundFormInputs {
+  amount: number;
+  bankName: string;
+  bankAccountNumber: string;
+  bankAccountOwner: string;
+}

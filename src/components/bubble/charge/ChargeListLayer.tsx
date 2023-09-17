@@ -32,7 +32,7 @@ const ProductList = tw.div`
 //#endregion
 
 const ChargeListLayer = () => {
-  const { control, watch } = useFormContext<IProductFormInputs>();
+  const { control, formState, watch } = useFormContext<IProductFormInputs>();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const { handleScroll, isReachingEnd } = useScroll();
@@ -59,7 +59,10 @@ const ChargeListLayer = () => {
     <Layer
       title="버블충전"
       footer={
-        <Custom.Button type="submit" disabled={!watch('product')}>
+        <Custom.Button
+          type="submit"
+          disabled={!watch('product') || formState.isSubmitting}
+        >
           다음
         </Custom.Button>
       }

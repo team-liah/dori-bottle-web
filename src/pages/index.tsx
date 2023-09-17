@@ -6,13 +6,17 @@ import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
+import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import NavigationBar from '@/components/main/NavigationBar';
+import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
+import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useInstalltaion from '@/hooks/useInstallation';
 import useModals from '@/hooks/useModals';
 import { fetcher, serverFetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
+import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Components
 const Wrapper = tw(Custom.MobileWrapper)`
@@ -152,7 +156,7 @@ const infoTextList = [
 
 export default function Home() {
   const { user, refreshUser } = useAuth();
-  const { openModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
@@ -161,10 +165,38 @@ export default function Home() {
 
   const [infoText, setInfoText] = useState<string>('');
 
-  const openQrcode = () => {
-    openModal({
-      component: QrcodeModal,
-    });
+  const openQrcode = async () => {
+    try {
+      const result = await fetcher('/api/account/pre-auth');
+      openModal({
+        component: QrcodeModal,
+        props: {
+          accessToken: result.accessToken,
+          refresh: () => {
+            closeModal(QrcodeModal);
+            openQrcode();
+          },
+        },
+      });
+    } catch (error) {
+      if (getErrorMessage(error) === ERROR_MESSAGE.G002) {
+        openModal({
+          position: 'bottom',
+          component: PaymentCreatModal,
+          props: {
+            onClose: () => closeModal(PaymentCreatModal),
+          },
+        });
+      } else {
+        openModal({
+          component: QrcodeErrorModal,
+          props: {
+            error,
+            onClose: () => closeModal(QrcodeErrorModal),
+          },
+        });
+      }
+    }
   };
 
   const getInfoText = () => {

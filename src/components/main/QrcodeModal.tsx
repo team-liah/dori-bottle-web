@@ -1,16 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { useEffect } from 'react';
 import { TbRefresh } from 'react-icons/tb';
 import tw from 'tailwind-styled-components';
-import Loading from '../common/Loading';
 import useTimer from '@/hooks/useTimer';
-import { fetcher } from '@/service/fetch';
-import { ILoginResponse } from '@/types/user';
 import { getTimeFormat } from '@/utils/util';
 
 interface IQrcodeModalProps {
-  onClose?: () => void;
+  accessToken: string;
+  refresh: () => void;
 }
 
 //#region Styled Component
@@ -22,12 +19,6 @@ const Wrapper = tw.div`
   bg-white
   p-10
   pb-4
-`;
-
-const Empty = tw.div`
-  flex
-  h-[200px]
-  w-[200px]
 `;
 
 const QrcodeContainer = tw.div`
@@ -80,55 +71,44 @@ const Timer = tw.div`
 
 //#endregion
 
-const QrcodeModal = ({ onClose }: IQrcodeModalProps) => {
+const QrcodeModal = ({ accessToken, refresh }: IQrcodeModalProps) => {
   const { seconds, handleSeconds } = useTimer();
-  const { data, isLoading, refetch } = useQuery<ILoginResponse>({
-    queryKey: ['qrcode'],
-    queryFn: () => fetcher('/api/account/pre-auth'),
-    refetchOnMount: true,
-  });
 
   useEffect(() => {
-    if (data?.accessToken) handleSeconds(300);
-  }, [data, handleSeconds]);
+    handleSeconds(300);
+  }, [accessToken, handleSeconds]);
 
   return (
-    <Wrapper onClick={onClose}>
-      {isLoading ? (
-        <Empty>
-          <Loading />
-        </Empty>
-      ) : (
-        <QrcodeContainer>
-          <QRCodeSVG
-            value={data?.accessToken || ''}
-            size={200}
-            bgColor={'#ffffff'}
-            fgColor={'#000000'}
-            level={'L'}
-            includeMargin={false}
-            imageSettings={{
-              src: '/svg/bubble.svg',
-              height: 24,
-              width: 24,
-              excavate: true,
-            }}
-          />
-          {seconds === 0 && (
-            <Blur>
-              <RefreshButton onClick={() => refetch()}>
-                <RefreshIcon />
-              </RefreshButton>
-              <BlurText>재발급</BlurText>
-            </Blur>
-          )}
-          <Timer>
-            {seconds === 0
-              ? '인증 시간이 만료되었습니다'
-              : getTimeFormat(seconds)}
-          </Timer>
-        </QrcodeContainer>
-      )}
+    <Wrapper>
+      <QrcodeContainer>
+        <QRCodeSVG
+          value={accessToken}
+          size={200}
+          bgColor={'#ffffff'}
+          fgColor={'#000000'}
+          level={'L'}
+          includeMargin={false}
+          imageSettings={{
+            src: '/svg/bubble.svg',
+            height: 24,
+            width: 24,
+            excavate: true,
+          }}
+        />
+        {seconds === 0 && (
+          <Blur>
+            <RefreshButton onClick={refresh}>
+              <RefreshIcon />
+            </RefreshButton>
+            <BlurText>재발급</BlurText>
+          </Blur>
+        )}
+        <Timer>
+          {seconds === 0
+            ? '인증 시간이 만료되었습니다'
+            : getTimeFormat(seconds)}
+        </Timer>
+      </QrcodeContainer>
     </Wrapper>
   );
 };

@@ -77,7 +77,7 @@ const bulletList = [
 const ChargeDetailLayer = ({ onClickBack }: IChargeDetailLayerProps) => {
   const {
     watch,
-    formState: { submitCount },
+    formState: { submitCount, isSubmitting },
   } = useFormContext<IProductFormInputs>();
 
   return (
@@ -85,8 +85,8 @@ const ChargeDetailLayer = ({ onClickBack }: IChargeDetailLayerProps) => {
       title="버블충전"
       fullScreen={true}
       footer={
-        <Custom.Button type="submit" disabled={submitCount > 1}>
-          다음
+        <Custom.Button type="submit" disabled={submitCount > 1 || isSubmitting}>
+          충전하기
         </Custom.Button>
       }
       onClickBack={onClickBack}
