@@ -33,7 +33,7 @@ const RegisterInputLayer = () => {
   const {
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext<IRegisterFormInputs>();
 
   const [step, setStep] = useState(0);
@@ -51,7 +51,12 @@ const RegisterInputLayer = () => {
       footer={
         <Custom.Button
           type="submit"
-          disabled={!watch('name') || !watch('birthDate') || !watch('gender')}
+          disabled={
+            !watch('name') ||
+            !watch('birthDate') ||
+            !watch('gender') ||
+            isSubmitting
+          }
         >
           다음
         </Custom.Button>

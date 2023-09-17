@@ -31,14 +31,17 @@ const PhoneInputLayer = ({ title }: IPhoneInputLayerProps) => {
     control,
     watch,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext<ILoginFormInputs>();
 
   return (
     <Layer
       title={title ?? '휴대폰번호 입력'}
       footer={
-        <Custom.Button type="submit" disabled={watch('loginId')?.length !== 13}>
+        <Custom.Button
+          type="submit"
+          disabled={watch('loginId')?.length !== 13 || isSubmitting}
+        >
           다음
         </Custom.Button>
       }

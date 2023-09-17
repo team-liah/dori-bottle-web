@@ -52,7 +52,7 @@ const VerifyInputLayer = ({
     watch,
     resetField,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext<ILoginFormInputs>();
   const { openToast } = useToast();
   const { seconds, handleSeconds } = useTimer();
@@ -82,7 +82,9 @@ const VerifyInputLayer = ({
       footer={
         <Custom.Button
           type="submit"
-          disabled={seconds < 1 || watch('loginPassword').length < 6}
+          disabled={
+            seconds < 1 || watch('loginPassword').length < 6 || isSubmitting
+          }
         >
           다음
         </Custom.Button>

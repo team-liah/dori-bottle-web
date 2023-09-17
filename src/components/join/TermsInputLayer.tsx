@@ -89,7 +89,8 @@ const CheckAllText = tw(CheckText)`
 
 const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
   const { openToast } = useToast();
-  const { control, watch, setValue } = useFormContext<IRegisterFormInputs>();
+  const { control, formState, watch, setValue } =
+    useFormContext<IRegisterFormInputs>();
 
   const handleAllAgree = () => {
     if (
@@ -120,7 +121,9 @@ const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
         <Custom.Button
           type="submit"
           disabled={
-            !watch('agreedTermsOfService') || !watch('agreedTermsOfPrivacy')
+            !watch('agreedTermsOfService') ||
+            !watch('agreedTermsOfPrivacy') ||
+            formState.isSubmitting
           }
         >
           회원가입 하기
