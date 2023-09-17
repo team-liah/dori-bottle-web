@@ -21,6 +21,7 @@ const Title = tw.div`
   mb-[40px]
   w-full
   whitespace-pre-line
+  text-center
   text-[24px]
   leading-[35px]
   text-gray1
@@ -30,10 +31,11 @@ const ContentWrapper = tw.div`
   flex
   w-full
   flex-col
-  gap-[10px]
+  gap-10
 `;
 
 const BubbleImage = tw.img`
+  mx-auto
   h-[80px]
   w-[80px]
 `;
@@ -47,7 +49,10 @@ const ButtonImage = tw.img`
 const ContentText = tw.div`
   mb-[75px]
   whitespace-pre-line
+  text-center
   text-[16px]
+  leading-[28px]
+  tracking-[-0.54px]
   text-gray1
 `;
 
@@ -55,7 +60,7 @@ const ButtonWrapper = tw.div`
   flex
   w-full
   flex-col
-  gap-[10px]
+  gap-3
 `;
 
 const PaymentButton = tw(Custom.Button)`
@@ -75,6 +80,7 @@ const InviteButton = tw(Custom.Button)`
 `;
 
 const ButtonText = tw.div`
+  relative
   h-[22px]
 `;
 
@@ -86,12 +92,30 @@ const ArrowIcon = tw(FiArrowRight)`
 `;
 
 const LaterButton = tw.div`
-  mt-7
+  mt-20
   text-[13px]
   font-medium
-  tracking-[-0.65px]
+  tracking-[-0.36px]
   text-unactivated
   underline
+`;
+
+const LabelText = tw.div`
+  pointer-events-none
+  absolute
+  top-[35px]
+  left-[20px]
+  h-[50px]
+  w-[124px]
+  translate-x-[-90%]
+  bg-[url(/svg/tooltip_blue.svg)]
+  bg-no-repeat
+  px-3
+  pt-[18px]
+  text-left
+  text-[12px]
+  font-bold
+  text-main-blue
 `;
 
 //#endregion
@@ -103,26 +127,29 @@ export default function Complete() {
   return (
     <Wrapper>
       <Title>
-        <b>{user?.name}</b>
-        {'님,\n도리보틀 회원가입을\n축하합니다!'}
+        <b>{`${user?.name}님 환영합니다!`}</b>
       </Title>
       <ContentWrapper>
         <BubbleImage src="/svg/bubble.svg" alt="next" />
         <ContentText>
-          {'웰컴버블 10개를 드렸어요\n'}
-          <b>{'결제수단 등록'}</b>
-          {'하고\n바로 도리보틀을 이용해보세요!'}
+          <b className="text-main-blue">웰컴버블 20개</b>
+          {'를 드렸어요.\n'}
+          {'결제수단 등록 후\n'}
+          {'바로 이용해보세요!'}
         </ContentText>
       </ContentWrapper>
       <ButtonWrapper>
-        <PaymentButton onClick={() => router.push('/')}>
+        <PaymentButton onClick={() => router.push('/payment')}>
           <ButtonImage src="/svg/card_blue.svg" />
           <ButtonText>결제수단 등록하기</ButtonText>
           <ArrowIcon />
         </PaymentButton>
-        <InviteButton onClick={() => router.push('/')}>
+        <InviteButton onClick={() => router.push('/invtie')}>
           <ButtonImage src="/svg/invite_yellow.svg" />
-          <ButtonText>초대코드 입력하기</ButtonText>
+          <ButtonText>
+            초대코드 입력하기
+            <LabelText>버블 10개 추가 증정</LabelText>
+          </ButtonText>
           <ArrowIcon />
         </InviteButton>
       </ButtonWrapper>

@@ -18,8 +18,7 @@ const Wrapper = tw.div<{ $read?: boolean }>`
   gap-2
   rounded-[15px]
   bg-white
-  px-5
-  py-[23px]
+  p-5
   ${(props) => !props.$read && 'bg-[#FAFAFF]'}
 `;
 

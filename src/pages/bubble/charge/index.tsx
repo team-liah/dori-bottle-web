@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import ChargeDetailLayer from '@/components/bubble/charge/ChargeDetailLayer';
 import ChargeListLayer from '@/components/bubble/charge/ChargeListLayer';
-import ChargeCompleteModal from '@/components/common/modal/ChargeCompleteModal';
+import AlertModal from '@/components/common/modal/AlertModal';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
@@ -34,12 +34,21 @@ export default function Charge() {
       });
 
       openModal({
-        component: ChargeCompleteModal,
+        component: AlertModal,
         props: {
-          product: methods.getValues('product'),
-          onClickHome: () => {
+          children: (
+            <div className="flex flex-col items-center">
+              <img
+                className="h-[80px] w-[80px]"
+                src="/svg/bubble.svg"
+                alt="next"
+              />
+              {`버블 ${methods.getValues('product').amounts}개를 충전했어요!`}
+            </div>
+          ),
+          onClose: () => {
             router.replace('/');
-            closeModal(ChargeCompleteModal);
+            closeModal(AlertModal);
           },
         },
       });

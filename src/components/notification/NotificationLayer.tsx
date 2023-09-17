@@ -29,7 +29,7 @@ const Wrapper = tw.div`
 
 const NotificationList = tw.div`
   flex
-  h-[calc(100dvh-150px)]
+  h-[calc(100dvh-76px)]
   w-full
   flex-col
   gap-3

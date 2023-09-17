@@ -26,8 +26,8 @@ const Wrapper = tw.div`
 
 const Empty = tw.div`
   flex
-  h-[160px]
-  w-[160px]
+  h-[200px]
+  w-[200px]
 `;
 
 const QrcodeContainer = tw.div`
@@ -102,7 +102,7 @@ const QrcodeModal = ({ onClose }: IQrcodeModalProps) => {
         <QrcodeContainer>
           <QRCodeSVG
             value={data?.accessToken || ''}
-            size={160}
+            size={200}
             bgColor={'#ffffff'}
             fgColor={'#000000'}
             level={'L'}
