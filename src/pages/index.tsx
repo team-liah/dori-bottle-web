@@ -100,10 +100,11 @@ const BottomContainer = tw.div`
   w-screen
   flex-row
   items-center
-  justify-between
+  justify-start
   bg-[#E2EFFF]
   py-7
-  px-5
+  pl-4
+  pr-10
 `;
 
 const GuideButton = tw.div`
@@ -115,6 +116,7 @@ const GuideButton = tw.div`
 const GuideText = tw.div`
   text-[13px]
   font-bold
+  tracking-[-0.39px]
   text-main-blue
   underline
 `;
@@ -128,12 +130,25 @@ const ArrowIcon = tw(IoArrowForward)`
 const InfoText = tw.div`
   whitespace-pre-line
   break-words
-  text-center
+  text-left
   text-[14px]
   font-medium
+  leading-[22px]
   text-gray1
 `;
 //#endregion
+
+const infoTextList = [
+  '홈화면에 도리보틀을 추가하면\n더 편리하게 이용할 수 있어요!',
+  '얼음컵과 커피믹스를 이용해\n저렴하게 커피를 마실 수 있어요!',
+  '컵을 앞접시로 사용해\n음식을 나누어 먹을 수도 있어요!',
+  '미지근한 음료도\n시원하게 즐길 수 있어요!',
+  '배달음식과 함께\n음료도 시원하게 즐겨요!',
+  '친구를 초대하면\n버블을 모을 수 있어요!',
+  '불편/건의사항을 1:1문의를\n통해 편하게 말씀해주세요!',
+  '학생이라면 기관등록 하고\n10%할인된 가격으로\n버블을 구매할 수 있어요!',
+  '컵에 이물질을 넣거나\n파손하는 경우 레드카드가 부여돼요!',
+];
 
 export default function Home() {
   const { user, refreshUser } = useAuth();
@@ -153,17 +168,9 @@ export default function Home() {
   };
 
   const getInfoText = () => {
-    const random = Math.floor(Math.random() * 3);
-    switch (random) {
-      case 0:
-        return '홈화면에 도리보틀을 추가하면\n더 편하게 이용할 수 있어요!';
-      case 1:
-        return '친구를 초대하면 버블을\n계속 모을 수 있어요!';
-      case 2:
-        return '커피믹스 등을 이용하면\n커피값을 절약할 수 있어요!';
-      default:
-        return '';
-    }
+    const random = Math.floor(Math.random() * infoTextList.length);
+
+    return infoTextList[random];
   };
 
   useEffect(() => {
@@ -217,16 +224,16 @@ export default function Home() {
         </QrButton>
 
         <BottomContainer>
-          <img src="/assets/Character.png" className="h-[130px]" alt="QR" />
-          <div className="flex flex-col items-end justify-start gap-[30px]">
+          <img src="/assets/Character.png" className="h-[110px]" alt="QR" />
+          <div className="flex flex-col items-start justify-start gap-[30px]">
+            <Link href="/guide">
+              <InfoText>{infoText}</InfoText>
+            </Link>
             <Link href="/guide">
               <GuideButton>
                 <GuideText>이용가이드 보러가기</GuideText>
                 <ArrowIcon />
               </GuideButton>
-            </Link>
-            <Link href="/guide">
-              <InfoText>{infoText}</InfoText>
             </Link>
           </div>
         </BottomContainer>

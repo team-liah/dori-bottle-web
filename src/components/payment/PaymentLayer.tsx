@@ -157,7 +157,7 @@ const PaymentLayer = () => {
         <BottomWrapper>
           <BulletTextContainer>
             <BulletText>
-              반납하지 않은 컵이 있을 경우 기본 결제수단은 삭제할 수 없습니다.
+              미반납된 컵이 있을 경우 기본 결제수단은 삭제할 수 없습니다.
             </BulletText>
           </BulletTextContainer>
         </BottomWrapper>

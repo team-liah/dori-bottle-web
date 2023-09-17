@@ -11,13 +11,30 @@ interface IPaymentCreatModalProps {
 
 //#region Styled Component
 
-const SelectList = tw(motion.div)`
+const Wrapper = tw.div`
+  flex
+  flex-col
+  items-center
+  gap-6
+  bg-white
+  px-9
   pt-[30px]
-  px-5
+`;
+
+const SelectList = tw(motion.div)`
   bg-white
   flex
   flex-col
-  gap-2
+  gap-[10px]
+  w-full
+`;
+
+const Title = tw.div`
+  text-cemter
+  text-[20px]
+  font-medium
+  text-main-text
+
 `;
 
 const KakaoButton = tw(Custom.Button)`
@@ -72,23 +89,26 @@ const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
   };
 
   return (
-    <SelectList>
-      <Custom.Button onClick={() => handleAddPayment('CARD')}>
-        신용카드 추가
-      </Custom.Button>
-      {MULTIPLE_PAYMENT && (
-        <Fragment>
-          <KakaoButton onClick={() => handleAddPayment('KAKAO')}>
-            <Icon src="/svg/kakao_pay.svg" alt="kakaopay" />
-            추가
-          </KakaoButton>
-          <NaverButton onClick={() => handleAddPayment('NAVER')}>
-            <Icon src="/svg/naver_pay.svg" alt="naverpay" />
-            추가
-          </NaverButton>
-        </Fragment>
-      )}
-    </SelectList>
+    <Wrapper>
+      <Title>이용 전 결제수단 등록이 필요해요</Title>
+      <SelectList>
+        <Custom.Button onClick={() => handleAddPayment('CARD')}>
+          신용/체크카드
+        </Custom.Button>
+        {MULTIPLE_PAYMENT && (
+          <Fragment>
+            <KakaoButton onClick={() => handleAddPayment('KAKAO')}>
+              <Icon src="/svg/kakao_pay.svg" alt="kakaopay" />
+              추가
+            </KakaoButton>
+            <NaverButton onClick={() => handleAddPayment('NAVER')}>
+              <Icon src="/svg/naver_pay.svg" alt="naverpay" />
+              추가
+            </NaverButton>
+          </Fragment>
+        )}
+      </SelectList>
+    </Wrapper>
   );
 };
 

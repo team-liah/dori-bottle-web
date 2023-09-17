@@ -19,8 +19,9 @@ const InfoWrapper = tw.div`
 `;
 
 const Icon = tw.img`
-  h-[170px]
-  w-[170px]
+  h-[181px]
+  w-[195px]
+  scale-x-[-1]
 `;
 
 const InfoText = tw.div`
