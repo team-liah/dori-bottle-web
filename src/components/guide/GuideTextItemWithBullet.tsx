@@ -14,7 +14,7 @@ interface IGuideTextItemWithBulletProps {
 const Wrapper = tw.div`
   flex
   flex-col
-  gap-[10px]
+  gap-6
 `;
 
 const TitleWrapper = tw.div`
@@ -31,13 +31,14 @@ const DetailWrapper = tw.div`
   items-center
   gap-[10px]
   rounded-[16px]
-  bg-back-color
+  bg-white
   px-[22px]
   py-5
   text-[15px]
   font-medium
   leading-[22px]
   text-main-text
+  shadow-[0_0_5px_0px_rgba(17,17,17,0.15)]
 `;
 
 const TitleText = tw.div`
@@ -54,7 +55,7 @@ const BulletTextContainer = tw.ul`
   list-disc
   flex-col
   gap-3
-  pl-[20px]
+  pl-6
 `;
 
 const BulletText = tw.li`

@@ -83,8 +83,9 @@ export const GuideNumber = tw.div`
     items-center
     justify-center
     rounded-full
-    bg-main-blue
+    bg-white
     text-[14px]
     font-medium
-    text-white
+    text-gray2
+    shadow-[0_0_5px_0px_rgba(17,17,17,0.15)]
 `;

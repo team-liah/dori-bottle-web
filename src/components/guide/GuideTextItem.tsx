@@ -1,42 +1,57 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-import * as Custom from '@/components/common/CustomStyledComponent';
 
 interface IGuideTextItemProps {
   id: number;
   title: string;
+  image?: React.ReactNode;
 }
 
 //#region Styled Component
 
 const Wrapper = tw.div`
+  mx-4
   flex
-  w-full
-  flex-row
+  h-[245px]
+  flex-col
   items-center
-  gap-[10px]
+  justify-between
   rounded-[16px]
-  bg-back-color
-  px-[22px]
-  py-[25px]
+  py-10
+  shadow-[0_0_5px_0px_rgba(17,17,17,0.15)]
+`;
+
+const StepText = tw.div`
+  mb-5
+  font-jalnan
+  text-[18px]
+  font-bold
+  leading-[22px]
+  tracking-[0.18px]
+  text-gray1
 `;
 
 const TitleText = tw.div`
+  whitespace-pre-line
+  text-center
   text-[16px]
   font-medium
   leading-[22px]
-  tracking-[0.48px]
-  text-main-text
+  tracking-[-0.48px]
+  text-gray1
 `;
 
 //#endregion
 
-const GuideTextItem = ({ id, title }: IGuideTextItemProps) => {
+const GuideTextItem = ({ id, title, image }: IGuideTextItemProps) => {
   return (
-    <Wrapper>
-      <Custom.GuideNumber>{id}</Custom.GuideNumber>
-      <TitleText>{title}</TitleText>
-    </Wrapper>
+    <div>
+      <StepText>{`STEP ${id}.`}</StepText>
+      <Wrapper>
+        {image}
+        <TitleText>{title}</TitleText>
+      </Wrapper>
+    </div>
   );
 };
 
