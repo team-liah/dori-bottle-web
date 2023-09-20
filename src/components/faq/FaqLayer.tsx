@@ -30,7 +30,7 @@ const FaqLayer = () => {
   return (
     <Layer title="문의하기" fullScreen={true}>
       <Wrapper>
-        <Tab tabs={guideTabs} />
+        <Tab tabs={guideTabs} tabStyle="underline" />
       </Wrapper>
     </Layer>
   );
