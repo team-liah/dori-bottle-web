@@ -137,7 +137,7 @@ const InviteLayer = () => {
   };
 
   const shareInviteLink = () => {
-    const shareTarget = `${window.location.origin}/login?invitationCode=${profile}`;
+    const shareTarget = `${window.location.origin}/login?invitationCode=${profile?.invitationCode}`;
     if (navigator.share) {
       navigator.share({
         title: '도리보틀 초대장',
@@ -153,7 +153,11 @@ const InviteLayer = () => {
   };
 
   return (
-    <Layer title="초대장" scrollable={true}>
+    <Layer
+      title="초대장"
+      scrollable={true}
+      onClickBack={() => router.replace('/')}
+    >
       <Wrapper>
         <Title>{'친구랑 도리보틀하고\n무료 버블 받기'}</Title>
         {!profile?.inviterId &&

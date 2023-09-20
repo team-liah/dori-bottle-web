@@ -7,7 +7,7 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { MOTION } from '@/constants/MotionConstants';
 import useAuth from '@/hooks/useAuth';
-import useInstalltaion from '@/hooks/useInstallation';
+import useToast from '@/hooks/useToast';
 
 interface IMenuBarProps {
   open: boolean;
@@ -92,11 +92,31 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const router = useRouter();
   const { user } = useAuth();
   const { logout } = useAuth();
-  const { handleClickShare } = useInstalltaion();
+  const { openToast } = useToast();
 
   const onClickLogout = () => {
     logout();
     router.push('/login');
+  };
+
+  const handleClickShare = async () => {
+    const url = window.location.origin;
+    try {
+      if (navigator.share) {
+        navigator.share({
+          title: '도리보틀',
+          url,
+        });
+      } else {
+        openToast({
+          component: '현재 브라우저에서 지원하지 않습니다.',
+        });
+      }
+    } catch (error) {
+      openToast({
+        component: '잠시 후 다시 시도해주세요.',
+      });
+    }
   };
 
   const menuList = [

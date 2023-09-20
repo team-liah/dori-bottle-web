@@ -105,6 +105,7 @@ const BottomContainer = tw.div`
   flex-row
   items-center
   justify-start
+  gap-4
   bg-[#E2EFFF]
   py-7
   pl-4
