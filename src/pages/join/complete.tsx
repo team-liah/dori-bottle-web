@@ -144,7 +144,14 @@ export default function Complete() {
           <ButtonText>결제수단 등록하기</ButtonText>
           <ArrowIcon />
         </PaymentButton>
-        <InviteButton onClick={() => router.push('/invtie')}>
+        <InviteButton
+          onClick={() =>
+            router.replace({
+              pathname: '/invite/register',
+              query: router.query,
+            })
+          }
+        >
           <ButtonImage src="/svg/invite_yellow.svg" />
           <ButtonText>
             초대코드 입력하기

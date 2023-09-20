@@ -39,7 +39,10 @@ const Join = () => {
           ...methods.getValues(),
         });
         refreshUser();
-        router.push('/join/complete');
+        router.push({
+          pathname: '/join/complete',
+          query: router.query,
+        });
       }
     } catch (error: any) {
       openToast({
