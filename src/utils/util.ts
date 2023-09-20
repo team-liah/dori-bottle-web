@@ -20,6 +20,14 @@ export const getTimeFormat = (second: number) => {
   return `${min}:${sec < 10 ? `0${sec}` : sec}`;
 };
 
+export const copyToClipboard = async (
+  shareTarget: string,
+  callback: () => void,
+) => {
+  await navigator.clipboard.writeText(shareTarget);
+  callback();
+};
+
 export const getRentalStatus = (status: RentalStatus) => {
   switch (status) {
     case 'PROCEEDING':

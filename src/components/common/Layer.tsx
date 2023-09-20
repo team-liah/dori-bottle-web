@@ -9,17 +9,19 @@ interface ILayerProps {
   children?: React.ReactNode;
   footer?: React.ReactNode;
   fullScreen?: boolean;
+  scrollable?: boolean;
   onClickBack?: () => void;
 }
 
 //#region Styled Components
 
-const Wrapper = tw(Custom.MobileWrapper)`
+const Wrapper = tw(Custom.MobileWrapper)<{ $scrollable?: boolean }>`
   flex
   flex-col
   pt-[20px]
   justify-between
   px-0
+  ${({ $scrollable }) => $scrollable && 'overflow-y-auto pb-5'}
 `;
 
 const TopWrapper = tw.div`
@@ -69,6 +71,7 @@ const Layer = ({
   children,
   footer,
   fullScreen,
+  scrollable,
   onClickBack,
 }: ILayerProps) => {
   const router = useRouter();
@@ -82,7 +85,7 @@ const Layer = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper $scrollable={scrollable}>
       <BackButton onClick={handleBack} />
       <TopWrapper>
         <Header>

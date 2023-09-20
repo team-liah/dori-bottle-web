@@ -38,20 +38,11 @@ const Change = () => {
     methods.clearErrors();
     methods.setValue('loginPassword', '');
   }, [step, methods]);
-
-  const openTempToast = () => {
-    openToast({
-      component: '준비중입니다.',
-    });
-  };
-
   // 인증번호 전송
   const onSendVerificationCode = async () => {
     // TODO : 전화번호 변경 로직 필요
     try {
       if (IS_MOCKUP) {
-        openTempToast();
-
         return;
       }
 

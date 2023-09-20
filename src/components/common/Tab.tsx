@@ -20,7 +20,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
 
 const TabButtonContainer = tw.div`
   w=full
-  mx-4
+  m-4
   flex
   max-h-[44px]
   min-h-[44px]

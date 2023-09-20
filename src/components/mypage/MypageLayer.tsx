@@ -111,7 +111,7 @@ const Button = tw.button<{ $style?: 'default' | 'primary' }>`
 
 const MypageLayer = () => {
   const { data: profile } = useQuery<IProfile>({
-    queryKey: ['me'],
+    queryKey: ['profile'],
     queryFn: () => fetcher('/api/me/profile'),
   });
 
