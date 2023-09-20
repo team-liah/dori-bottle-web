@@ -8,6 +8,7 @@ import PaymentRefundLayer from '@/components/payment/refund/PaymentRefundLayer';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
+import api from '@/service/api';
 import { fetcher } from '@/service/fetch';
 import { IPaymentRefundFormInputs } from '@/types/payment';
 import { IRemainPoint } from '@/types/point';
@@ -39,7 +40,13 @@ export default function Refund() {
 
   const onSubmitRefund = async () => {
     try {
-      console.log('methods.getValues', methods.getValues());
+      await api.post('/api/account/inactivate', {
+        bankAccount: {
+          bank: methods.getValues('bankName'),
+          accountNumber: methods.getValues('bankAccountNumber'),
+          accountHolder: methods.getValues('bankAccountOwner'),
+        },
+      });
 
       openModal({
         component: AlertModal,

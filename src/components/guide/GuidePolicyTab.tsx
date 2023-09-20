@@ -36,7 +36,7 @@ const guideItemList = [
       </p>
     ),
     bulletList: [
-      '깨끗한 컵을 세척없이 편리하게 이용하기 위해선 사용 후 당일 반납을 가장 추천해요 :)',
+      '깨끗한 컵을 편리하게 이용하기 위해선 사용 후 당일 반납을 가장 추천해요!',
     ],
   },
   {
@@ -53,8 +53,9 @@ const guideItemList = [
     bulletList: [
       <p>
         패널티가 부과되었더라도{' '}
-        <b>패널티 부과 후 2주 이내로 반납할 시 패널티 비용을 환급</b>받을 수
-        있습니다. 환급처리를 위해서는 반납 후 고객센터로 연락 부탁드립니다.
+        <b>부과 후 2주 이내로 컵을 반납할 시 패널티 비용을 환급</b>받을 수
+        있습니다. 환급처리를 위해서는 반납 후 고객센터로 접수해주세요. 미접수시
+        환불되지 않습니다.
       </p>,
       '2주 초과 이후 패널티 비용 환급은 불가능합니다.',
     ],
@@ -115,8 +116,13 @@ const guideItemList = [
 const GuidePolicyTab = () => {
   return (
     <Wrapper>
-      {guideItemList.map((item) => (
-        <GuideTextItemWithBullet key={item.id} {...item} />
+      {guideItemList.map((item, index) => (
+        <>
+          <GuideTextItemWithBullet key={item.id} {...item} />
+          {index !== guideItemList.length - 1 && (
+            <hr className="text-[#F2F1F1]" />
+          )}
+        </>
       ))}
     </Wrapper>
   );

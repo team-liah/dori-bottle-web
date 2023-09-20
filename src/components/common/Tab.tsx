@@ -4,8 +4,10 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { ITab } from '@/types/common';
 
+type TabStyle = 'default' | 'underline';
 interface ITabProps {
   tabs: ITab[];
+  tabStyle?: TabStyle;
 }
 
 //#region Styled Components
@@ -18,6 +20,39 @@ const Wrapper = tw(Custom.MobileWrapper)`
 
 const TabButtonContainer = tw.div`
   w=full
+  mx-4
+  flex
+  max-h-[44px]
+  min-h-[44px]
+  flex-row
+  rounded-full
+  border-solid
+  bg-point-yellow
+  p-1
+`;
+
+const TabButton = tw.button<{ $active: boolean }>`
+  relative
+  flex-1
+  py-2
+  text-[16px]
+  leading-[22px]
+  tracking-[-0.48px]
+  transition
+  ${({ $active }) => ($active ? 'text-gray2' : 'text-white')}
+`;
+
+const SelectCircle = tw(motion.div)`
+  absolute
+  w-full
+  top-0
+  h-[36px]
+  bg-white
+  rounded-full
+`;
+
+const UnderlineTabButtonContainer = tw.div`
+  w=full
   flex
   flex-row
   border-b-[2px]
@@ -25,7 +60,7 @@ const TabButtonContainer = tw.div`
   border-back-line
 `;
 
-const TabButton = tw.button<{ $active: boolean }>`
+const UnderlineTabButton = tw.button<{ $active: boolean }>`
   relative
   flex-1
   py-2
@@ -46,7 +81,7 @@ const Underline = tw(motion.div)`
 
 //#endregion
 
-const Tab = ({ tabs }: ITabProps) => {
+const Tab = ({ tabs, tabStyle = 'default' }: ITabProps) => {
   const [activeTab, setActiveTab] = useState<ITab>();
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 });
@@ -80,7 +115,7 @@ const Tab = ({ tabs }: ITabProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [touchEnd]);
 
-  return (
+  return tabStyle === 'default' ? (
     <Wrapper
       onTouchStart={(e) =>
         setTouchStart({
@@ -102,11 +137,40 @@ const Tab = ({ tabs }: ITabProps) => {
             key={tab.id}
             onClick={() => setActiveTab(tab)}
           >
-            {activeTab?.id === tab.id && <Underline layoutId="underline" />}
-            {tab.title}
+            {activeTab?.id === tab.id && <SelectCircle layoutId="selected" />}
+            <div className="relative">{tab.title}</div>
           </TabButton>
         ))}
       </TabButtonContainer>
+      {activeTab?.children}
+    </Wrapper>
+  ) : (
+    <Wrapper
+      onTouchStart={(e) =>
+        setTouchStart({
+          x: e.changedTouches[0].clientX,
+          y: e.changedTouches[0].clientY,
+        })
+      }
+      onTouchEnd={(e) => {
+        setTouchEnd({
+          x: e.changedTouches[0].clientX,
+          y: e.changedTouches[0].clientY,
+        });
+      }}
+    >
+      <UnderlineTabButtonContainer>
+        {tabs.map((tab) => (
+          <UnderlineTabButton
+            $active={activeTab?.id === tab.id}
+            key={tab.id}
+            onClick={() => setActiveTab(tab)}
+          >
+            {activeTab?.id === tab.id && <Underline layoutId="selected" />}
+            {tab.title}
+          </UnderlineTabButton>
+        ))}
+      </UnderlineTabButtonContainer>
       {activeTab?.children}
     </Wrapper>
   );
