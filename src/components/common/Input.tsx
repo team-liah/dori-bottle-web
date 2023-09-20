@@ -109,6 +109,7 @@ const Input = ({
           autoFocus={autoFocus}
           autoComplete={autoComplete}
           {...field}
+          value={field.value || ''}
           onKeyUp={onKeyUp}
         />
         {error && <AlertCircleIcon />}

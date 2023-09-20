@@ -4,8 +4,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputLayer from '@/components/join/RegisterInputLayer';
 import TermsInputLayer from '@/components/join/TermsInputLayer';
 import useAuth from '@/hooks/useAuth';
+import useToast from '@/hooks/useToast';
 import api from '@/service/api';
 import { IRegisterFormInputs } from '@/types/user';
+import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
 
@@ -13,6 +15,7 @@ import { IRegisterFormInputs } from '@/types/user';
 
 const Join = () => {
   const router = useRouter();
+  const { openToast } = useToast();
   const methods = useForm<IRegisterFormInputs>();
   const { refreshUser } = useAuth();
 
@@ -27,15 +30,21 @@ const Join = () => {
   }, [methods]);
 
   const onSubmit = async () => {
-    if (step === 0) {
-      await methods.trigger('birthDate');
-      setStep(1);
-    } else {
-      await api.post('/api/account/register', {
-        ...methods.getValues(),
+    try {
+      if (step === 0) {
+        await methods.trigger('birthDate');
+        setStep(1);
+      } else {
+        await api.post('/api/account/register', {
+          ...methods.getValues(),
+        });
+        refreshUser();
+        router.push('/join/complete');
+      }
+    } catch (error: any) {
+      openToast({
+        component: getErrorMessage(error),
       });
-      refreshUser();
-      router.push('/join/complete');
     }
   };
 

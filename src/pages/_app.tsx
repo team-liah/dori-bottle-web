@@ -22,11 +22,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>도리보틀</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
-          rel="stylesheet"
-          type="text/css"
-        ></link>
       </Head>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>

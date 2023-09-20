@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { BiCheck, BiCopy } from 'react-icons/bi';
@@ -63,7 +64,7 @@ const LinkText = tw.div`
   underline
 `;
 
-const InviteCode = tw.span`
+const InvitationCode = tw.span`
   text-[20px]
   font-bold
   text-gray1
@@ -136,11 +137,10 @@ const InviteLayer = () => {
   };
 
   const shareInviteLink = () => {
-    const shareTarget = `${window.location.origin}/login?inviteCode=${profile?.invitationCode}`;
+    const shareTarget = `${window.location.origin}/login?invitationCode=${profile}`;
     if (navigator.share) {
       navigator.share({
         title: '도리보틀 초대장',
-        text: '친구랑 도리보틀하고 무료 버블 받기',
         url: shareTarget,
       });
     } else {
@@ -156,9 +156,14 @@ const InviteLayer = () => {
     <Layer title="초대장" scrollable={true}>
       <Wrapper>
         <Title>{'친구랑 도리보틀하고\n무료 버블 받기'}</Title>
-        <LinkText onClick={() => router.push('/invite/register')}>
-          초대코드 입력하고 버블받기
-        </LinkText>
+        {!profile?.inviterId &&
+          dayjs(profile?.registeredDate).isAfter(
+            dayjs().subtract(14, 'day'),
+          ) && (
+            <LinkText onClick={() => router.push('/invite/register')}>
+              초대코드 입력하고 버블받기
+            </LinkText>
+          )}
         <SubTitle>
           {
             '친구를 도리보틀에 초대하고\n친구가 첫 이용하면 카운트 수가 올라가요!'
@@ -176,10 +181,10 @@ const InviteLayer = () => {
         </RewardListWrapper>
         <SubTitle onClick={copyInvitecode}>
           나의 초대코드
-          <InviteCode>
+          <InvitationCode>
             {profile?.invitationCode}
             {copy ? <CheckIcon /> : <CopyIcon />}
-          </InviteCode>
+          </InvitationCode>
         </SubTitle>
         <Custom.Button onClick={shareInviteLink}>
           초대링크 공유하기
