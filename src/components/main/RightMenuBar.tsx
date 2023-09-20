@@ -8,7 +8,6 @@ import * as Custom from '@/components/common/CustomStyledComponent';
 import { MOTION } from '@/constants/MotionConstants';
 import useAuth from '@/hooks/useAuth';
 import useInstalltaion from '@/hooks/useInstallation';
-import useToast from '@/hooks/useToast';
 
 interface IMenuBarProps {
   open: boolean;
@@ -92,15 +91,8 @@ const Divider = tw.div`
 const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
   const router = useRouter();
   const { user } = useAuth();
-  const { openToast } = useToast();
   const { logout } = useAuth();
   const { handleClickShare } = useInstalltaion();
-
-  const openPreparingToast = () => {
-    openToast({
-      component: '준비 중입니다.',
-    });
-  };
 
   const onClickLogout = () => {
     logout();
@@ -130,7 +122,7 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     },
     {
       title: '초대장',
-      onClick: openPreparingToast,
+      onClick: () => router.push('/invite'),
     },
   ];
 
