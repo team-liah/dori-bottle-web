@@ -59,7 +59,10 @@ const Confirmation = () => {
       if (response.accessToken) {
         const user = jwtDecode<IAuth>(response.accessToken);
         if (user?.role === 'ROLE_GUEST') {
-          router.push('/join');
+          router.push({
+            pathname: '/join',
+            query: router.query,
+          });
         } else if (user?.role === 'ROLE_USER') {
           openToast({
             component: `${user?.name}님 반갑습니다.`,

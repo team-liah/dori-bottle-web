@@ -14,6 +14,10 @@ export interface IRegisterFormInputs {
   agreedTermsOfMarketing: boolean;
 }
 
+export interface IInviteRegisterFormInputs {
+  invitationCode: string;
+}
+
 export interface IAuth {
   id: React.Key;
   loginId: string;

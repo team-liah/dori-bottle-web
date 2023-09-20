@@ -21,7 +21,7 @@ const Wrapper = tw(Custom.MobileWrapper)<{ $scrollable?: boolean }>`
   pt-[20px]
   justify-between
   px-0
-  ${({ $scrollable }) => $scrollable && 'overflow-y-auto pb-5'}
+  ${({ $scrollable }) => $scrollable && 'overflow-y-auto pb-10'}
 `;
 
 const TopWrapper = tw.div`

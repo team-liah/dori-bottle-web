@@ -89,8 +89,6 @@ const MainImage = tw.img`
 export default function Login() {
   const router = useRouter();
 
-  const callbackUrl = router.query.callbackUrl as string;
-
   // TODO: 테스트 로그인 버튼 삭제
   const handleTestLogin = async () => {
     try {
@@ -121,11 +119,10 @@ export default function Login() {
             테스트 로그인
           </TestLoginButton>
           <LinkWrapper
-            href={`/login/confirmation${
-              callbackUrl
-                ? `?callbackUrl=${encodeURIComponent(callbackUrl)}`
-                : ''
-            }`}
+            href={{
+              pathname: '/login/confirmation',
+              query: router.query,
+            }}
           >
             <LoginButton>
               <LabelText>🎉 가입하고 무료이용권 받자!</LabelText>
