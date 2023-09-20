@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import useModals from './useModals';
-import useToast from './useToast';
 import InstallationModal from '@/components/common/modal/InstallationModal';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -18,18 +17,7 @@ declare global {
   }
 }
 const useInstalltaion = () => {
-  const { openToast } = useToast();
   const { openModal, closeModal } = useModals();
-
-  const handleClickShare = async () => {
-    try {
-      await navigator.share();
-    } catch (error) {
-      openToast({
-        component: '현재 브라우저에서 지원하지 않습니다.',
-      });
-    }
-  };
 
   const handleInstall = useCallback(
     async (deferredPrompt: BeforeInstallPromptEvent) => {
@@ -65,7 +53,7 @@ const useInstalltaion = () => {
     [openModal, handleInstall, closeModal],
   );
 
-  return { handleClickShare, handleBeforeInstallPrompt };
+  return { handleBeforeInstallPrompt };
 };
 
 export default useInstalltaion;
