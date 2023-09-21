@@ -31,7 +31,7 @@ const MenuWrapper = tw(motion.div)`
   relative
   w-[239px]
   bg-white
-  py-[75px]
+  py-[36px]
   px-[32px]
 `;
 

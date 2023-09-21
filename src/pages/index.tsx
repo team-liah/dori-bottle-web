@@ -23,7 +23,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   items-center
   justify-between
-  pt-[48px]
+  pt-[24px]
   px-[28px]
   relative
   pb-[0px]
@@ -240,7 +240,7 @@ export default function Home() {
           </FullLink>
         </ButtonWrapper>
         <QrButton onClick={openQrcode}>
-          <img src="/svg/qrcode.svg" className="h-1/2" alt="QR" />
+          <img src="/svg/qrcode.svg" className="h-1/2 max-h-[50%]" alt="QR" />
         </QrButton>
 
         <BottomContainer>
