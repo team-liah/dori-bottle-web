@@ -12,7 +12,6 @@ import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
-import useInstalltaion from '@/hooks/useInstallation';
 import useModals from '@/hooks/useModals';
 import { fetcher, serverFetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
@@ -158,7 +157,6 @@ const infoTextList = [
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
-  const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -209,17 +207,6 @@ export default function Home() {
   useEffect(() => {
     setInfoText(getInfoText());
   }, []);
-
-  useEffect(() => {
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener(
-        'beforeinstallprompt',
-        handleBeforeInstallPrompt,
-      );
-    };
-  }, [handleBeforeInstallPrompt]);
 
   useEffect(() => {
     refreshUser();

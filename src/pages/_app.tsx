@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import Toast from '@/components/common/Toast';
+import InstallPrompt from '@/components/main/InstallPrompt';
 import { AuthProvider } from '@/context/AuthContext';
 import FloatingProvider from '@/context/FloatingContext';
 import 'dayjs/locale/ko';
@@ -32,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Component {...pageProps} />
                 <Modal />
                 <Toast />
+                <InstallPrompt />
               </main>
             </AuthProvider>
           </FloatingProvider>
