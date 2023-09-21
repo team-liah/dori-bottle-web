@@ -7,6 +7,7 @@ import { IoArrowForward } from 'react-icons/io5';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
+import InstallPrompt from '@/components/main/InstallPrompt';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
@@ -258,6 +259,7 @@ export default function Home() {
           </div>
         </BottomContainer>
       </Wrapper>
+      <InstallPrompt />
     </Fragment>
   );
 }
