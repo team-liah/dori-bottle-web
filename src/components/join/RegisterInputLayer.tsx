@@ -76,6 +76,11 @@ const RegisterInputLayer = () => {
               maxLength={20}
               autoFocus={true}
               error={errors.name?.message}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  handleNextStep();
+                }
+              }}
               field={{
                 ...field,
                 onBlur: () => {
@@ -108,6 +113,11 @@ const RegisterInputLayer = () => {
                   maxLength={8}
                   autoFocus={true}
                   error={errors.birthDate?.message}
+                  onKeyUp={(e) => {
+                    if (e.currentTarget.value.length === 8) {
+                      handleNextStep();
+                    }
+                  }}
                   field={{
                     ...field,
                     onChange: (e) => {
