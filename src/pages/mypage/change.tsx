@@ -1,4 +1,3 @@
-import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -7,19 +6,16 @@ import VerifyInputLayer from '@/components/login/VerifyInputLayer';
 import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
 import api from '@/service/api';
-import { IAuth, ILoginFormInputs } from '@/types/user';
+import { ILoginFormInputs } from '@/types/user';
 import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
 
 //#endregion
-
-const IS_MOCKUP = true;
-
 const Change = () => {
   const { openToast } = useToast();
   const router = useRouter();
-  const { login } = useAuth();
+  const { logout } = useAuth();
 
   const methods = useForm<ILoginFormInputs>({
     defaultValues: {
@@ -38,16 +34,12 @@ const Change = () => {
     methods.clearErrors();
     methods.setValue('loginPassword', '');
   }, [step, methods]);
+
   // 인증번호 전송
   const onSendVerificationCode = async () => {
-    // TODO : 전화번호 변경 로직 필요
     try {
-      if (IS_MOCKUP) {
-        return;
-      }
-
       await methods.trigger('loginId');
-      await api.post('/api/account/auth/send-sms', {
+      await api.post('/api/account/change-login-id/send-sms', {
         loginId: methods.getValues('loginId'),
       });
       setStep(1);
@@ -60,24 +52,13 @@ const Change = () => {
   };
 
   const onSubmitVerifyToken = async () => {
-    // TODO : 전화번호 변경 로직 필요
     try {
-      const response = await login(methods.getValues());
-      if (response.accessToken) {
-        const user = jwtDecode<IAuth>(response.accessToken);
-        if (user?.role === 'ROLE_GUEST') {
-          router.push('/join');
-        } else if (user?.role === 'ROLE_USER') {
-          openToast({
-            component: `${user?.name}님 반갑습니다.`,
-          });
-          router.push((router.query.callbackUrl as string) || '/');
-        } else {
-          throw new Error('권한이 없습니다.');
-        }
-      } else {
-        throw new Error('로그인에 실패하였습니다.');
-      }
+      await api.put('/api/account/change-login-id', methods.getValues());
+      openToast({
+        component: '변경이 완료되었습니다. 다시 로그인해주세요.',
+      });
+      await logout();
+      router.push('/login');
     } catch (error) {
       methods.setError('loginPassword', {
         type: 'manual',
