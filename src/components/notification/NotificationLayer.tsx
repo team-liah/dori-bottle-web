@@ -3,6 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useRef } from 'react';
 import tw from 'tailwind-styled-components';
 import NotificationListItem from './NotificationListItem';
@@ -42,6 +43,7 @@ const NotificationList = tw.div`
 //#endregion
 
 const NotificationLayer = () => {
+  const router = useRouter();
   const { refreshUser } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { handleScroll, isReachingEnd } = useScroll();
@@ -70,9 +72,25 @@ const NotificationLayer = () => {
 
   const handleRead = (notification: INotification) => {
     if (!notification.read) {
-      // TODO: notification.targetId에 따라 페이지 이동
-      console.log(notification.targetId);
       patchNotificationRead(notification);
+    }
+    switch (notification.type) {
+      case 'POINT':
+        return router.push('/bubble/history');
+      case 'REFUND':
+        return router.push('/bubble/history');
+      case 'NOTICE':
+        return router.push('/notice');
+      case 'PROMOTION':
+        return router.push('/notice');
+      case 'PENALTY':
+        return router.push('/mypage');
+      case 'LOST_CUP':
+        return router.push('/rental');
+      case 'NEAR_EXPIRATION':
+        return router.push('/rental');
+      case 'AUTO_PAYMENT':
+        return router.push('/payment');
     }
   };
 
