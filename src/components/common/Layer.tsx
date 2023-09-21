@@ -20,6 +20,7 @@ const Wrapper = tw(Custom.MobileWrapper)<{ $scrollable?: boolean }>`
   flex-col
   pt-[20px]
   justify-between
+  gap-10
   px-0
   ${({ $scrollable }) => $scrollable && 'overflow-y-auto pb-10'}
 `;

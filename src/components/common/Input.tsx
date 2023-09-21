@@ -3,6 +3,7 @@ import { ControllerRenderProps } from 'react-hook-form';
 import { FiAlertCircle } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 
+type InputSize = 'small' | 'default';
 interface IInputProps {
   id?: string;
   type?: React.HTMLInputTypeAttribute;
@@ -17,6 +18,7 @@ interface IInputProps {
   autoComplete?: string;
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   field: ControllerRenderProps<any, any>;
+  size?: InputSize;
 }
 
 //#region Styled Components
@@ -29,11 +31,12 @@ const Wrapper = tw.div`
   gap-4
 `;
 
-const Label = tw.label`
+const Label = tw.label<{ $size: InputSize }>`
   text-[20px]
   font-medium
   tracking-[-0.6px]
   text-gray1
+  ${({ $size }) => $size === 'small' && 'text-[16px]'}
 `;
 
 const InputWrapper = tw.div`
@@ -41,7 +44,7 @@ const InputWrapper = tw.div`
   w-full
 `;
 
-const StyledInput = tw.input<{ $error?: boolean }>`
+const StyledInput = tw.input<{ $error?: boolean; $size: InputSize }>`
   w-full
   rounded-[15px]
   border-[1.5px]
@@ -55,6 +58,7 @@ const StyledInput = tw.input<{ $error?: boolean }>`
   focus-within:border-main-blue
   focus-within:outline-none
   ${({ $error }) => $error && 'border-alert focus-within:border-alert'}
+  ${({ $size }) => $size === 'small' && 'p-[16px] text-[14px] leading-[20px]'}
 `;
 
 const AlertCircleIcon = tw(FiAlertCircle)`
@@ -92,11 +96,12 @@ const Input = ({
   autoFocus,
   autoComplete,
   field,
+  size = 'default',
   onKeyUp,
 }: IInputProps) => {
   return (
     <Wrapper>
-      {label && <Label>{label}</Label>}
+      {label && <Label $size={size}>{label}</Label>}
       <InputWrapper>
         <StyledInput
           type={type}
@@ -110,6 +115,7 @@ const Input = ({
           autoComplete={autoComplete}
           {...field}
           value={field.value || ''}
+          $size={size}
           onKeyUp={onKeyUp}
         />
         {error && <AlertCircleIcon />}

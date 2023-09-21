@@ -19,7 +19,7 @@ const Wrapper = tw.div`
   flex-col
   items-center
   justify-between
-  gap-7
+  gap-5
   pt-14
 `;
 //#endregion
@@ -64,6 +64,7 @@ const PaymentRefundFormLayer = ({ onClickBack }: IPaymentRefundFormLayer) => {
               autoFocus={true}
               error={errors.bankName?.message}
               field={field}
+              size="small"
             />
           )}
         />
@@ -79,9 +80,9 @@ const PaymentRefundFormLayer = ({ onClickBack }: IPaymentRefundFormLayer) => {
               label="계좌번호"
               id="bankAccountNumber"
               maxLength={20}
-              autoFocus={true}
               error={errors.bankAccountNumber?.message}
               field={field}
+              size="small"
             />
           )}
         />
@@ -96,9 +97,9 @@ const PaymentRefundFormLayer = ({ onClickBack }: IPaymentRefundFormLayer) => {
               label="예금주명"
               id="bankAccountOwner"
               maxLength={20}
-              autoFocus={true}
               error={errors.bankAccountOwner?.message}
               field={field}
+              size="small"
             />
           )}
         />

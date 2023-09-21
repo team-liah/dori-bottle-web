@@ -12,7 +12,6 @@ import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
-import useInstalltaion from '@/hooks/useInstallation';
 import useModals from '@/hooks/useModals';
 import { fetcher, serverFetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
@@ -24,7 +23,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   items-center
   justify-between
-  pt-[48px]
+  pt-[24px]
   px-[28px]
   relative
   pb-[0px]
@@ -158,7 +157,6 @@ const infoTextList = [
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
-  const { handleBeforeInstallPrompt } = useInstalltaion();
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -211,17 +209,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener(
-        'beforeinstallprompt',
-        handleBeforeInstallPrompt,
-      );
-    };
-  }, [handleBeforeInstallPrompt]);
-
-  useEffect(() => {
     refreshUser();
   }, [refreshUser]);
 
@@ -253,7 +240,7 @@ export default function Home() {
           </FullLink>
         </ButtonWrapper>
         <QrButton onClick={openQrcode}>
-          <img src="/svg/qrcode.svg" className="h-1/2" alt="QR" />
+          <img src="/svg/qrcode.svg" className="h-1/2 max-h-[50%]" alt="QR" />
         </QrButton>
 
         <BottomContainer>
