@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import PhoneInputLayer from '@/components/login/PhoneInputLayer';
 import VerifyInputLayer from '@/components/login/VerifyInputLayer';
+import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
 import api from '@/service/api';
@@ -67,18 +68,27 @@ const Confirmation = () => {
           openToast({
             component: `${user?.name}님 반갑습니다.`,
           });
-          router.push((router.query.callbackUrl as string) || '/');
+          router.push('/');
         } else {
           throw new Error('권한이 없습니다.');
         }
       } else {
         throw new Error('로그인에 실패하였습니다.');
       }
-    } catch (error) {
-      methods.setError('loginPassword', {
-        type: 'manual',
-        message: getErrorMessage(error),
-      });
+    } catch (error: any) {
+      if (
+        getErrorMessage(error) === ERROR_MESSAGE.A006 ||
+        getErrorMessage(error) === ERROR_MESSAGE.A007
+      ) {
+        methods.setError('loginPassword', {
+          type: 'manual',
+          message: getErrorMessage(error),
+        });
+      } else {
+        openToast({
+          component: getErrorMessage(error),
+        });
+      }
     }
   };
 
