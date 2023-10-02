@@ -1,9 +1,11 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import React, { Fragment } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import usePayment from '@/hooks/usePayment';
-import { PaymentType } from '@/types/payment';
+import { fetcher } from '@/service/fetch';
+import { IPaymentMethodList, PaymentType } from '@/types/payment';
 
 interface IPaymentCreatModalProps {
   onClose: () => void;
@@ -67,6 +69,19 @@ const Icon = tw.img`
 const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
   const MULTIPLE_PAYMENT = false;
 
+  const { data } = useInfiniteQuery<IPaymentMethodList>({
+    queryKey: ['payment', 'method'],
+    queryFn: ({ pageParam = 0 }) =>
+      fetcher('/api/payment/method', {
+        page: pageParam,
+      }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.pageable.hasNext) {
+        return lastPage.pageable.page + 1;
+      }
+    },
+  });
+
   const { addTossPayment, addKakaoPay, addNaverPay } = usePayment();
 
   const handleAddPayment = (paymentType: PaymentType) => {
@@ -90,7 +105,9 @@ const PaymentCreatModal = ({ onClose }: IPaymentCreatModalProps) => {
 
   return (
     <Wrapper>
-      <Title>이용 전 결제수단 등록이 필요해요</Title>
+      {data?.pages[0].content.length === 0 && (
+        <Title>이용 전 결제수단 등록이 필요해요</Title>
+      )}
       <SelectList>
         <Custom.Button onClick={() => handleAddPayment('CARD')}>
           신용/체크카드

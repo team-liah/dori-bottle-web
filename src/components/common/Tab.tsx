@@ -39,7 +39,7 @@ const TabButton = tw.button<{ $active: boolean }>`
   leading-[22px]
   tracking-[-0.48px]
   transition
-  ${({ $active }) => ($active ? 'text-gray2' : 'text-white')}
+  ${({ $active }) => ($active ? 'text-gray2 font-medium' : 'text-white')}
 `;
 
 const SelectCircle = tw(motion.div)`

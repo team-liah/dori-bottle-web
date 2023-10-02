@@ -35,7 +35,6 @@ const Icon = tw.img`
 `;
 
 const BulletTextContainer = tw.ul`
-  mb-7
   mt-5
   flex
   w-full
