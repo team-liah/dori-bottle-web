@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
-import { BiCheck, BiCopy } from 'react-icons/bi';
+import React from 'react';
 import tw from 'tailwind-styled-components';
 import BubbleProgressBar from './BubbleProgressBar';
 import InviteRewardItem from './InviteRewardItem';
@@ -70,18 +69,6 @@ const InvitationCode = tw.span`
   text-gray1
 `;
 
-const CopyIcon = tw(BiCopy)`
-  text-unactivated
-  inline-block
-  ml-1
-`;
-
-const CheckIcon = tw(BiCheck)`
-  text-green
-  inline-block
-  ml-1
-`;
-
 const RewardListWrapper = tw.div`
   flex
   w-full
@@ -91,6 +78,21 @@ const RewardListWrapper = tw.div`
   gap-[10px]
   pt-10
   pb-5
+`;
+
+const CopyIconWrapper = tw.div`
+  absolute
+  right-6
+  flex
+  translate-x-[-100%]
+  flex-col
+  items-center
+  gap-1
+`;
+
+const CopyIcon = tw.img`
+  h-6
+  w-6
 `;
 //#endregion
 
@@ -124,12 +126,8 @@ const InviteLayer = () => {
     queryKey: ['profile'],
     queryFn: () => fetcher('/api/me/profile'),
   });
-
-  const [copy, setCopy] = useState(false);
-
   const copyInvitecode = () => {
     copyToClipboard(profile?.invitationCode || '', () => {
-      setCopy(true);
       openToast({
         component: '초대코드가 복사되었습니다.',
       });
@@ -185,10 +183,10 @@ const InviteLayer = () => {
         </RewardListWrapper>
         <SubTitle onClick={copyInvitecode}>
           나의 초대코드
-          <InvitationCode>
-            {profile?.invitationCode}
-            {copy ? <CheckIcon /> : <CopyIcon />}
-          </InvitationCode>
+          <InvitationCode>{profile?.invitationCode}</InvitationCode>
+          <CopyIconWrapper>
+            <CopyIcon src="/svg/clipboard.svg" alt="next" />
+          </CopyIconWrapper>
         </SubTitle>
         <Custom.Button onClick={shareInviteLink}>
           초대링크 공유하기
