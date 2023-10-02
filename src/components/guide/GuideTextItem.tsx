@@ -15,9 +15,8 @@ const Wrapper = tw.div`
   h-[245px]
   flex-col
   items-center
-  justify-between
+  justify-evenly
   rounded-[16px]
-  py-10
   shadow-[0_0_5px_0px_rgba(17,17,17,0.15)]
 `;
 

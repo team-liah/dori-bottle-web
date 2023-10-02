@@ -14,10 +14,10 @@ interface IGuideTextItemWithBulletProps {
 const Wrapper = tw.div`
   flex
   flex-col
-  gap-6
 `;
 
 const TitleWrapper = tw.div`
+  mb-[26px]
   flex
   flex-row
   items-center
@@ -25,6 +25,7 @@ const TitleWrapper = tw.div`
 `;
 
 const DetailWrapper = tw.div`
+  mb-5
   flex
   w-full
   flex-row
