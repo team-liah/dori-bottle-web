@@ -84,6 +84,7 @@ const QrButton = tw(SquareButton)`
 `;
 
 const Name = tw.div`
+  height-[30px]
   mb-4
   w-full
   text-left
@@ -141,6 +142,7 @@ const InfoText = tw.div`
   leading-[22px]
   text-gray1
 `;
+
 //#endregion
 
 const infoTextList = [
@@ -224,8 +226,16 @@ export default function Home() {
         }}
       >
         <NavigationBar />
-
-        <Name>{user?.name || '사용자'}님의 버블</Name>
+        <Name>
+          {user ? (
+            `${user?.name || '사용자'}님의 버블`
+          ) : (
+            <div className="flex flex-col gap-[6px]">
+              <Custom.Skeleton className="w-[100px]" />
+              <Custom.Skeleton className="w-[140px]" />
+            </div>
+          )}
+        </Name>
         <BubbleWrapper>
           <BubbleIcon src="/svg/bubble.svg" alt="버블" />
           <BubbleText>

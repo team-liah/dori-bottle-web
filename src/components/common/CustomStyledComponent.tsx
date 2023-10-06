@@ -89,3 +89,12 @@ export const GuideNumber = tw.div`
     text-gray2
     shadow-[0_0_5px_0px_rgba(17,17,17,0.15)]
 `;
+
+export const Skeleton = tw.div`
+    h-[12px]
+    animate-pulse
+    rounded-full
+    bg-gray-light
+    opacity-30
+    dark:bg-gray
+`;
