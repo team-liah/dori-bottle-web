@@ -110,11 +110,11 @@ const inviteRewardList = [
     inviteCount: 25,
   },
   {
-    text: '버블 10개\n6개월간 !',
+    text: '버블\n60개',
     inviteCount: 50,
   },
   {
-    text: '버블 20개\n6개월간 !',
+    text: '버블\n120개',
     inviteCount: 100,
   },
 ];

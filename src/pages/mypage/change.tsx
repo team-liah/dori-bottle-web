@@ -53,7 +53,9 @@ const Change = () => {
 
   const onSubmitVerifyToken = async () => {
     try {
-      await api.put('/api/account/change-login-id', methods.getValues());
+      await api.put('/api/account/change-login-id', {
+        authCode: methods.getValues('loginPassword'),
+      });
       openToast({
         component: '변경이 완료되었습니다. 다시 로그인해주세요.',
       });

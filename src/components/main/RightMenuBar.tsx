@@ -97,6 +97,11 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
     router.push('/login');
   };
 
+  const handleMenuClick = (callback: () => void) => {
+    onClose();
+    callback();
+  };
+
   const menuList = [
     {
       title: '결제수단',
@@ -133,10 +138,6 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
       title: '문의하기',
       onClick: () => router.push('/faq'),
     },
-    // {
-    //   title: '홈 화면에 아이콘 추가',
-    //   onClick: () => handleInstall(),
-    // },
     {
       title: '로그아웃',
       onClick: onClickLogout,
@@ -158,13 +159,19 @@ const RightMenuBar = ({ open, onClose }: IMenuBarProps) => {
               </Link>
               <MenuListWrapper>
                 {menuList.map((item) => (
-                  <MenuItem key={item.title} onClick={item.onClick}>
+                  <MenuItem
+                    key={item.title}
+                    onClick={() => handleMenuClick(item.onClick)}
+                  >
                     {item.title}
                   </MenuItem>
                 ))}
                 <Divider />
                 {menuListSmall.map((item) => (
-                  <MenuItemSmall key={item.title} onClick={item.onClick}>
+                  <MenuItemSmall
+                    key={item.title}
+                    onClick={() => handleMenuClick(item.onClick)}
+                  >
                     {item.title}
                   </MenuItemSmall>
                 ))}
