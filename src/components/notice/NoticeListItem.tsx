@@ -79,7 +79,10 @@ const NoticeListItem = ({ notice }: INoticeListItemProps) => {
       </Wrapper>
       {open && (
         <OpenWrapper {...MOTION.FADE}>
-          <Content>{notice.content}</Content>
+          <Content
+            className="view ql-editor"
+            dangerouslySetInnerHTML={{ __html: notice.content }}
+          ></Content>
         </OpenWrapper>
       )}
     </Fragment>

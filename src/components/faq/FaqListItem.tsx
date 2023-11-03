@@ -45,14 +45,6 @@ const OpenWrapper = tw(motion.div)`
   bg-back-color
 `;
 
-const ContentText = tw.div`
-  text-[14px]
-  font-normal
-  leading-[22px]
-  tracking-[-0.42px]
-  text-gray1
-`;
-
 const ChevronIcon = tw(FiChevronDown)<{ $open: boolean }>`
   w-[24px]
   h-[24px]
@@ -78,7 +70,10 @@ const FaqListItem = ({ faq }: IFaqListItemProps) => {
       </Wrapper>
       {open && (
         <OpenWrapper {...MOTION.FADE}>
-          <ContentText>{faq.content}</ContentText>
+          <Content
+            className="view ql-editor"
+            dangerouslySetInnerHTML={{ __html: faq.content }}
+          ></Content>
         </OpenWrapper>
       )}
     </Fragment>

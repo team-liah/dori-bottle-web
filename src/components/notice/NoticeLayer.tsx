@@ -21,7 +21,7 @@ const Wrapper = tw.div`
   pt-8
 `;
 
-const RentalList = tw.div`
+const NoticeList = tw.div`
   mt-5
   flex
   h-[calc(100dvh-150px)]
@@ -39,9 +39,9 @@ const NoticeLayer = () => {
 
   const { data, isLoading, error, fetchNextPage } =
     useInfiniteQuery<INoticeList>({
-      queryKey: ['rental'],
+      queryKey: ['notice'],
       queryFn: ({ pageParam = 0 }) =>
-        fetcher('/api/rental', {
+        fetcher('/api/post?type=NOTICE', {
           page: pageParam,
         }),
       getNextPageParam: (lastPage) => {
@@ -60,7 +60,7 @@ const NoticeLayer = () => {
   return (
     <Layer title="공지사항" fullScreen={true}>
       <Wrapper>
-        <RentalList
+        <NoticeList
           ref={scrollRef}
           onScroll={() => scrollRef.current && handleScroll(scrollRef.current)}
         >
@@ -78,15 +78,7 @@ const NoticeLayer = () => {
               </Fragment>
             )),
           )}
-          <NoticeListItem
-            notice={{
-              id: '1',
-              title: '공지사항',
-              content: '공지사항입니다.',
-              createdDate: '2023-08-25T06:34:07.229763Z',
-            }}
-          />
-        </RentalList>
+        </NoticeList>
       </Wrapper>
     </Layer>
   );
