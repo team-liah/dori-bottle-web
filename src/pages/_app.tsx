@@ -1,4 +1,5 @@
 import '@/styles/base.css';
+import 'react-quill/dist/quill.core.css';
 import {
   Hydrate,
   QueryClient,

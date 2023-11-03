@@ -36,9 +36,9 @@ const FaqTab = () => {
 
   const { data, isLoading, error, fetchNextPage } =
     useInfiniteQuery<INoticeList>({
-      queryKey: ['rental'],
+      queryKey: ['faq'],
       queryFn: ({ pageParam = 0 }) =>
-        fetcher('/api/rental', {
+        fetcher('/api/post?type=FAQ', {
           page: pageParam,
         }),
       getNextPageParam: (lastPage) => {
@@ -74,14 +74,6 @@ const FaqTab = () => {
             </Fragment>
           )),
         )}
-        <FaqListItem
-          faq={{
-            id: '1',
-            title: 'FAQ입니다.',
-            content: 'FAQ 상세 데이터 입니다.',
-            createdDate: '2023-08-25T06:34:07.229763Z',
-          }}
-        />
       </FaqList>
     </Wrapper>
   );
