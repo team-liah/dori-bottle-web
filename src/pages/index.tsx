@@ -1,5 +1,4 @@
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { GetServerSideProps } from 'next';
+import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
@@ -14,7 +13,7 @@ import QrcodeModal from '@/components/main/QrcodeModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
-import { fetcher, serverFetcher } from '@/service/fetch';
+import { fetcher } from '@/service/fetch';
 import { IRemainPoint } from '@/types/point';
 import { getErrorMessage } from '@/utils/error';
 
@@ -273,29 +272,3 @@ export default function Home() {
     </Fragment>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const queryClient = new QueryClient();
-
-  try {
-    await queryClient.prefetchQuery(['me'], () =>
-      serverFetcher('/me', {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${context.req.cookies.access_token}`,
-          'Content-Type': 'application/json',
-        },
-      }),
-    );
-
-    return {
-      props: {
-        dehydratedProps: dehydrate(queryClient),
-      },
-    };
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-};
