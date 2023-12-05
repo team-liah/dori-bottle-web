@@ -47,6 +47,7 @@ export interface IUser {
   gender?: Gender;
   registeredDate?: string;
   group?: IGroup;
+  penaltyCount?: number;
   penalties?: IPenalty[];
   blocked?: boolean;
   blockedCauses?: IBlockCause[];
