@@ -1,4 +1,7 @@
+import { IBlockCause, IPenalty } from './penalty';
+
 export type GroupType = 'UNIVERSITY' | 'COMPANY';
+export type Gender = 'MALE' | 'FEMALE';
 
 export interface ILoginFormInputs {
   loginId: string;
@@ -30,23 +33,26 @@ export interface ILoginResponse {
   accessToken: string;
   refreshToken?: string;
 }
-
-export interface IProfile {
-  id: string;
+export interface IUser {
+  id: React.Key;
   loginId: string;
   name: string;
-  phoneNumber: string;
-  invitationCode: string;
-  invitationCount: number;
-  inviterId: string;
-  birthDate: string;
-  gender: string;
-  role: string;
-  registeredDate: string;
-  penaltyCount: number;
-  group: IGroup;
+  active: boolean;
+  phoneNumber?: string;
+  invitationCode?: string;
+  invitationCount?: number;
+  inviterId?: React.Key;
+  birthDate?: string;
+  description?: string;
+  gender?: Gender;
+  registeredDate?: string;
+  group?: IGroup;
+  penalties?: IPenalty[];
+  blocked?: boolean;
+  blockedCauses?: IBlockCause[];
+  createdDate?: string;
+  lastModifiedDate?: string;
 }
-
 export interface IGroup {
   id: string;
   name: string;

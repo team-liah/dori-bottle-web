@@ -1,9 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import Layer from '@/components/common/Layer';
+import { fetcher } from '@/service/fetch';
 import { IPaymentRefundFormInputs } from '@/types/payment';
+import { IUser } from '@/types/user';
+import { getBlockCauseTypeLabel } from '@/utils/util';
 //#region Styled Component
 
 const Wrapper = tw.div`
@@ -83,9 +87,13 @@ const bulletList = [
 
 const PaymentPenaltyLayer = () => {
   const {
-    watch,
     formState: { isSubmitting },
   } = useFormContext<IPaymentRefundFormInputs>();
+
+  const { data: profile } = useQuery<IUser>({
+    queryKey: ['profile'],
+    queryFn: () => fetcher('/api/me/profile'),
+  });
 
   return (
     <Layer
@@ -93,20 +101,18 @@ const PaymentPenaltyLayer = () => {
       fullScreen={true}
       footer={
         <Custom.Button type="submit" disabled={isSubmitting}>
-          다음
+          해제하기
         </Custom.Button>
       }
     >
       <Wrapper>
         <ProductWrapper>
-          <RefundAmountWrapper>
-            <AmountText>분실 패널티</AmountText>
-            <AmountText>{watch('amount')?.toLocaleString()}원</AmountText>
-          </RefundAmountWrapper>
-          <RefundAmountWrapper>
-            <AmountText>블락해제 비용</AmountText>
-            <AmountText>{watch('amount')?.toLocaleString()}원</AmountText>
-          </RefundAmountWrapper>
+          {profile?.blockedCauses?.map((cause, index) => (
+            <RefundAmountWrapper key={index}>
+              <AmountText>{getBlockCauseTypeLabel(cause.type)}</AmountText>
+              <AmountText>{cause.clearPrice?.toLocaleString()}원</AmountText>
+            </RefundAmountWrapper>
+          ))}
         </ProductWrapper>
         <PolicyWrapper>
           [이용 및 환불 규정]

@@ -6,7 +6,7 @@ import tw from 'tailwind-styled-components';
 import ToolTip from '../common/ToolTip';
 import Layer from '@/components/common/Layer';
 import { fetcher } from '@/service/fetch';
-import { IProfile } from '@/types/user';
+import { IUser } from '@/types/user';
 
 //#region Styled Component
 
@@ -110,7 +110,7 @@ const Button = tw.button<{ $style?: 'default' | 'primary' }>`
 //#endregion
 
 const MypageLayer = () => {
-  const { data: profile } = useQuery<IProfile>({
+  const { data: profile } = useQuery<IUser>({
     queryKey: ['profile'],
     queryFn: () => fetcher('/api/me/profile'),
   });
