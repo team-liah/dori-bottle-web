@@ -9,7 +9,7 @@ import * as Custom from '@/components/common/CustomStyledComponent';
 import Layer from '@/components/common/Layer';
 import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
-import { IProfile } from '@/types/user';
+import { IUser } from '@/types/user';
 import { copyToClipboard } from '@/utils/util';
 
 //#region Styled Component
@@ -122,7 +122,7 @@ const inviteRewardList = [
 const InviteLayer = () => {
   const router = useRouter();
   const { openToast } = useToast();
-  const { data: profile } = useQuery<IProfile>({
+  const { data: profile } = useQuery<IUser>({
     queryKey: ['profile'],
     queryFn: () => fetcher('/api/me/profile'),
   });

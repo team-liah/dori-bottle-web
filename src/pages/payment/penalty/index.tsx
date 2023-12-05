@@ -5,6 +5,7 @@ import AlertModal from '@/components/common/modal/AlertModal';
 import PaymentPenaltyLayer from '@/components/payment/penalty/PaymentPenaltyLayer';
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
+import api from '@/service/api';
 import { IPaymentRefundFormInputs } from '@/types/payment';
 import { getErrorMessage } from '@/utils/error';
 
@@ -28,7 +29,7 @@ export default function Penalty() {
       component: AlertModal,
       props: {
         children: '블락을 해제하시겠습니까?',
-        confirmText: '환불하기',
+        confirmText: '해제하기',
         onConfirm: onSubmit,
         onClose: () => {
           closeModal(AlertModal);
@@ -39,8 +40,7 @@ export default function Penalty() {
 
   const onSubmit = async () => {
     try {
-      await fetch('/api/payment/penalty', {
-        method: 'POST',
+      await api.post('/api/payment/unblock-account', {
         body: JSON.stringify(methods.getValues()),
       });
 

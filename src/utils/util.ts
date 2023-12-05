@@ -1,5 +1,6 @@
 import { Regex } from '@/constants/Regex';
 import { PaymentHistoryType } from '@/types/payment';
+import { BlockCauseType, PenaltyType } from '@/types/penalty';
 import { BubbleHistoryType } from '@/types/point';
 import { RentalStatus } from '@/types/rental';
 
@@ -70,6 +71,29 @@ export const getBubbleHistoryStatus = (status: BubbleHistoryType) => {
       return '컵 사용';
     case 'DISAPPEAR':
       return '소멸';
+    default:
+      return '';
+  }
+};
+export const getPenaltyTypeLabel = (type?: PenaltyType) => {
+  switch (type) {
+    case 'DAMAGED_CUP':
+      return '파손된 컵 반납';
+    case 'NON_MANNER':
+      return '비매너 행동';
+    case 'ETC':
+      return '기타';
+    default:
+      return '';
+  }
+};
+
+export const getBlockCauseTypeLabel = (type?: BlockCauseType) => {
+  switch (type) {
+    case 'FIVE_PENALTIES':
+      return '블락해제 비용';
+    case 'LOST_CUP_PENALTY':
+      return '분실 페널티';
     default:
       return '';
   }

@@ -5,6 +5,7 @@ import tw from 'tailwind-styled-components';
 import Error from '../common/Error';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
+import useAuth from '@/hooks/useAuth';
 import { getErrorMessage } from '@/utils/error';
 
 interface IQrcodeErrorModalProps {
@@ -65,6 +66,7 @@ const DetailButton = tw.div`
 
 const QrcodeErrorModal = ({ error, onClose }: IQrcodeErrorModalProps) => {
   const router = useRouter();
+  const { user } = useAuth();
   const [showDetail, setShowDetail] = useState(false);
 
   const handleConfirm = () => {
@@ -86,7 +88,7 @@ const QrcodeErrorModal = ({ error, onClose }: IQrcodeErrorModalProps) => {
             <p>다음과 같습니다.</p>
             <p className="mt-3 text-alert">1. 카드 정지</p>
             <p className="text-alert">2. 잔액 부족</p>
-            <p className="mb-3  text-alert">3. 서버 오류</p>
+            <p className="mb-3 text-alert">3. 서버 오류</p>
             <p>문제가 해결되지 않을 시</p>
             <p>고객센터에 문의를 남겨주세요!</p>
           </TextWrapper>
@@ -119,8 +121,8 @@ const QrcodeErrorModal = ({ error, onClose }: IQrcodeErrorModalProps) => {
         <Fragment>
           <TextWrapper>
             <p>
-              한지유님께서는 <span className="text-alert">레드카드가 5회</span>{' '}
-              부여되어
+              {user?.name}님께서는{' '}
+              <span className="text-alert">레드카드가 5회</span> 부여되어
             </p>
             <p>서비스를 이용하실 수 없습니다.</p>
             <p className="mt-[10px]">서비스 재이용을 원하시는 경우 </p>
