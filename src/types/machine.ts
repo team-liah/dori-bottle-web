@@ -65,9 +65,9 @@ export const getMachineTypeLabel = (type?: MachineType) => {
 export const getMachineStateLabel = (state?: MachineState) => {
   switch (state) {
     case 'NORMAL':
-      return '✅ 정상';
+      return '사용가능';
     case 'MALFUNCTION':
-      return '⛔️ 고장';
+      return '사용불가';
     default:
       return '';
   }

@@ -4,18 +4,20 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
+import { useSetRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import InstallPrompt from '@/components/main/InstallPrompt';
-import MapModal from '@/components/main/MapModal';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
+import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
 import { fetcher } from '@/service/fetch';
+import { myLocationState } from '@/states/MyLocationState';
 import { IRemainPoint } from '@/types/point';
 import { getErrorMessage } from '@/utils/error';
 
@@ -161,6 +163,7 @@ const infoTextList = [
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
+  const setMyLocation = useSetRecoilState(myLocationState);
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -218,7 +221,11 @@ export default function Home() {
 
   useEffect(() => {
     setInfoText(getInfoText());
-  }, []);
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { coords } = position;
+      setMyLocation({ lat: coords.latitude, lng: coords.longitude });
+    });
+  }, [setMyLocation]);
 
   useEffect(() => {
     refreshUser();
