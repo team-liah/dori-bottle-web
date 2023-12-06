@@ -29,23 +29,24 @@ const ModalContainer = tw(motion.div)`
   rounded-[20px]
 `;
 
-const BottomSheetContainer = tw(motion.div)`
+const BottomSheetContainer = tw(motion.div)<{ $draggable?: boolean }>`
   w-full
   absolute
   bottom-0
   rounded-t-[25px]
   overflow-hidden
   bg-white
-  pt-[10px]
-  pb-[30px]
+  ${(props) => !props.$draggable && 'pt-[20px]'}
+  ${(props) => !props.$draggable && 'pb-[30px]'}
 `;
 
 const BottomSheetSlidebar = tw.div`
   absolute
   top-[10px]
   left-[50%]
-  h-[4px]
-  w-[10vw]
+  z-[1]
+  min-h-[5px]
+  w-[25vw]
   -translate-x-1/2
   transform
   rounded-full
@@ -70,21 +71,32 @@ const Modal = () => {
     <Portal>
       <AnimatePresence>
         {openedModals.map((modal, index) => {
-          const { component: Component, props } = modal;
+          const { component: Component, props, position, draggable } = modal;
 
           return (
             <ModalWrapper key={index}>
               <Dimmed onClick={() => closeModal(Component)} />
-              {modal.position === 'bottom' ? (
+              {position === 'bottom' ? (
                 <BottomSheetContainer
+                  $draggable={draggable}
                   {...MOTION.POP}
-                  onTouchStart={(e) =>
-                    setTouchStart(e.targetTouches[0].clientY)
-                  }
+                  onTouchStart={(e) => {
+                    setTouchEnd(0);
+                    setTouchStart(e.targetTouches[0].clientY);
+                  }}
                   onTouchMove={(e) => setTouchEnd(e.changedTouches[0].clientY)}
-                  onTouchEnd={() => handleTouchMove(Component)}
+                  onTouchEnd={() => !draggable && handleTouchMove(Component)}
                 >
-                  <BottomSheetSlidebar />
+                  <BottomSheetSlidebar
+                    onTouchStart={(e) => {
+                      setTouchEnd(0);
+                      setTouchStart(e.targetTouches[0].clientY);
+                    }}
+                    onTouchMove={(e) =>
+                      setTouchEnd(e.changedTouches[0].clientY)
+                    }
+                    onTouchEnd={() => handleTouchMove(Component)}
+                  />
                   <Component {...props} />
                 </BottomSheetContainer>
               ) : (
