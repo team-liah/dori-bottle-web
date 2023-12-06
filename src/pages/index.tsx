@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { MapPinned } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
@@ -7,6 +8,7 @@ import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
 import InstallPrompt from '@/components/main/InstallPrompt';
+import MapModal from '@/components/main/MapModal';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
@@ -56,14 +58,22 @@ const ButtonWrapper = tw.div`
 `;
 
 const SquareButton = tw.div`
+  mb-8
   flex
   h-[180px]
+  w-full
   basis-1/2
   flex-col
   items-center
   justify-center
+  gap-2
   rounded-[16px]
-  `;
+  bg-[#F2F3F8]
+  py-4
+  font-bold
+  text-gray1
+  shadow-[0_0_6px_0px_rgba(17,17,17,0.12)]
+`;
 
 const FullLink = tw(Link)`
   flex-1
@@ -72,14 +82,6 @@ const FullLink = tw(Link)`
 
 const HistoryButton = tw(Custom.Button)`
   bg-point-yellow
-`;
-
-const QrButton = tw(SquareButton)`
-  w-full
-  bg-[#F2F3F8]
-  shadow-[0_0_6px_0px_rgba(17,17,17,0.12)]
-  mb-8
-  py-4
 `;
 
 const Name = tw.div`
@@ -200,6 +202,14 @@ export default function Home() {
     }
   };
 
+  const openMap = () => {
+    openModal({
+      component: MapModal,
+      position: 'bottom',
+      draggable: true,
+    });
+  };
+
   const getInfoText = () => {
     const random = Math.floor(Math.random() * infoTextList.length);
 
@@ -249,10 +259,17 @@ export default function Home() {
             <Custom.Button>버블 충전하기</Custom.Button>
           </FullLink>
         </ButtonWrapper>
-        <QrButton onClick={openQrcode}>
-          <img src="/svg/qrcode.svg" className="h-1/2 max-h-[50%]" alt="QR" />
-        </QrButton>
-
+        <ButtonWrapper>
+          <SquareButton onClick={openQrcode}>
+            {/* <QrCode size={'50%'} /> */}
+            <img src="/svg/qrcode.svg" className="h-1/2 max-h-[50%]" alt="QR" />
+            QR 인증하기
+          </SquareButton>
+          <SquareButton onClick={openMap}>
+            <MapPinned size={'50%'} />
+            자판기 지도
+          </SquareButton>
+        </ButtonWrapper>
         <BottomContainer>
           <img src="/assets/Character.png" className="h-[110px]" alt="QR" />
           <div className="flex flex-col items-start justify-start gap-[30px]">

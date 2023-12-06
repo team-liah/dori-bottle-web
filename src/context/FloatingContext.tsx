@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useState } from 'react';
 interface FloatingComponentType {
   component: React.FC<any>;
   position?: 'center' | 'bottom';
+  draggable?: boolean;
   props?: any;
 }
 
@@ -30,14 +31,11 @@ const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
   const [openedModals, setOpenedModals] = useState<FloatingComponentType[]>([]);
   const [openedToast, setOpenedToasts] = useState<ToastType>();
 
-  const openModal = useCallback(
-    ({ component, position, props }: FloatingComponentType) => {
-      setOpenedModals((modals) => {
-        return [...modals, { component, position, props }];
-      });
-    },
-    [],
-  );
+  const openModal = useCallback((props: FloatingComponentType) => {
+    setOpenedModals((modals) => {
+      return [...modals, { ...props }];
+    });
+  }, []);
 
   const closeModal = useCallback((component: React.FC<any>) => {
     setOpenedModals((modals) => {
