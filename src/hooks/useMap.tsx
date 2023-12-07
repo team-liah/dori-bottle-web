@@ -61,6 +61,7 @@ const useMap = () => {
   );
 
   const initializeMap = useCallback(() => {
+    if (!window.naver.maps) return;
     const mapOptions = {
       center: new window.naver.maps.LatLng(
         myLocation.lat || 37.3595704,
