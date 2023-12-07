@@ -1,14 +1,14 @@
 import { atom } from 'recoil';
 
 type Location = {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 };
 
 export const myLocationState = atom<Location>({
   key: 'myLocationState',
   default: {
-    lat: 0,
-    lng: 0,
+    latitude: 0,
+    longitude: 0,
   },
 });

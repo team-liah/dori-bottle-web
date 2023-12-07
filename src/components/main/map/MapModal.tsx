@@ -1,12 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import Script from 'next/script';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import MachineInfo from './MachineInfo';
-import { dummy } from './dummy';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import useMap from '@/hooks/useMap';
+import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
+import { IMachine } from '@/types/machine';
 
 //#region Styled Component
 
@@ -51,41 +53,57 @@ const MyLocationButton = tw.div<{ $position: 'CENTER' | 'BOTTOM' }>`
 //#endregion
 const MapModal = () => {
   const [myLocation] = useRecoilState(myLocationState);
+  const [mapLoading, setMapLoading] = useState(true);
   const {
-    selectedMarker,
+    selectedMachineId,
     updateSelectedMarker,
     moveMap,
     initializeMap,
     addMachineMarker,
   } = useMap();
 
+  const { data } = useQuery<IMachine[]>({
+    queryKey: ['machine'],
+    queryFn: () => fetcher('/api/machine/all'),
+  });
+
   const onReady = () => {
     initializeMap();
-    dummy.forEach((machine) => {
-      addMachineMarker(machine);
-    });
+    setMapLoading(false);
   };
 
   const onClickMyLocation = () => {
-    moveMap(myLocation.lat, myLocation.lng);
+    moveMap(myLocation.latitude, myLocation.longitude);
   };
 
+  useEffect(() => {
+    if (mapLoading) return;
+    data?.forEach((machine) => {
+      addMachineMarker(machine);
+    });
+  }, [mapLoading, data, addMachineMarker]);
+
   const onClickNearMachine = () => {
-    const nearestMachine = dummy.reduce((prev, curr) => {
+    const nearestMachine = data?.reduce((prev, curr) => {
       if (curr.type === 'COLLECTION') return prev;
       const prevDistance = Math.sqrt(
-        Math.pow(prev.lat - myLocation.lat, 2) +
-          Math.pow(prev.lng - myLocation.lng, 2),
+        Math.pow(prev.location.latitude - myLocation.latitude, 2) +
+          Math.pow(prev.location.longitude - myLocation.longitude, 2),
       );
       const currDistance = Math.sqrt(
-        Math.pow(curr.lat - myLocation.lat, 2) +
-          Math.pow(curr.lng - myLocation.lng, 2),
+        Math.pow(curr.location.latitude - myLocation.latitude, 2) +
+          Math.pow(curr.location.longitude - myLocation.longitude, 2),
       );
 
       return prevDistance < currDistance ? prev : curr;
-    }, dummy[0]);
+    }, data[0]);
 
-    moveMap(nearestMachine.lat, nearestMachine.lng);
+    if (!nearestMachine) return;
+
+    moveMap(
+      nearestMachine.location.latitude,
+      nearestMachine.location.longitude,
+    );
     updateSelectedMarker(nearestMachine);
   };
 
@@ -99,9 +117,9 @@ const MapModal = () => {
       />
       <Wrapper>
         <div id={'map'} style={{ width: '100%', height: '100%' }} />
-        <MachineInfo machine={selectedMarker} />
+        <MachineInfo machineId={selectedMachineId} />
         <MyLocationButton
-          $position={selectedMarker ? 'CENTER' : 'BOTTOM'}
+          $position={selectedMachineId ? 'CENTER' : 'BOTTOM'}
           onClick={onClickMyLocation}
         >
           <img src="/svg/current_location.svg" alt="내 위치" />

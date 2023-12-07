@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
@@ -16,6 +16,7 @@ import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
+import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
 import { IRemainPoint } from '@/types/point';
@@ -33,7 +34,16 @@ const Wrapper = tw(Custom.MobileWrapper)`
   pb-[0px]
 `;
 
+const ColorBg = tw.div`
+  absolute
+  top-0
+  h-[27%]
+  w-full
+  bg-main-blue
+`;
+
 const BubbleWrapper = tw.div`
+  relative
   flex
   w-full
   cursor-pointer
@@ -42,7 +52,7 @@ const BubbleWrapper = tw.div`
   gap-4
   rounded-[25px]
   bg-white
-  py-[40px]
+  py-[4vh]
   shadow-[0_0_8px_0px_rgba(17,17,17,0.12)]
 `;
 
@@ -60,9 +70,9 @@ const ButtonWrapper = tw.div`
 `;
 
 const SquareButton = tw.div`
-  mb-8
+  mb-4
   flex
-  h-[180px]
+  h-[20vh]
   w-full
   basis-1/2
   flex-col
@@ -88,10 +98,11 @@ const HistoryButton = tw(Custom.Button)`
 
 const Name = tw.div`
   height-[30px]
+  relative
   mb-4
   w-full
   text-left
-  text-[20px]
+  text-[3vh]
   font-bold
   tracking-[-0.6px]
   text-white
@@ -163,7 +174,8 @@ const infoTextList = [
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
-  const setMyLocation = useSetRecoilState(myLocationState);
+  const { openToast } = useToast();
+  const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -206,6 +218,13 @@ export default function Home() {
   };
 
   const openMap = () => {
+    if (myLocation.latitude === 0) {
+      openToast({
+        component: '위치 정보를 불러오는 중입니다.',
+      });
+
+      return;
+    }
     openModal({
       component: MapModal,
       position: 'bottom',
@@ -223,7 +242,7 @@ export default function Home() {
     setInfoText(getInfoText());
     navigator.geolocation.getCurrentPosition((position) => {
       const { coords } = position;
-      setMyLocation({ lat: coords.latitude, lng: coords.longitude });
+      setMyLocation({ latitude: coords.latitude, longitude: coords.longitude });
     });
   }, [setMyLocation]);
 
@@ -236,11 +255,8 @@ export default function Home() {
       <Head>
         <meta name="theme-color" content="#056BF1" />
       </Head>
-      <Wrapper
-        style={{
-          background: 'linear-gradient(180deg, #056BF1 220px, #FFFFFF 100px)',
-        }}
-      >
+      <Wrapper>
+        <ColorBg />
         <NavigationBar />
         <Name>
           {user ? (
@@ -278,7 +294,7 @@ export default function Home() {
           </SquareButton>
         </ButtonWrapper>
         <BottomContainer>
-          <img src="/assets/Character.png" className="h-[110px]" alt="QR" />
+          <img src="/assets/Character.png" className="h-[13vh]" alt="QR" />
           <div className="flex flex-col items-start justify-start gap-[30px]">
             <Link href="/guide">
               <InfoText>{infoText}</InfoText>

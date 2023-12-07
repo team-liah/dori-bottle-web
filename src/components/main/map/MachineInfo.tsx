@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import { MOTION } from '@/constants/MotionConstants';
+import { fetcher } from '@/service/fetch';
 import {
   IMachine,
   getMachineStateLabel,
@@ -9,7 +11,7 @@ import {
 } from '@/types/machine';
 
 interface IMachineInfoProps {
-  machine?: IMachine | null;
+  machineId?: React.Key | null;
 }
 
 //#region Styled Component
@@ -54,7 +56,13 @@ const BoldText = tw.span`
 
 //#endregion
 
-const MachineInfo = ({ machine }: IMachineInfoProps) => {
+const MachineInfo = ({ machineId }: IMachineInfoProps) => {
+  const { data: machine } = useQuery<IMachine>({
+    enabled: machineId !== null,
+    queryKey: ['machine', machineId],
+    queryFn: () => fetcher(`/api/machine/${machineId}`),
+  });
+
   return (
     <AnimatePresence>
       {machine && (
@@ -65,12 +73,14 @@ const MachineInfo = ({ machine }: IMachineInfoProps) => {
             <div className="h-[100px] w-[100px] rounded-lg bg-[url('/assets/machine-rental.png')] bg-contain bg-center bg-no-repeat" />
           )}
           <InfoWrapper>
-            <Title>{`${machine.name} ${getMachineTypeLabel(
-              machine.type,
-            )}`}</Title>
+            <Title>
+              {`${machine.name} ${getMachineTypeLabel(machine.type)}`}
+            </Title>
             <Text>
               <BoldText>위치</BoldText>
-              {` ${machine.address.address1} ${machine.address.address2 || ''}`}
+              {` ${machine.address?.address1} ${
+                machine.address?.address2 || ''
+              }`}
             </Text>
             <Text>
               <BoldText>{getMachineStateLabel(machine.state)}</BoldText>
