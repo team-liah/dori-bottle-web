@@ -17,9 +17,9 @@ const Container = tw(motion.div)`
   absolute
   bottom-0
   w-full
-  px-4
+  px-[30px]
   pt-8
-  pb-[96px]
+  pb-[112px]
   z-[101]
   bg-white
   rounded-t-[20px]
