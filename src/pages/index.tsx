@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import PaymentCreatModal from '@/components/common/modal/PaymentCreatModal';
@@ -16,6 +16,7 @@ import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
+import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
 import { IRemainPoint } from '@/types/point';
@@ -173,7 +174,8 @@ const infoTextList = [
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
-  const setMyLocation = useSetRecoilState(myLocationState);
+  const { openToast } = useToast();
+  const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
@@ -216,6 +218,13 @@ export default function Home() {
   };
 
   const openMap = () => {
+    if (myLocation.latitude === 0) {
+      openToast({
+        component: '위치 정보를 불러오는 중입니다.',
+      });
+
+      return;
+    }
     openModal({
       component: MapModal,
       position: 'bottom',
@@ -233,7 +242,7 @@ export default function Home() {
     setInfoText(getInfoText());
     navigator.geolocation.getCurrentPosition((position) => {
       const { coords } = position;
-      setMyLocation({ lat: coords.latitude, lng: coords.longitude });
+      setMyLocation({ latitude: coords.latitude, longitude: coords.longitude });
     });
   }, [setMyLocation]);
 

@@ -7,20 +7,28 @@ const useMap = () => {
   const myLocation = useRecoilValue(myLocationState);
   const mapRef = useRef<naver.maps.Map>();
 
-  const [selectedMarker, setSelectedMarker] = useState<IMachine | null>(null);
+  const [selectedMachineId, setSelectedMachineId] = useState<React.Key | null>(
+    null,
+  );
 
   const updateSelectedMarker = useCallback((machine: IMachine) => {
-    setSelectedMarker(machine);
+    setSelectedMachineId(machine.id);
   }, []);
 
-  const moveMap = useCallback((lat: number, lng: number) => {
-    mapRef.current?.morph(new window.naver.maps.LatLng(lat, lng), 16);
+  const moveMap = useCallback((latitude: number, longitude: number) => {
+    mapRef.current?.morph(
+      new window.naver.maps.LatLng(latitude, longitude),
+      16,
+    );
   }, []);
 
   const addCurrentLocationMarker = useCallback(() => {
-    if (mapRef.current === undefined || myLocation.lat === 0) return;
+    if (mapRef.current === undefined || myLocation.latitude === 0) return;
     new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(myLocation.lat, myLocation.lng),
+      position: new window.naver.maps.LatLng(
+        myLocation.latitude,
+        myLocation.longitude,
+      ),
       map: mapRef.current,
       icon: {
         content:
@@ -30,13 +38,16 @@ const useMap = () => {
         anchor: new window.naver.maps.Point(20, 20),
       },
     });
-  }, [myLocation.lat, myLocation.lng]);
+  }, [myLocation.latitude, myLocation.longitude]);
 
   const addMachineMarker = useCallback(
     (machine: IMachine) => {
       if (mapRef.current === undefined) return;
       const marker = new window.naver.maps.Marker({
-        position: new window.naver.maps.LatLng(machine.lat, machine.lng),
+        position: new window.naver.maps.LatLng(
+          machine.location.latitude,
+          machine.location.longitude,
+        ),
         map: mapRef.current,
         icon: {
           content: imageHtml(
@@ -53,8 +64,8 @@ const useMap = () => {
       });
 
       window.naver.maps.Event.addListener(marker, 'click', () => {
-        moveMap(machine.lat, machine.lng);
-        setSelectedMarker(machine);
+        moveMap(machine.location.latitude, machine.location.longitude);
+        setSelectedMachineId(machine.id);
       });
     },
     [moveMap],
@@ -64,8 +75,8 @@ const useMap = () => {
     if (!window.naver.maps) return;
     const mapOptions = {
       center: new window.naver.maps.LatLng(
-        myLocation.lat || 37.3595704,
-        myLocation.lng || 127.105399,
+        myLocation.latitude || 37.3595704,
+        myLocation.longitude || 127.105399,
       ),
       zoom: 13,
       minZoom: 9,
@@ -80,14 +91,14 @@ const useMap = () => {
     mapRef.current = map;
 
     window.naver.maps.Event.addListener(mapRef.current, 'click', () => {
-      setSelectedMarker(null);
+      setSelectedMachineId(null);
     });
 
     addCurrentLocationMarker();
-  }, [addCurrentLocationMarker, myLocation.lat, myLocation.lng]);
+  }, [addCurrentLocationMarker, myLocation.latitude, myLocation.longitude]);
 
   return {
-    selectedMarker,
+    selectedMachineId,
     updateSelectedMarker,
     moveMap,
     addMachineMarker,

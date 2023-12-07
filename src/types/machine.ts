@@ -1,5 +1,3 @@
-import { IPageable } from './common';
-
 export type MachineType = 'VENDING' | 'COLLECTION' | 'WASHING';
 export const MACHINE_TYPES: MachineType[] = [
   'VENDING',
@@ -16,6 +14,8 @@ export interface IAddress {
   address2?: string | null;
 }
 
+export interface IMachineListItem
+  extends Pick<IMachine, 'id' | 'type' | 'location' | 'state'> {}
 export interface IMachine {
   id: React.Key;
   no: string;
@@ -25,28 +25,12 @@ export interface IMachine {
   capacity: number;
   cupAmounts: number;
   state: MachineState;
-  lng: number;
-  lat: number;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
   createdDate?: string;
   lastModifiedDate?: string;
-}
-
-export interface IMachineFormValue extends Omit<IMachine, 'id'> {}
-
-export interface IMachinesParams {
-  no?: string;
-  name?: string;
-  type?: MachineType;
-  state?: MachineState;
-  addressKeyword?: string;
-  page?: number;
-  size?: number;
-  sort?: string[];
-}
-
-export interface IMachinesResponse {
-  content: IMachine[];
-  pageable: IPageable;
 }
 
 export const getMachineTypeLabel = (type?: MachineType) => {
