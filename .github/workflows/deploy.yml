@@ -39,12 +39,13 @@ jobs:
           echo "NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY=$NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY" >> .env.production
           echo "NEXT_PUBLIC_KAKAO_PLUS_URL=$NEXT_PUBLIC_KAKAO_PLUS_URL" >> .env.production
           echo "NEXT_PUBLIC_HOST_URL=$NEXT_PUBLIC_HOST_URL" >> .env.production
-          echo "BASE_API_URL=$BASE_API_URL" >> .env.production
           echo "NEXT_PUBLIC_NCP_CLIENT_ID=$NEXT_PUBLIC_NCP_CLIENT_ID" >> .env.production
+          echo "BASE_API_URL=$BASE_API_URL" >> .env.production
         env:
           NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY: ${{ vars.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY }}
           NEXT_PUBLIC_KAKAO_PLUS_URL: ${{ vars.NEXT_PUBLIC_KAKAO_PLUS_URL }}
           NEXT_PUBLIC_HOST_URL: ${{ vars.NEXT_PUBLIC_HOST_URL }}
+          NEXT_PUBLIC_NCP_CLIENT_ID: ${{ vars.NEXT_PUBLIC_NCP_CLIENT_ID }}
           BASE_API_URL: ${{ vars.BASE_API_URL }}
 
       - name: Build, tag, and push image to Amazon ECR
