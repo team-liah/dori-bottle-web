@@ -33,7 +33,16 @@ const Wrapper = tw(Custom.MobileWrapper)`
   pb-[0px]
 `;
 
+const ColorBg = tw.div`
+  absolute
+  top-0
+  h-[27%]
+  w-full
+  bg-main-blue
+`;
+
 const BubbleWrapper = tw.div`
+  relative
   flex
   w-full
   cursor-pointer
@@ -42,7 +51,7 @@ const BubbleWrapper = tw.div`
   gap-4
   rounded-[25px]
   bg-white
-  py-[40px]
+  py-[4vh]
   shadow-[0_0_8px_0px_rgba(17,17,17,0.12)]
 `;
 
@@ -60,9 +69,9 @@ const ButtonWrapper = tw.div`
 `;
 
 const SquareButton = tw.div`
-  mb-8
+  mb-4
   flex
-  h-[180px]
+  h-[20vh]
   w-full
   basis-1/2
   flex-col
@@ -88,10 +97,11 @@ const HistoryButton = tw(Custom.Button)`
 
 const Name = tw.div`
   height-[30px]
+  relative
   mb-4
   w-full
   text-left
-  text-[20px]
+  text-[3vh]
   font-bold
   tracking-[-0.6px]
   text-white
@@ -236,11 +246,8 @@ export default function Home() {
       <Head>
         <meta name="theme-color" content="#056BF1" />
       </Head>
-      <Wrapper
-        style={{
-          background: 'linear-gradient(180deg, #056BF1 220px, #FFFFFF 100px)',
-        }}
-      >
+      <Wrapper>
+        <ColorBg />
         <NavigationBar />
         <Name>
           {user ? (
@@ -278,7 +285,7 @@ export default function Home() {
           </SquareButton>
         </ButtonWrapper>
         <BottomContainer>
-          <img src="/assets/Character.png" className="h-[110px]" alt="QR" />
+          <img src="/assets/Character.png" className="h-[13vh]" alt="QR" />
           <div className="flex flex-col items-start justify-start gap-[30px]">
             <Link href="/guide">
               <InfoText>{infoText}</InfoText>
