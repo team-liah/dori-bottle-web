@@ -28,10 +28,15 @@ const ButtonWrapper = tw.div`
   flex-col
   items-end
   gap-4
-  p-4
+  p-[30px]
 `;
 
-const MyLocationButton = tw.div`
+const MyLocationButton = tw.div<{ $position: 'CENTER' | 'BOTTOM' }>`
+  absolute
+  ${({ $position }) =>
+    $position === 'CENTER' ? 'bottom-[270px]' : 'bottom-[100px]'}
+  right-[30px]
+  z-[101]
   flex
   h-[50px]
   w-[50px]
@@ -40,6 +45,7 @@ const MyLocationButton = tw.div`
   rounded-[25px]
   bg-white
   shadow-[0_0_8px_0px_rgba(17,17,17,0.12)]
+  transition-all
 `;
 
 //#endregion
@@ -94,10 +100,13 @@ const MapModal = () => {
       <Wrapper>
         <div id={'map'} style={{ width: '100%', height: '100%' }} />
         <MachineInfo machine={selectedMarker} />
+        <MyLocationButton
+          $position={selectedMarker ? 'CENTER' : 'BOTTOM'}
+          onClick={onClickMyLocation}
+        >
+          <img src="/svg/current_location.svg" alt="내 위치" />
+        </MyLocationButton>
         <ButtonWrapper>
-          <MyLocationButton onClick={onClickMyLocation}>
-            <img src="/svg/current_location.svg" alt="내 위치" />
-          </MyLocationButton>
           <Custom.Button $style="primary" onClick={onClickNearMachine}>
             가까운 자판기 찾기
           </Custom.Button>
