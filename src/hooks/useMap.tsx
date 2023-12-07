@@ -59,7 +59,7 @@ const useMap = () => {
           ),
           size: new window.naver.maps.Size(40, 40),
           origin: new window.naver.maps.Point(0, 0),
-          anchor: new window.naver.maps.Point(20, 20),
+          anchor: new window.naver.maps.Point(25, 70),
         },
       });
 
@@ -82,9 +82,6 @@ const useMap = () => {
       minZoom: 9,
       scaleControl: false,
       mapDataControl: false,
-      logoControlOptions: {
-        position: naver.maps.Position.BOTTOM_LEFT,
-      },
     };
 
     const map = new window.naver.maps.Map('map', mapOptions);
@@ -93,7 +90,6 @@ const useMap = () => {
     window.naver.maps.Event.addListener(mapRef.current, 'click', () => {
       setSelectedMachineId(null);
     });
-
     addCurrentLocationMarker();
   }, [addCurrentLocationMarker, myLocation.latitude, myLocation.longitude]);
 
