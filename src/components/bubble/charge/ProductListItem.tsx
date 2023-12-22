@@ -12,13 +12,14 @@ interface IProductListItemProps {
 
 const Wrapper = tw.div<{ $selected?: boolean }>`
   flex
-  h-[80px]
+  min-h-[80px]
   w-full
   flex-row
   items-center
   justify-between
   rounded-[15px]
   bg-white
+  py-4
   px-5
   transition-all
   duration-100
@@ -74,6 +75,13 @@ const DiscountTag = tw.span`
   text-main-blue
 `;
 
+const IndiviualPriceText = tw.span`
+  text-[11px]
+  font-medium
+  tracking-[0.3px]
+  text-gray1
+`;
+
 //#endregion
 const ProductListItem = ({
   product,
@@ -98,6 +106,11 @@ const ProductListItem = ({
           )}
           <AmountText>{product.discountPrice?.toLocaleString()}원</AmountText>
         </RowWrapper>
+        {product.discountRate > 0 && (
+          <IndiviualPriceText>{`(${Math.round(
+            product.discountPrice / product.amounts,
+          )}원/개)`}</IndiviualPriceText>
+        )}
       </PriceWrapper>
     </Wrapper>
   );
