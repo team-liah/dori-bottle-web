@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import tw from 'tailwind-styled-components';
 import { MOTION } from '@/constants/MotionConstants';
 
+type StyleType = 'default' | 'warning';
 interface IToolTipProps {
   children: React.ReactNode;
   toolTip: React.ReactNode;
+  toolTipStyle?: StyleType;
 }
 
 //#region Styled Components
@@ -14,7 +16,7 @@ const Wrapper = tw.div`
   relative
 `;
 
-const ToolTipWrapper = tw(motion.div)`
+const ToolTipWrapper = tw(motion.div)<{ $style?: StyleType }>`
   absolute
   top-1/2
   right-[-8px]
@@ -26,6 +28,8 @@ const ToolTipWrapper = tw(motion.div)`
   bg-opacity-[0.85]
   px-3
   py-[10px]
+  z-10
+  ${({ $style }) => $style === 'warning' && 'bg-[#FF5151EE]'}
 `;
 
 const ToolTipText = tw.div`
@@ -46,7 +50,7 @@ const Dimmed = tw.div`
 
 //#endregion
 
-const ToolTip = ({ children, toolTip }: IToolTipProps) => {
+const ToolTip = ({ children, toolTip, toolTipStyle }: IToolTipProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -62,6 +66,7 @@ const ToolTip = ({ children, toolTip }: IToolTipProps) => {
               }}
             />
             <ToolTipWrapper
+              $style={toolTipStyle}
               {...MOTION.FADE}
               transition={{
                 duration: 0.2,
