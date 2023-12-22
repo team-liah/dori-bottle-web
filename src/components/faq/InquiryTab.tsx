@@ -19,9 +19,7 @@ const InfoWrapper = tw.div`
 `;
 
 const Icon = tw.img`
-  h-[181px]
-  w-[195px]
-  scale-x-[-1]
+  w-[40vw]
 `;
 
 const InfoText = tw.div`
@@ -39,7 +37,7 @@ const InquiryTab = () => {
   return (
     <Wrapper>
       <InfoWrapper>
-        <Icon src="/assets/Character.png" />
+        <Icon src="/assets/character-default.png" />
         <InfoText>{'카카오톡 상담채널로\n문의해주세요!'}</InfoText>
       </InfoWrapper>
       <KakaoButton />

@@ -37,13 +37,15 @@ export default function Charge() {
         component: AlertModal,
         props: {
           children: (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-4">
               <img
                 className="h-[80px] w-[80px]"
                 src="/svg/bubble.svg"
                 alt="next"
               />
-              {`버블 ${methods.getValues('product').amounts}개를 충전했어요!`}
+              <span>{`버블 ${
+                methods.getValues('product').amounts
+              }개를 충전했어요!`}</span>
             </div>
           ),
           onClose: () => {

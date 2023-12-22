@@ -79,9 +79,23 @@ const LabelText = tw.div`
   text-point-yellow
 `;
 
-const MainImage = tw.img`
+const LogoWrapper = tw.div`
+  relative
+  flex
+  w-full
+  items-center
+  justify-center
+  bg-white
+`;
+
+const BackgroundImage = tw.img`
+  absolute
   h-[300px]
-  w-[300px]
+`;
+
+const CharacterImage = tw.img`
+  absolute
+  h-[180px]
 `;
 
 //#endregion
@@ -113,7 +127,10 @@ export default function Login() {
           <MainSubText>손쉬운 얼음라이프</MainSubText>
           <MainText>도리보틀</MainText>
         </TextWrapper>
-        <MainImage src="/svg/main.svg" alt="next" />
+        <LogoWrapper>
+          <BackgroundImage src="/svg/main.svg" alt="next" />
+          <CharacterImage src="/assets/character-default.png" alt="next" />
+        </LogoWrapper>
         <BottomContainer>
           <TestLoginButton onClick={handleTestLogin}>
             테스트 로그인

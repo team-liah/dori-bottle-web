@@ -58,4 +58,7 @@ export interface IGroup {
   id: string;
   name: string;
   type: GroupType;
+  discountRate?: number;
+  createdDate?: string;
+  lastModifiedDate?: string;
 }

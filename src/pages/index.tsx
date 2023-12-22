@@ -294,7 +294,11 @@ export default function Home() {
           </SquareButton>
         </ButtonWrapper>
         <BottomContainer>
-          <img src="/assets/Character.png" className="h-[13vh]" alt="QR" />
+          <img
+            src="/assets/character-default.png"
+            className="mx-[8vw] w-[20vw]"
+            alt="QR"
+          />
           <div className="flex flex-col items-start justify-start gap-[30px]">
             <Link href="/guide">
               <InfoText>{infoText}</InfoText>

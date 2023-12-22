@@ -14,7 +14,7 @@ const Wrapper = tw.div`
   flex-col
   items-center
   px-[48px]
-  pt-[132px]
+  pt-[10vh]
 `;
 
 const Title = tw.div`
@@ -31,13 +31,12 @@ const ContentWrapper = tw.div`
   flex
   w-full
   flex-col
-  gap-10
+  gap-8
 `;
 
-const BubbleImage = tw.img`
+const Character = tw.img`
   mx-auto
-  h-[80px]
-  w-[80px]
+  w-[30vw]
 `;
 
 const ButtonImage = tw.img`
@@ -47,7 +46,7 @@ const ButtonImage = tw.img`
 `;
 
 const ContentText = tw.div`
-  mb-[75px]
+  mb-8
   whitespace-pre-line
   text-center
   text-[16px]
@@ -130,7 +129,7 @@ export default function Complete() {
         <b>{`${user?.name}님 환영합니다!`}</b>
       </Title>
       <ContentWrapper>
-        <BubbleImage src="/svg/bubble.svg" alt="next" />
+        <Character src="/assets/character-welcome.png" alt="next" />
         <ContentText>
           <b className="text-main-blue">웰컴버블 20개</b>
           {'를 드렸어요.\n'}

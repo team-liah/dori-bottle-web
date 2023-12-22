@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import tw from 'tailwind-styled-components';
@@ -92,7 +93,7 @@ const AlertCardIcon = tw.img`
   w-[21px]
 `;
 
-const Button = tw.button<{ $style?: 'default' | 'primary' }>`
+const Button = tw.button<{ $style?: 'default' | 'primary' | 'yellow' }>`
   flex
   h-[30px]
   w-[75px]
@@ -105,11 +106,43 @@ const Button = tw.button<{ $style?: 'default' | 'primary' }>`
   ${({ $style }) =>
     $style === 'primary'
       ? 'text-white bg-main-blue'
+      : $style === 'yellow'
+      ? 'text-white bg-yellow'
       : 'text-gray2 bg-back-color'}
+`;
+
+const YellowInfoWrapper = tw(InfoWrapper)`
+  flex
+  flex-row
+  items-center
+  justify-between
+  bg-[#FFF1D6]
+  rounded-[15px]
+  px-5
+  py-[14px]
+  text-[16px]
+  font-medium
+  leading-[22px]
+  tracking-[-0.48px]
+  text-gray1
+`;
+
+const LeaveLink = tw.div`
+  flex
+  cursor-pointer
+  items-center
+  justify-center
+  text-[12px]
+  font-medium
+  leading-[22px]
+  tracking-[-0.36px]
+  text-unactivated
+  underline
 `;
 //#endregion
 
 const MypageLayer = () => {
+  const router = useRouter();
   const { data: profile } = useQuery<IUser>({
     queryKey: ['profile'],
     queryFn: () => fetcher('/api/me/profile'),
@@ -141,6 +174,15 @@ const MypageLayer = () => {
               </Link>
             </InfoText>
           </InfoWrapper>
+          <YellowInfoWrapper>
+            탄소중립실천포인트
+            <Button
+              $style="yellow"
+              onClick={() => router.push('/mypage/cpoint')}
+            >
+              참여하기
+            </Button>
+          </YellowInfoWrapper>
           <InfoWrapper>
             <InfoLabelText>
               레드카드
@@ -155,16 +197,21 @@ const MypageLayer = () => {
             <AlertCardWrapper>
               {Array.from({ length: profile?.penaltyCount || 0 }).map(
                 (_item, index) => (
-                  <AlertCardIcon
+                  <ToolTip
                     key={index}
-                    src="/svg/alert_card.svg"
-                    alt="alert"
-                  />
+                    toolTipStyle="warning"
+                    toolTip={'임시 ToolTip'}
+                  >
+                    <AlertCardIcon src="/svg/alert_card.svg" alt="alert" />
+                  </ToolTip>
                 ),
               )}
             </AlertCardWrapper>
           </InfoWrapper>
         </BottomWrapper>
+        <LeaveLink>
+          <Link href="/mypage/leave">회원 탈퇴하기</Link>
+        </LeaveLink>
       </Wrapper>
     </Layer>
   );
