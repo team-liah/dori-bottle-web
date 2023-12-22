@@ -31,7 +31,6 @@ const Title = tw.div`
 
 const Icon = tw.img`
   h-[140px]
-  scale-x-[-1]
 `;
 
 const BulletTextContainer = tw.ul`
@@ -116,7 +115,7 @@ const InviteRegisterLayer = () => {
             </span>
             <Edge />
           </BubbleText>
-          <Icon src="/assets/Character.png" />
+          <Icon src="/assets/character-default.png" />
         </CharacterWrapper>
         <Controller
           name="invitationCode"
