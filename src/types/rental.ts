@@ -1,4 +1,5 @@
 import { IPageable } from './common';
+import { IMachine } from './machine';
 
 export interface IRentalList {
   content: IRental[];
@@ -20,18 +21,4 @@ export interface IRental {
   createdDate: string;
   expiredDate: string;
   status: RentalStatus;
-}
-
-export interface IMachine {
-  id: string;
-  no: string;
-  name: string;
-  address: Address;
-  type?: 'VENDING' | 'COLLECTION';
-}
-
-export interface Address {
-  zipCode: string;
-  address1: string;
-  address2: string;
 }

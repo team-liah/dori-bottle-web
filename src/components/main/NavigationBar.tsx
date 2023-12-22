@@ -9,6 +9,7 @@ import useAuth from '@/hooks/useAuth';
 //#region Styled Component
 
 const Wrapper = tw.div`
+  relative
   flex
   w-full
   flex-row

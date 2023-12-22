@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useState } from 'react';
+import { RecoilRoot } from 'recoil';
 import Modal from '@/components/common/Modal';
 import Toast from '@/components/common/Toast';
 import { AuthProvider } from '@/context/AuthContext';
@@ -30,15 +31,17 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <FloatingProvider>
-            <AuthProvider>
-              <main className="font-spoqa">
-                <Component {...pageProps} />
-                <Modal />
-                <Toast />
-              </main>
-            </AuthProvider>
-          </FloatingProvider>
+          <RecoilRoot>
+            <FloatingProvider>
+              <AuthProvider>
+                <main className="font-spoqa">
+                  <Component {...pageProps} />
+                  <Modal />
+                  <Toast />
+                </main>
+              </AuthProvider>
+            </FloatingProvider>
+          </RecoilRoot>
         </Hydrate>
       </QueryClientProvider>
     </>
