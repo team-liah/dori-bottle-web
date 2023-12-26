@@ -32,11 +32,15 @@ export const copyToClipboard = async (
 export const getRentalStatus = (status: RentalStatus) => {
   switch (status) {
     case 'PROCEEDING':
+      return '처리 중';
+    case 'CONFIRMED':
       return '대여 중';
     case 'SUCCEEDED':
       return '반납 완료';
     case 'FAILED':
       return '분실';
+    case 'CANCELED':
+      return '취소';
     default:
       return '';
   }

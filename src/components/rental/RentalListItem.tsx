@@ -99,10 +99,14 @@ const Tag = tw.div<{ $status: RentalStatus }>`
     switch ($status) {
       case 'PROCEEDING':
         return 'bg-white text-main-blue';
+      case 'CONFIRMED':
+        return 'bg-white text-main-blue';
       case 'SUCCEEDED':
         return 'bg-main-blue border-main-blue text-white';
       case 'FAILED':
         return 'bg-white text-point-yellow';
+      case 'CANCELED':
+        return 'bg-white text-unactivated';
       default:
         return 'bg-main-blue';
     }
