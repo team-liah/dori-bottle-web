@@ -70,5 +70,5 @@ export interface IGroup {
 }
 
 export const requestUserLeave = (value: ILeaveFormInputs) => {
-  return api.post('/api/account/inactivate', { body: JSON.stringify(value) });
+  return api.post('/api/account/inactivate', value);
 };

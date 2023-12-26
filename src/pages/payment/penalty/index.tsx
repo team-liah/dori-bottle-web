@@ -6,7 +6,6 @@ import PaymentPenaltyLayer from '@/components/payment/penalty/PaymentPenaltyLaye
 import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
 import api from '@/service/api';
-import { IPaymentRefundFormInputs } from '@/types/payment';
 import { getErrorMessage } from '@/utils/error';
 
 //#region Styled Component
@@ -18,7 +17,7 @@ export default function Penalty() {
   const { openModal, closeModal } = useModals();
   const { openToast } = useToast();
 
-  const methods = useForm<IPaymentRefundFormInputs>();
+  const methods = useForm();
 
   useEffect(() => {
     methods.reset();
@@ -40,9 +39,7 @@ export default function Penalty() {
 
   const onSubmit = async () => {
     try {
-      await api.post('/api/payment/unblock-account', {
-        body: JSON.stringify(methods.getValues()),
-      });
+      await api.post('/api/payment/unblock-account');
 
       openModal({
         component: AlertModal,
