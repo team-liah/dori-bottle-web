@@ -73,6 +73,8 @@ export const getBubbleHistoryStatus = (status: BubbleHistoryType) => {
       return '적립 취소';
     case 'USE_CUP':
       return '컵 사용';
+    case 'CANCEL_USE':
+      return '대여 취소';
     case 'DISAPPEAR':
       return '소멸';
     default:
