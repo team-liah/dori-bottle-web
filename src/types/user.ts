@@ -1,4 +1,5 @@
 import { IBlockCause, IPenalty } from './penalty';
+import api from '@/service/api';
 
 export type GroupType = 'UNIVERSITY' | 'COMPANY';
 export type Gender = 'MALE' | 'FEMALE';
@@ -15,6 +16,11 @@ export interface IRegisterFormInputs {
   agreedTermsOfService: boolean;
   agreedTermsOfPrivacy: boolean;
   agreedTermsOfMarketing: boolean;
+}
+
+export interface ILeaveFormInputs {
+  reason: string;
+  agreedTermsOfLeave: boolean;
 }
 
 export interface IInviteRegisterFormInputs {
@@ -62,3 +68,7 @@ export interface IGroup {
   createdDate?: string;
   lastModifiedDate?: string;
 }
+
+export const requestUserLeave = (value: ILeaveFormInputs) => {
+  return api.post('/api/account/inactivate', { body: JSON.stringify(value) });
+};

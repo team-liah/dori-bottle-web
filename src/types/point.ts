@@ -6,6 +6,7 @@ export type BubbleHistoryType =
   | 'SAVE_INVITE_REWARD'
   | 'SAVE_PAY'
   | 'CANCEL_SAVE'
+  | 'CANCEL_USE'
   | 'USE_CUP'
   | 'DISAPPEAR';
 

@@ -6,7 +6,20 @@ export interface IRentalList {
   pageable: IPageable;
 }
 
-export type RentalStatus = 'PROCEEDING' | 'SUCCEEDED' | 'FAILED';
+export type RentalStatus =
+  | 'PROCEEDING'
+  | 'CONFIRMED'
+  | 'SUCCEEDED'
+  | 'FAILED'
+  | 'CANCELED';
+
+export const RENTAL_STATUSES: RentalStatus[] = [
+  'PROCEEDING',
+  'CONFIRMED',
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELED',
+];
 
 export interface IRental {
   id: string;

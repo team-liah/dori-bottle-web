@@ -32,11 +32,15 @@ export const copyToClipboard = async (
 export const getRentalStatus = (status: RentalStatus) => {
   switch (status) {
     case 'PROCEEDING':
+      return '처리 중';
+    case 'CONFIRMED':
       return '대여 중';
     case 'SUCCEEDED':
       return '반납 완료';
     case 'FAILED':
       return '분실';
+    case 'CANCELED':
+      return '취소';
     default:
       return '';
   }
@@ -69,6 +73,8 @@ export const getBubbleHistoryStatus = (status: BubbleHistoryType) => {
       return '적립 취소';
     case 'USE_CUP':
       return '컵 사용';
+    case 'CANCEL_USE':
+      return '대여 취소';
     case 'DISAPPEAR':
       return '소멸';
     default:

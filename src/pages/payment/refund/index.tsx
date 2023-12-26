@@ -41,6 +41,7 @@ export default function Refund() {
   const onSubmitRefund = async () => {
     try {
       await api.post('/api/account/inactivate', {
+        reason: '블락 회원 탈퇴',
         bankAccount: {
           bank: methods.getValues('bankName'),
           accountNumber: methods.getValues('bankAccountNumber'),

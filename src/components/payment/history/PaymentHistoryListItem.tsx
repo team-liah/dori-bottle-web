@@ -79,7 +79,7 @@ const BubbleIcon = tw.img`
   w-[22px]
 `;
 
-const Tag = tw.div<{ $style?: 'default' | 'disabled' }>`
+const Tag = tw.div<{ $style?: 'default' | 'yellow' | 'disabled' }>`
   ml-auto
   flex
   h-[22px]
@@ -93,6 +93,7 @@ const Tag = tw.div<{ $style?: 'default' | 'disabled' }>`
   font-medium
   text-main-blue
   ${({ $style }) => $style === 'disabled' && 'text-unactivated'}
+  ${({ $style }) => $style === 'yellow' && 'text-point-yellow'}
 `;
 const MachineNoText = tw.span`
   text-[12px]
@@ -162,18 +163,32 @@ const PaymentHistoryListItem = ({
                 <MachineNoText>잔여 개수</MachineNoText>
                 <MachineNoText>{history.remainPointAmounts}개</MachineNoText>
               </Content>
-              {(history.status === 'CANCELED' ||
-                history.savePointAmounts === history.remainPointAmounts) && (
-                <Content>
-                  {history.status === 'CANCELED' ? (
-                    <Tag $style="disabled">환불완료</Tag>
-                  ) : (
-                    <Tag $style="default" onClick={onRefund}>
-                      환불하기
-                    </Tag>
-                  )}
-                </Content>
-              )}
+              <Content>
+                {history.status === 'CANCELED' && (
+                  <Tag $style="disabled">환불완료</Tag>
+                )}
+                {history.savePointAmounts === history.remainPointAmounts && (
+                  <Tag $style="default" onClick={onRefund}>
+                    환불하기
+                  </Tag>
+                )}
+              </Content>
+            </Fragment>
+          )}
+          {history.type === 'LOST_CUP' && (
+            <Fragment>
+              <Content>
+                {history.status === 'CANCELED' && (
+                  <Tag $style="disabled">환불완료</Tag>
+                )}
+                {dayjs(history.createdDate).isAfter(
+                  dayjs().subtract(7, 'day'),
+                ) && (
+                  <Tag $style="yellow" onClick={onRefund}>
+                    환불접수
+                  </Tag>
+                )}
+              </Content>
             </Fragment>
           )}
         </OpenWrapper>

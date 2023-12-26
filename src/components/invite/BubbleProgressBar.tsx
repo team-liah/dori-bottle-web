@@ -41,7 +41,7 @@ const PointWrapper = tw.div`
   flex-col
 `;
 
-const BubbleIcon = tw.img`
+const BubbleIcon = tw.object`
   h-[50px]
   min-h-[50px]
   w-[50px]
@@ -67,7 +67,7 @@ const BubbleProgressBar = ({ percent }: IBubbleProgressBarProps) => {
           <PointTextBubbleWrapper>
             <TextBubble side="bottom">{percent}</TextBubble>
           </PointTextBubbleWrapper>
-          <BubbleIcon src="/svg/bubble3.svg" alt="next" />
+          <BubbleIcon data="/svg/bubble3.svg" />
         </PointWrapper>
       </Progress>
     </Wrapper>

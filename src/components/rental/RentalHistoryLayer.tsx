@@ -8,8 +8,9 @@ import SelectBottom from '../common/SelectBottom';
 import Layer from '@/components/common/Layer';
 import useScroll from '@/hooks/useScroll';
 import { fetcher } from '@/service/fetch';
-import { IRentalList, RentalStatus } from '@/types/rental';
+import { IRentalList, RENTAL_STATUSES, RentalStatus } from '@/types/rental';
 import { getErrorMessage } from '@/utils/error';
+import { getRentalStatus } from '@/utils/util';
 
 //#region Styled Component
 
@@ -36,13 +37,6 @@ const RentalList = tw.div`
 `;
 
 //#endregion
-
-const selectItems = [
-  { value: 'ALL', label: '전체내역' },
-  { value: 'PROCEEDING', label: '대여 중' },
-  { value: 'SUCCEEDED', label: '반납완료' },
-  { value: 'FAILED', label: '분실' },
-];
 
 const RentalHistoryLayer = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -76,7 +70,15 @@ const RentalHistoryLayer = () => {
       <Wrapper>
         <SelectWrapper>
           <SelectBottom
-            items={selectItems}
+            items={[
+              { label: '전체', value: 'ALL' },
+              ...RENTAL_STATUSES.filter((value) => value !== 'PROCEEDING').map(
+                (status) => ({
+                  label: getRentalStatus(status),
+                  value: status,
+                }),
+              ),
+            ]}
             value={status}
             onChange={(value) => setStatus(value as RentalStatus | 'ALL')}
           />
