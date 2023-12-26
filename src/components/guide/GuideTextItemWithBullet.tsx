@@ -25,7 +25,6 @@ const TitleWrapper = tw.div`
 `;
 
 const DetailWrapper = tw.div`
-  mb-5
   flex
   w-full
   flex-row
@@ -83,6 +82,7 @@ const GuideTextItemWithBullet = ({
       </TitleWrapper>
       <DetailWrapper>{content}</DetailWrapper>
       <BulletTextContainer>
+        {bulletList && bulletList.length > 0 && <div className="min-h-[6px]" />}
         {bulletList?.map((bullet, index) => (
           <BulletText key={index}>{bullet}</BulletText>
         ))}
