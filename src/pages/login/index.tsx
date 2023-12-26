@@ -90,12 +90,12 @@ const LogoWrapper = tw.div`
 
 const BackgroundImage = tw.img`
   absolute
-  h-[300px]
+  h-[35dvh]
 `;
 
 const CharacterImage = tw.img`
   absolute
-  h-[180px]
+  h-[22dvh]
 `;
 
 //#endregion
