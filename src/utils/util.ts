@@ -40,7 +40,7 @@ export const getRentalStatus = (status: RentalStatus) => {
     case 'FAILED':
       return '분실';
     case 'CANCELED':
-      return '취소';
+      return '대여 취소';
     default:
       return '';
   }
