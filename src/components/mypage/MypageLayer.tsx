@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,6 +9,7 @@ import ToolTip from '../common/ToolTip';
 import Layer from '@/components/common/Layer';
 import { fetcher } from '@/service/fetch';
 import { IUser } from '@/types/user';
+import { getPenaltyTypeLabel } from '@/utils/util';
 
 //#region Styled Component
 
@@ -195,17 +197,19 @@ const MypageLayer = () => {
               </ToolTip>
             </InfoLabelText>
             <AlertCardWrapper>
-              {Array.from({ length: profile?.penaltyCount || 0 }).map(
-                (_item, index) => (
-                  <ToolTip
-                    key={index}
-                    toolTipStyle="warning"
-                    toolTip={'임시 ToolTip'}
-                  >
-                    <AlertCardIcon src="/svg/alert_card.svg" alt="alert" />
-                  </ToolTip>
-                ),
-              )}
+              {profile?.penalties?.map((item, index) => (
+                <ToolTip
+                  key={index}
+                  toolTipStyle="warning"
+                  toolTip={
+                    <span className="whitespace-pre">{`${getPenaltyTypeLabel(
+                      item.type,
+                    )}\n(${dayjs(item.createdDate).format('YY.MM.DD')})`}</span>
+                  }
+                >
+                  <AlertCardIcon src="/svg/alert_card.svg" alt="alert" />
+                </ToolTip>
+              ))}
             </AlertCardWrapper>
           </InfoWrapper>
         </BottomWrapper>
