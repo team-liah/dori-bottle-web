@@ -32,6 +32,7 @@ const Wrapper = tw(Custom.MobileWrapper)`
   px-[1.75rem]
   gap-3
   relative
+  pb-[4vh]
 `;
 
 const ColorBg = tw.div`
@@ -69,7 +70,6 @@ const ButtonWrapper = tw.div`
 `;
 
 const SquareButton = tw.div`
-  mb-4
   flex
   h-[20vh]
   w-full
