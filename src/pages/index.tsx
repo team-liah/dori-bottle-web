@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { MapPinned } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
-import { IoArrowForward } from 'react-icons/io5';
+import { Fragment, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -12,6 +10,7 @@ import InstallPrompt from '@/components/main/InstallPrompt';
 import NavigationBar from '@/components/main/NavigationBar';
 import QrcodeErrorModal from '@/components/main/QrcodeErrorModal';
 import QrcodeModal from '@/components/main/QrcodeModal';
+import SlickBanner from '@/components/main/SlickBanner';
 import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
@@ -19,6 +18,7 @@ import useModals from '@/hooks/useModals';
 import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
+import { useBanners } from '@/types/banner';
 import { IRemainPoint } from '@/types/point';
 import { getErrorMessage } from '@/utils/error';
 
@@ -28,16 +28,16 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex-col
   items-center
   justify-between
-  pt-[24px]
-  px-[28px]
+  pt-[1.5rem]
+  px-[1.75rem]
+  gap-3
   relative
-  pb-[0px]
 `;
 
 const ColorBg = tw.div`
   absolute
   top-0
-  h-[27%]
+  h-[30%]
   w-full
   bg-main-blue
 `;
@@ -62,7 +62,6 @@ const BubbleIcon = tw.img`
 `;
 
 const ButtonWrapper = tw.div`
-  my-[22px]
   flex
   w-full
   flex-row
@@ -79,12 +78,23 @@ const SquareButton = tw.div`
   items-center
   justify-center
   gap-2
-  rounded-[16px]
+  rounded-[25px]
   bg-[#F2F3F8]
   py-4
+  shadow-[0_0_6px_0px_rgba(17,17,17,0.12)]
+`;
+
+const MapSquareButton = tw(SquareButton)`
+  whitespace-pre
   font-bold
   text-gray1
-  shadow-[0_0_6px_0px_rgba(17,17,17,0.12)]
+  tracking-[-0.48px]
+  flex
+  justify-end
+  bg-[url(/svg/main_map.svg)]
+  bg-no-repeat
+  bg-center
+  bg-cover
 `;
 
 const FullLink = tw(Link)`
@@ -97,7 +107,6 @@ const HistoryButton = tw(Custom.Button)`
 `;
 
 const Name = tw.div`
-  height-[30px]
   relative
   mb-4
   w-full
@@ -109,80 +118,28 @@ const Name = tw.div`
 `;
 
 const BubbleText = tw.span`
-  text-[30px]
+  text-[2rem]
   font-bold
   text-gray1
 `;
 
 const BottomContainer = tw.div`
-  flex
-  w-screen
-  flex-row
-  items-center
-  justify-start
-  gap-4
-  bg-[#E2EFFF]
-  py-7
-  pl-4
-  pr-10
-`;
-
-const GuideButton = tw.div`
-  flex
-  flex-row
-  items-center
-`;
-
-const GuideText = tw.div`
-  text-[13px]
-  font-bold
-  tracking-[-0.39px]
-  text-main-blue
-  underline
-`;
-
-const ArrowIcon = tw(IoArrowForward)`
-  text-main-blue
-  w-[16px]
-  h-[16px]
-`;
-
-const InfoText = tw.div`
-  whitespace-pre-line
-  break-words
-  text-left
-  text-[14px]
-  font-medium
-  leading-[22px]
-  text-gray1
+  w-full
 `;
 
 //#endregion
-
-const infoTextList = [
-  '홈화면에 도리보틀을 추가하면\n더 편리하게 이용할 수 있어요!',
-  '얼음컵과 커피믹스를 이용해\n저렴하게 커피를 마실 수 있어요!',
-  '컵을 앞접시로 사용해\n음식을 나누어 먹을 수도 있어요!',
-  '미지근한 음료도\n시원하게 즐길 수 있어요!',
-  '배달음식과 함께\n음료도 시원하게 즐겨요!',
-  '친구를 초대하면\n버블을 모을 수 있어요!',
-  '불편/건의사항을 1:1문의를\n통해 편하게 말씀해주세요!',
-  '학생이라면 기관등록 하고\n10%할인된 가격으로\n버블을 구매할 수 있어요!',
-  '컵에 이물질을 넣거나\n파손하는 경우 레드카드가 부여돼요!',
-];
 
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
   const { openToast } = useToast();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
+  const { data: banners } = useBanners();
+
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
     queryFn: () => fetcher('/api/point/remain-point'),
   });
-
-  const [infoText, setInfoText] = useState<string>('');
-
   const openQrcode = async () => {
     try {
       const result = await fetcher('/api/account/pre-auth');
@@ -232,14 +189,7 @@ export default function Home() {
     });
   };
 
-  const getInfoText = () => {
-    const random = Math.floor(Math.random() * infoTextList.length);
-
-    return infoTextList[random];
-  };
-
   useEffect(() => {
-    setInfoText(getInfoText());
     navigator.geolocation.getCurrentPosition((position) => {
       const { coords } = position;
       setMyLocation({ latitude: coords.latitude, longitude: coords.longitude });
@@ -283,33 +233,19 @@ export default function Home() {
           </FullLink>
         </ButtonWrapper>
         <ButtonWrapper>
+          <MapSquareButton onClick={openMap}>
+            {'도리보틀\n지도 보기'}
+          </MapSquareButton>
           <SquareButton onClick={openQrcode}>
-            {/* <QrCode size={'50%'} /> */}
-            <img src="/svg/qrcode.svg" className="h-1/2 max-h-[50%]" alt="QR" />
-            QR 인증하기
-          </SquareButton>
-          <SquareButton onClick={openMap}>
-            <MapPinned size={'50%'} />
-            자판기 지도
+            <img
+              src="/svg/qrcode.svg"
+              className="h-[60%] max-h-[60%]"
+              alt="QR"
+            />
           </SquareButton>
         </ButtonWrapper>
         <BottomContainer>
-          <img
-            src="/assets/character-default.png"
-            className="mx-[8vw] w-[20vw]"
-            alt="QR"
-          />
-          <div className="flex flex-col items-start justify-start gap-[30px]">
-            <Link href="/guide">
-              <InfoText>{infoText}</InfoText>
-            </Link>
-            <Link href="/guide">
-              <GuideButton>
-                <GuideText>이용가이드 보러가기</GuideText>
-                <ArrowIcon />
-              </GuideButton>
-            </Link>
-          </div>
+          <SlickBanner banners={banners} />
         </BottomContainer>
       </Wrapper>
       <InstallPrompt />
