@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import Slider, { Settings } from 'react-slick';
 import tw from 'tailwind-styled-components';
@@ -54,6 +55,7 @@ const BannerImage = tw.img`
 //#endregion
 
 const SlickBanner = ({ banners }: ISlickBannerProps) => {
+  const router = useRouter();
   const settings: Settings = {
     dots: true,
     arrows: false,
@@ -68,7 +70,10 @@ const SlickBanner = ({ banners }: ISlickBannerProps) => {
   return (
     <Slider {...settings}>
       {banners?.map((banner) => (
-        <div key={banner.id}>
+        <div
+          key={banner.id}
+          onClick={() => router.push(banner.targetUrl ?? '/')}
+        >
           <ItemWrapper
             style={{
               backgroundColor: banner.backgroundColor,

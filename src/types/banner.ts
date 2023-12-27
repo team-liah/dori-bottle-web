@@ -9,6 +9,7 @@ export interface IBanner {
   backgroundColor?: string;
   priority: number;
   visible: boolean;
+  targetUrl?: string;
   createdDate: string;
   lastModifiedDate: string;
 }
