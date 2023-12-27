@@ -1,5 +1,9 @@
 import '@/styles/base.css';
 import 'react-quill/dist/quill.core.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import '@/styles/slick.css';
+
 import {
   Hydrate,
   QueryClient,
