@@ -14,8 +14,10 @@ import { getPenaltyTypeLabel } from '@/utils/util';
 //#region Styled Component
 
 const Wrapper = tw.div`
+  flex
+  h-[80vh]
   w-full
-  pt-6
+  flex-col
 `;
 
 const NameText = tw.div`
@@ -130,6 +132,7 @@ const YellowInfoWrapper = tw(InfoWrapper)`
 `;
 
 const LeaveLink = tw.div`
+  mt-auto
   flex
   cursor-pointer
   items-center
