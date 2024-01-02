@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 interface FloatingComponentType {
   component: React.FC<any>;
@@ -28,6 +29,7 @@ export const FloatingContext = createContext<FloatingContextType>(
 );
 
 const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
+  const router = useRouter();
   const [openedModals, setOpenedModals] = useState<FloatingComponentType[]>([]);
   const [openedToast, setOpenedToasts] = useState<ToastType>();
 
@@ -50,6 +52,10 @@ const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
   const closeToast = useCallback(() => {
     setOpenedToasts(undefined);
   }, []);
+
+  useEffect(() => {
+    setOpenedModals([]);
+  }, [router.pathname]);
 
   return (
     <FloatingContext.Provider
