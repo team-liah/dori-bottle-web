@@ -13,8 +13,10 @@ export interface IRegisterFormInputs {
   name: string;
   gender: string;
   birthDate: string;
+  agreedTermsOfAge: boolean;
   agreedTermsOfService: boolean;
   agreedTermsOfPrivacy: boolean;
+  agreedTermsOfLocation: boolean;
   agreedTermsOfMarketing: boolean;
 }
 

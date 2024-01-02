@@ -126,7 +126,7 @@ export default function Complete() {
   return (
     <Wrapper>
       <Title>
-        <b>{`${user?.name}님 환영합니다!`}</b>
+        <b>{`${user?.name || '사용자'}님 환영합니다!`}</b>
       </Title>
       <ContentWrapper>
         <Character src="/assets/character-welcome.png" alt="next" />
