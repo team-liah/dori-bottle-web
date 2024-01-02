@@ -76,7 +76,7 @@ const CheckButtonWrapper = tw.div`
 
 const CheckText = tw.span`
   text-[14px]
-  font-medium
+  font-normal
   tracking-[-0.48px]
   text-gray1
 `;
@@ -87,6 +87,39 @@ const CheckAllText = tw(CheckText)`
 
 //#endregion
 
+interface ITerm {
+  id: keyof IRegisterFormInputs;
+  text: string;
+  link?: string;
+}
+const termsList: ITerm[] = [
+  {
+    id: 'agreedTermsOfAge',
+    text: '만 14세 이상입니다 (필수)',
+    link: '',
+  },
+  {
+    id: 'agreedTermsOfService',
+    text: '서비스 이용약관 동의 (필수)',
+    link: '',
+  },
+  {
+    id: 'agreedTermsOfPrivacy',
+    text: '개인정보 수집 및 이용 동의 (필수)',
+    link: '',
+  },
+  {
+    id: 'agreedTermsOfLocation',
+    text: '위치기반 서비스 약관 (필수)',
+    link: '',
+  },
+  {
+    id: 'agreedTermsOfMarketing',
+    text: '마케팅 수신 동의 (선택)',
+    link: '',
+  },
+];
+
 const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
   const { openToast } = useToast();
   const { control, formState, watch, setValue } =
@@ -94,24 +127,36 @@ const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
 
   const handleAllAgree = () => {
     if (
+      !watch('agreedTermsOfAge') ||
       !watch('agreedTermsOfService') ||
       !watch('agreedTermsOfPrivacy') ||
+      !watch('agreedTermsOfLocation') ||
       !watch('agreedTermsOfMarketing')
     ) {
+      setValue('agreedTermsOfAge', true);
       setValue('agreedTermsOfService', true);
       setValue('agreedTermsOfPrivacy', true);
+      setValue('agreedTermsOfLocation', true);
       setValue('agreedTermsOfMarketing', true);
     } else {
+      setValue('agreedTermsOfAge', false);
       setValue('agreedTermsOfService', false);
       setValue('agreedTermsOfPrivacy', false);
+      setValue('agreedTermsOfLocation', false);
       setValue('agreedTermsOfMarketing', false);
     }
   };
 
-  const handleDetailTerms = () => {
-    openToast({
-      component: '준비 중입니다.',
-    });
+  const handleDetailTerms = (link?: string) => {
+    if (link) {
+      window.open(link);
+
+      return;
+    } else {
+      openToast({
+        component: '준비 중입니다.',
+      });
+    }
   };
 
   return (
@@ -121,8 +166,10 @@ const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
         <Custom.Button
           type="submit"
           disabled={
+            !watch('agreedTermsOfAge') ||
             !watch('agreedTermsOfService') ||
             !watch('agreedTermsOfPrivacy') ||
+            !watch('agreedTermsOfLocation') ||
             formState.isSubmitting
           }
         >
@@ -136,59 +183,37 @@ const TermsInputLayer = ({ onClickBack }: ITermsInputLayerProps) => {
         <CheckButtonWrapper onClick={handleAllAgree}>
           <CheckAllIcon
             $checked={
+              watch('agreedTermsOfAge') &&
               watch('agreedTermsOfService') &&
               watch('agreedTermsOfPrivacy') &&
+              watch('agreedTermsOfLocation') &&
               watch('agreedTermsOfMarketing')
             }
           />
           <CheckAllText>모두 동의하기</CheckAllText>
         </CheckButtonWrapper>
         <ListWrapper>
-          <Controller
-            name="agreedTermsOfService"
-            control={control}
-            render={({ field }) => (
-              <ListItemWrapper>
-                <CheckButtonWrapper
-                  onClick={() => field.onChange(!field.value)}
-                >
-                  <CheckCircleIcon $checked={field.value} />
-                  <CheckText>서비스 이용약관 동의 (필수)</CheckText>
-                </CheckButtonWrapper>
-                <ChevronRightIcon onClick={handleDetailTerms} />
-              </ListItemWrapper>
-            )}
-          />
-          <Controller
-            name="agreedTermsOfPrivacy"
-            control={control}
-            render={({ field }) => (
-              <ListItemWrapper>
-                <CheckButtonWrapper
-                  onClick={() => field.onChange(!field.value)}
-                >
-                  <CheckCircleIcon $checked={field.value} />
-                  <CheckText>개인정보 수집 및 이용 동의 (필수)</CheckText>
-                </CheckButtonWrapper>
-                <ChevronRightIcon onClick={handleDetailTerms} />
-              </ListItemWrapper>
-            )}
-          />
-          <Controller
-            name="agreedTermsOfMarketing"
-            control={control}
-            render={({ field }) => (
-              <ListItemWrapper>
-                <CheckButtonWrapper
-                  onClick={() => field.onChange(!field.value)}
-                >
-                  <CheckCircleIcon $checked={field.value} />
-                  <CheckText>마케팅 수신 동의 (선택)</CheckText>
-                </CheckButtonWrapper>
-                <ChevronRightIcon onClick={handleDetailTerms} />
-              </ListItemWrapper>
-            )}
-          />
+          {termsList.map((item) => (
+            <Controller
+              key={item.id}
+              name={item.id}
+              control={control}
+              render={({ field }) => (
+                <ListItemWrapper>
+                  <CheckButtonWrapper
+                    onClick={() => field.onChange(!field.value)}
+                  >
+                    {/** @ts-ignore */}
+                    <CheckCircleIcon $checked={field.value} />
+                    <CheckText>{item.text}</CheckText>
+                  </CheckButtonWrapper>
+                  <ChevronRightIcon
+                    onClick={() => handleDetailTerms(item.link)}
+                  />
+                </ListItemWrapper>
+              )}
+            />
+          ))}
         </ListWrapper>
       </Wrapper>
     </Layer>

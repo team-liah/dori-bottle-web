@@ -25,6 +25,14 @@ const Wrapper = tw.div`
   pt-10
 `;
 
+const SubWrapper = tw.div`
+  flex
+  w-full
+  flex-col
+  items-center
+  gap-7
+`;
+
 const Title = tw.div`
   mb-1
   whitespace-pre-line
@@ -59,6 +67,7 @@ const CheckButtonWrapper = tw.div`
 const CheckText = tw.span`
   text-[14px]
   font-medium
+  leading-[20px]
   tracking-[-0.48px]
   text-gray1
 `;
@@ -68,6 +77,7 @@ const CheckCircleIcon = tw(BiCheckCircle)<{ $checked?: boolean }>`
   h-[20px]
   ${(props) => (props.$checked ? 'text-main-blue' : 'text-unactivated')}
   transition-colors
+  mb-[2px]
 `;
 
 //#endregion
@@ -98,7 +108,7 @@ const LeaveInputLayer = ({ onClickBack }: ILeaveInputLayerProps) => {
       }
     >
       <Wrapper>
-        <div className="flex w-full flex-col items-center gap-7">
+        <SubWrapper>
           <Title>도리보틀을 떠나시는 건가요..?</Title>
           <Controller
             name="reason"
@@ -117,8 +127,8 @@ const LeaveInputLayer = ({ onClickBack }: ILeaveInputLayerProps) => {
               />
             )}
           />
-        </div>
-        <div className="flex w-full flex-col items-center gap-8">
+        </SubWrapper>
+        <SubWrapper>
           <Icon src="/assets/character-down.png" />
           <Controller
             name="agreedTermsOfLeave"
@@ -130,7 +140,7 @@ const LeaveInputLayer = ({ onClickBack }: ILeaveInputLayerProps) => {
               </CheckButtonWrapper>
             )}
           />
-        </div>
+        </SubWrapper>
       </Wrapper>
     </Layer>
   );

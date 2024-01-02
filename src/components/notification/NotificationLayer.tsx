@@ -90,7 +90,7 @@ const NotificationLayer = () => {
       case 'NEAR_EXPIRATION':
         return router.push('/rental');
       case 'AUTO_PAYMENT':
-        return router.push('/payment');
+        return router.push('/payment/history');
     }
   };
 
