@@ -50,8 +50,7 @@ const BubbleIcon = tw.img`
   h-[50px]
   w-[50px]
   rounded-[10px]
-  bg-white
-  p-1
+  bg-main-blue
   shadow-[0_0_11px_0px_rgba(17,17,17,0.15)]
 `;
 
@@ -64,7 +63,7 @@ const InstallationModal = ({
   return (
     <Wrapper>
       <TitleWrapper>
-        <BubbleIcon src="/svg/bubble.svg" />
+        <BubbleIcon src="/svg/icon.svg" />
         <TitleText>{'도리보틀 바로가기를\n추가하시겠습니까?'}</TitleText>
       </TitleWrapper>
       <ButtonWrapper>

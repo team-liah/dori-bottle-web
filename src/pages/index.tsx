@@ -27,12 +27,12 @@ const Wrapper = tw(Custom.MobileWrapper)`
   flex
   flex-col
   items-center
-  justify-between
+  justify-evenly
   pt-[1.5rem]
   px-[1.75rem]
   gap-3
   relative
-  pb-[4vh]
+  pb-[10vh]
 `;
 
 const ColorBg = tw.div`
@@ -108,7 +108,6 @@ const HistoryButton = tw(Custom.Button)`
 
 const Name = tw.div`
   relative
-  mb-4
   w-full
   text-left
   text-[3vh]
