@@ -1,4 +1,5 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { BsTriangleFill } from 'react-icons/bs';
 import tw from 'tailwind-styled-components';
@@ -87,15 +88,23 @@ const Edge = tw(BsTriangleFill)`
 
 //#endregion
 const InviteRegisterLayer = () => {
+  const router = useRouter();
   const {
     control,
     watch,
     formState: { errors, isSubmitting },
   } = useFormContext<IInviteRegisterFormInputs>();
 
+  useEffect(() => {
+    console.log(router.asPath);
+  }, [router.asPath]);
+
   return (
     <Layer
       title="초대장"
+      onClickBack={() => {
+        router.push('/');
+      }}
       footer={
         <Custom.Button
           type="submit"

@@ -32,7 +32,6 @@ export default function Charge() {
       await api.post('/api/payment/save-point', {
         categoryId: methods.getValues('product').id,
       });
-      router.replace('/');
       openModal({
         component: AlertModal,
         props: {
@@ -50,6 +49,7 @@ export default function Charge() {
           ),
           onClose: () => {
             closeModal(AlertModal);
+            router.replace('/');
           },
         },
       });

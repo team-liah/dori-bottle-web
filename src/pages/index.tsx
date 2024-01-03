@@ -232,9 +232,7 @@ export default function Home() {
           </FullLink>
         </ButtonWrapper>
         <ButtonWrapper>
-          <MapSquareButton onClick={openMap}>
-            {'도리보틀\n지도 보기'}
-          </MapSquareButton>
+          <MapSquareButton onClick={openMap} />
           <SquareButton onClick={openQrcode}>
             <img
               src="/svg/qrcode.svg"
