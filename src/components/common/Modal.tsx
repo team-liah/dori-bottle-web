@@ -75,7 +75,12 @@ const Modal = () => {
 
           return (
             <ModalWrapper key={index}>
-              <Dimmed onClick={() => closeModal(Component)} />
+              <Dimmed
+                onClick={() => {
+                  closeModal(Component);
+                  props.onClose && props.onClose();
+                }}
+              />
               {position === 'bottom' ? (
                 <BottomSheetContainer
                   $draggable={draggable}
