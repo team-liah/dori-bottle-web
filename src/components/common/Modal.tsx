@@ -78,7 +78,7 @@ const Modal = () => {
               <Dimmed
                 onClick={() => {
                   closeModal(Component);
-                  props.onClose && props.onClose();
+                  props?.onClose && props.onClose();
                 }}
               />
               {position === 'bottom' ? (
