@@ -8,7 +8,7 @@ import * as Custom from '@/components/common/CustomStyledComponent';
 import useMap from '@/hooks/useMap';
 import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
-import { IMachine } from '@/types/machine';
+import { IMachine, MachineType } from '@/types/machine';
 
 //#region Styled Component
 
@@ -27,7 +27,7 @@ const ButtonWrapper = tw.div`
   z-[101]
   flex
   w-full
-  flex-col
+  flex-row
   items-end
   gap-4
   p-[30px]
@@ -83,9 +83,10 @@ const MapModal = () => {
     });
   }, [mapLoading, data, addMachineMarker]);
 
-  const onClickNearMachine = () => {
-    const nearestMachine = data?.reduce((prev, curr) => {
-      if (curr.type === 'COLLECTION') return prev;
+  const onClickNearMachine = (type: MachineType) => {
+    const nearestMachine = data?.reduce((prev: IMachine | null, curr) => {
+      if (curr.type !== type) return prev;
+      if (!prev) return curr;
       const prevDistance = Math.sqrt(
         Math.pow(prev.location.latitude - myLocation.latitude, 2) +
           Math.pow(prev.location.longitude - myLocation.longitude, 2),
@@ -96,7 +97,7 @@ const MapModal = () => {
       );
 
       return prevDistance < currDistance ? prev : curr;
-    }, data[0]);
+    }, null);
 
     if (!nearestMachine) return;
 
@@ -125,8 +126,18 @@ const MapModal = () => {
           <img src="/svg/current_location.svg" alt="내 위치" />
         </MyLocationButton>
         <ButtonWrapper>
-          <Custom.Button $style="primary" onClick={onClickNearMachine}>
-            가까운 자판기 찾기
+          <Custom.Button
+            $style="primary"
+            className="bg-point-yellow"
+            onClick={() => onClickNearMachine('VENDING')}
+          >
+            가까운 자판기
+          </Custom.Button>
+          <Custom.Button
+            $style="primary"
+            onClick={() => onClickNearMachine('COLLECTION')}
+          >
+            가까운 반납함
           </Custom.Button>
         </ButtonWrapper>
       </Wrapper>
