@@ -204,7 +204,7 @@ const RentalListItem = ({ rental }: IRentalListItemProps) => {
             <Content>
               <MachineNoBlock>
                 <Disc />
-                <MachineNoText>수거함번호 {rental.toMachine?.no}</MachineNoText>
+                <MachineNoText>반납함번호 {rental.toMachine?.no}</MachineNoText>
               </MachineNoBlock>
               <DateTimeText>
                 {rental.succeededDate &&

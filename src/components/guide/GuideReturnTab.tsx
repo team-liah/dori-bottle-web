@@ -52,28 +52,28 @@ const Icon = tw.img`
 const guideItemList = [
   {
     id: 1,
-    title: '도리보틀 수거함 발견!',
+    title: '도리보틀 반납함 발견!',
     image: (
       <img src="/assets/guide/return1.png" className="h-[110px]" alt="guide" />
     ),
   },
   {
     id: 2,
-    title: '컵 하단을\n수거함 리더기에 태그하기',
+    title: '컵 하단을\n반납함 리더기에 태그하기',
     image: (
       <img src="/assets/guide/return2.png" className="h-[100px]" alt="guide" />
     ),
   },
   {
     id: 3,
-    title: '수거함 투입구 열림',
+    title: '반납함 투입구 열림',
     image: (
       <img src="/assets/guide/return3.png" className="h-[110px]" alt="guide" />
     ),
   },
   {
     id: 4,
-    title: '컵 뚜껑을 닫은 후\n수거함에 투입',
+    title: '컵 뚜껑을 닫은 후\n반납함에 투입',
     image: (
       <img src="/assets/guide/return4.png" className="h-[100px]" alt="guide" />
     ),

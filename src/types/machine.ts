@@ -21,6 +21,7 @@ export interface IMachine {
   no: string;
   name: string;
   type: MachineType;
+  imageUrl?: string;
   address: IAddress;
   capacity: number;
   cupAmounts: number;
@@ -38,7 +39,7 @@ export const getMachineTypeLabel = (type?: MachineType) => {
     case 'VENDING':
       return '자판기';
     case 'COLLECTION':
-      return '수거함';
+      return '반납함';
     case 'WASHING':
       return '세척기';
     default:

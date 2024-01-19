@@ -4,11 +4,7 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import { MOTION } from '@/constants/MotionConstants';
 import { fetcher } from '@/service/fetch';
-import {
-  IMachine,
-  getMachineStateLabel,
-  getMachineTypeLabel,
-} from '@/types/machine';
+import { IMachine, getMachineTypeLabel } from '@/types/machine';
 
 interface IMachineInfoProps {
   machineId?: React.Key | null;
@@ -32,15 +28,15 @@ const Container = tw(motion.div)`
 
 const InfoWrapper = tw.div`
   flex
+  w-full
   flex-col
-  gap-2
+  justify-between
 `;
 
 const Title = tw.div`
   max-w-[200px]
   truncate
-  text-base
-  text-[24px]
+  text-lg
   font-bold
   text-gray1
 `;
@@ -50,8 +46,16 @@ const Text = tw.div`
   text-gray2
 `;
 
-const BoldText = tw.span`
-  font-bold
+const Tag = tw.div`
+  ml-auto
+  w-fit
+  min-w-[80px]
+  rounded-full
+  px-3
+  py-1
+  text-center
+  text-sm
+  text-white
 `;
 
 //#endregion
@@ -63,29 +67,52 @@ const MachineInfo = ({ machineId }: IMachineInfoProps) => {
     queryFn: () => fetcher(`/api/machine/${machineId}`),
   });
 
+  const breaked =
+    machine?.state === 'MALFUNCTION' ||
+    (machine?.type === 'COLLECTION' &&
+      machine?.capacity <= machine?.cupAmounts) ||
+    (machine?.type === 'VENDING' && machine?.cupAmounts < 1);
+
   return (
     <AnimatePresence>
       {machine && (
         <Container {...MOTION.POP}>
-          {machine.type === 'COLLECTION' ? (
-            <div className="h-[100px] w-[100px] rounded-lg bg-[url('/assets/machine-return.png')] bg-contain bg-center bg-no-repeat" />
-          ) : (
-            <div className="h-[100px] w-[100px] rounded-lg bg-[url('/assets/machine-rental.png')] bg-contain bg-center bg-no-repeat" />
-          )}
+          <div className="min-h-[110px] min-w-[110px] overflow-hidden rounded-2xl">
+            {machine.imageUrl ? (
+              <img
+                src={machine.imageUrl}
+                alt="자판기 정보"
+                className="w-full"
+              />
+            ) : (
+              <div className="flex h-[110px] w-full items-center justify-center bg-gray-light text-xs text-white">
+                이미지 준비중
+              </div>
+            )}
+          </div>
           <InfoWrapper>
-            <Title>
-              {`${machine.name} ${getMachineTypeLabel(machine.type)}`}
-            </Title>
-            <Text>
-              <BoldText>위치</BoldText>
-              {` ${machine.address?.address1} ${
-                machine.address?.address2 || ''
-              }`}
-            </Text>
-            <Text>
-              <BoldText>{getMachineStateLabel(machine.state)}</BoldText>
-              {` ${machine.cupAmounts} / ${machine.capacity}`}
-            </Text>
+            <div>
+              <Tag
+                className={
+                  breaked
+                    ? 'bg-unactivated'
+                    : machine.type === 'VENDING'
+                    ? 'bg-point-yellow'
+                    : 'bg-main-blue'
+                }
+              >
+                {breaked ? '점검 중' : '이용가능'}
+              </Tag>
+              <Title>{`${machine.name}`}</Title>
+              <Text>
+                {` ${machine.address?.address1} ${
+                  machine.address?.address2 || ''
+                }`}
+              </Text>
+            </div>
+            <Text className="text-xs tracking-[0.3px] text-unactivated">{`${getMachineTypeLabel(
+              machine.type,
+            )}번호 ${machine.no}`}</Text>
           </InfoWrapper>
         </Container>
       )}
