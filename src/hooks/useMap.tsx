@@ -140,7 +140,8 @@ const imageHtml = (
   opacity: number,
   imageLink: string,
 ) => {
-  return `<div
-    style="width: ${width}px; height: ${height}px; background-image: url(${imageLink}); background-repeat: no-repeat; background-position: center; background-size: contain; opacity: ${opacity};"
+  return `<object
+    data="${imageLink}"
+    style="width: ${width}px; height: ${height}px; opacity: ${opacity};"
   />`;
 };
