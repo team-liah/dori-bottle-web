@@ -40,14 +40,19 @@ const BottomSheetContainer = tw(motion.div)<{ $draggable?: boolean }>`
   ${(props) => !props.$draggable && 'pb-[30px]'}
 `;
 
-const BottomSheetSlidebar = tw.div`
+const BottomSheetHandleContrainer = tw.div`
   absolute
-  top-[10px]
-  left-[50%]
   z-[1]
+  flex
+  w-full
+  items-center
+  justify-center
+  p-[10px]
+`;
+
+const BottomSheetHandle = tw.div`
   min-h-[5px]
   w-[25vw]
-  -translate-x-1/2
   transform
   rounded-full
   bg-gray2
@@ -92,7 +97,7 @@ const Modal = () => {
                   onTouchMove={(e) => setTouchEnd(e.changedTouches[0].clientY)}
                   onTouchEnd={() => !draggable && handleTouchMove(Component)}
                 >
-                  <BottomSheetSlidebar
+                  <BottomSheetHandleContrainer
                     onTouchStart={(e) => {
                       setTouchEnd(0);
                       setTouchStart(e.targetTouches[0].clientY);
@@ -101,7 +106,9 @@ const Modal = () => {
                       setTouchEnd(e.changedTouches[0].clientY)
                     }
                     onTouchEnd={() => handleTouchMove(Component)}
-                  />
+                  >
+                    <BottomSheetHandle />
+                  </BottomSheetHandleContrainer>
                   <Component {...props} />
                 </BottomSheetContainer>
               ) : (
