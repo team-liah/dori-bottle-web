@@ -39,7 +39,7 @@ const BottomSheetSlidebar = tw.div`
   top-[10px]
   left-[50%]
   h-[4px]
-  w-[10vw]
+  w-[20vw]
   -translate-x-1/2
   transform
   rounded-full

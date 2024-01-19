@@ -42,7 +42,7 @@ const CheckIcon = tw(AiOutlineCheck)`
 `;
 
 const SelectList = tw(motion.div)`
-  pt-[10px]
+  pt-[20px]
   bg-white
 `;
 

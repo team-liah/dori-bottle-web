@@ -36,7 +36,7 @@ const BottomSheetContainer = tw(motion.div)<{ $draggable?: boolean }>`
   rounded-t-[25px]
   overflow-hidden
   bg-white
-  ${(props) => !props.$draggable && 'pt-[20px]'}
+  ${(props) => !props.$draggable && 'pt-[10px]'}
   ${(props) => !props.$draggable && 'pb-[30px]'}
 `;
 
@@ -47,7 +47,8 @@ const BottomSheetHandleContrainer = tw.div`
   w-full
   items-center
   justify-center
-  p-[10px]
+  pb-[20px]
+  pt-[10px]
 `;
 
 const BottomSheetHandle = tw.div`
