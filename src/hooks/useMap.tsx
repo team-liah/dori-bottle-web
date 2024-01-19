@@ -37,12 +37,14 @@ const useMap = () => {
         origin: new window.naver.maps.Point(0, 0),
         anchor: new window.naver.maps.Point(20, 20),
       },
+      zIndex: 100,
     });
   }, [myLocation.latitude, myLocation.longitude]);
 
   const addMachineMarker = useCallback(
     (machine: IMachine) => {
       if (mapRef.current === undefined) return;
+
       const marker = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(
           machine.location.latitude,
@@ -53,6 +55,7 @@ const useMap = () => {
           content: imageHtml(
             50,
             86,
+            1,
             machine.type === 'VENDING'
               ? '/svg/pin_rental.svg'
               : '/svg/pin_collection.svg',
@@ -67,8 +70,35 @@ const useMap = () => {
         moveMap(machine.location.latitude, machine.location.longitude);
         setSelectedMachineId(machine.id);
       });
+
+      return marker;
     },
     [moveMap],
+  );
+
+  const changeMarker = useCallback(
+    (
+      marker: {
+        machine: IMachine;
+        marker: naver.maps.Marker;
+      },
+      opacity: number,
+    ) => {
+      const icon = marker.marker.getIcon();
+      marker.marker.setIcon({
+        ...icon,
+        content: imageHtml(
+          50,
+          86,
+          opacity,
+          marker.machine.type === 'VENDING'
+            ? '/svg/pin_rental.svg'
+            : '/svg/pin_collection.svg',
+        ),
+      });
+      marker.marker.setZIndex(opacity * 10);
+    },
+    [],
   );
 
   const initializeMap = useCallback(() => {
@@ -99,12 +129,18 @@ const useMap = () => {
     moveMap,
     addMachineMarker,
     initializeMap,
+    changeMarker,
   };
 };
 export default useMap;
 
-const imageHtml = (width: number, height: number, imageLink: string) => {
+const imageHtml = (
+  width: number,
+  height: number,
+  opacity: number,
+  imageLink: string,
+) => {
   return `<div
-    style="width: ${width}px; height: ${height}px; background-image: url(${imageLink}); background-repeat: no-repeat; background-position: center; background-size: contain;"
+    style="width: ${width}px; height: ${height}px; background-image: url(${imageLink}); background-repeat: no-repeat; background-position: center; background-size: contain; opacity: ${opacity};"
   />`;
 };
