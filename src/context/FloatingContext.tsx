@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-interface FloatingComponentType {
+export interface FloatingComponentType {
   component: React.FC<any>;
   position?: 'center' | 'bottom';
-  draggable?: boolean;
+  fullScreen?: boolean;
   props?: any;
 }
 

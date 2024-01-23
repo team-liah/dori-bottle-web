@@ -1,11 +1,15 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import tw from 'tailwind-styled-components';
 import { Dimmed } from './CustomStyledComponent';
 import Portal from './Portal';
 import { MOTION } from '@/constants/MotionConstants';
-import { FloatingContext } from '@/context/FloatingContext';
+import {
+  FloatingComponentType,
+  FloatingContext,
+} from '@/context/FloatingContext';
 
 //#region Styled Component
 
@@ -29,34 +33,36 @@ const ModalContainer = tw(motion.div)`
   rounded-[20px]
 `;
 
-const BottomSheetContainer = tw(motion.div)<{ $draggable?: boolean }>`
+const BottomSheetContainer = tw(motion.div)<{ $fullScreen?: boolean }>`
   w-full
   absolute
   bottom-0
-  rounded-t-[25px]
   overflow-hidden
   bg-white
-  ${(props) => !props.$draggable && 'pt-[10px]'}
-  ${(props) => !props.$draggable && 'pb-[30px]'}
-`;
-
-const BottomSheetHandleContrainer = tw.div`
-  absolute
-  z-[1]
-  flex
-  w-full
-  items-center
-  justify-center
-  pb-[20px]
-  pt-[10px]
+  rounded-t-[25px]
+  ${(props) => !props.$fullScreen && 'pt-[10px] pb-[30px]'}
 `;
 
 const BottomSheetHandle = tw.div`
+  mx-auto
   min-h-[5px]
   w-[25vw]
   transform
   rounded-full
   bg-gray2
+`;
+
+const BottomSheetCloseButton = tw(X)`
+  absolute
+  top-5
+  right-5
+  z-[1000]
+  p-[10px]
+  w-[40px]
+  h-[40px]
+  bg-white
+  rounded-full
+  shadow-[0_0_8px_0px_rgba(17,17,17,0.12)]
 `;
 
 //#endregion
@@ -67,9 +73,15 @@ const Modal = () => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
 
-  const handleTouchMove = (component: React.FC<any>) => {
+  const handleClose = (modal: FloatingComponentType) => {
+    closeModal(modal.component);
+    modal.props?.onClose && modal.props.onClose();
+  };
+
+  const handleTouchMove = (modal: FloatingComponentType) => {
+    if (modal.fullScreen) return;
     if (touchStart - touchEnd < -75) {
-      closeModal(component);
+      handleClose(modal);
     }
   };
 
@@ -77,39 +89,28 @@ const Modal = () => {
     <Portal>
       <AnimatePresence>
         {openedModals.map((modal, index) => {
-          const { component: Component, props, position, draggable } = modal;
+          const { component: Component, props, position, fullScreen } = modal;
 
           return (
-            <ModalWrapper key={index}>
-              <Dimmed
-                onClick={() => {
-                  closeModal(Component);
-                  props?.onClose && props.onClose();
-                }}
-              />
+            <ModalWrapper
+              key={index}
+              onTouchStart={(e) => {
+                setTouchEnd(0);
+                setTouchStart(e.targetTouches[0].clientY);
+              }}
+              onTouchMove={(e) => setTouchEnd(e.changedTouches[0].clientY)}
+              onTouchEnd={() => handleTouchMove(modal)}
+            >
+              <Dimmed onClick={() => handleClose(modal)} />
               {position === 'bottom' ? (
-                <BottomSheetContainer
-                  $draggable={draggable}
-                  {...MOTION.POP}
-                  onTouchStart={(e) => {
-                    setTouchEnd(0);
-                    setTouchStart(e.targetTouches[0].clientY);
-                  }}
-                  onTouchMove={(e) => setTouchEnd(e.changedTouches[0].clientY)}
-                  onTouchEnd={() => !draggable && handleTouchMove(Component)}
-                >
-                  <BottomSheetHandleContrainer
-                    onTouchStart={(e) => {
-                      setTouchEnd(0);
-                      setTouchStart(e.targetTouches[0].clientY);
-                    }}
-                    onTouchMove={(e) =>
-                      setTouchEnd(e.changedTouches[0].clientY)
-                    }
-                    onTouchEnd={() => handleTouchMove(Component)}
-                  >
+                <BottomSheetContainer $fullScreen={fullScreen} {...MOTION.POP}>
+                  {fullScreen ? (
+                    <BottomSheetCloseButton
+                      onClick={() => handleClose(modal)}
+                    />
+                  ) : (
                     <BottomSheetHandle />
-                  </BottomSheetHandleContrainer>
+                  )}
                   <Component {...props} />
                 </BottomSheetContainer>
               ) : (

@@ -184,7 +184,7 @@ export default function Home() {
     openModal({
       component: MapModal,
       position: 'bottom',
-      draggable: true,
+      fullScreen: true,
     });
   };
 
