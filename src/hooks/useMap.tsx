@@ -37,14 +37,12 @@ const useMap = () => {
         origin: new window.naver.maps.Point(0, 0),
         anchor: new window.naver.maps.Point(20, 20),
       },
-      zIndex: 100,
     });
   }, [myLocation.latitude, myLocation.longitude]);
 
   const addMachineMarker = useCallback(
     (machine: IMachine) => {
       if (mapRef.current === undefined) return;
-
       const marker = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(
           machine.location.latitude,
@@ -52,14 +50,14 @@ const useMap = () => {
         ),
         map: mapRef.current,
         icon: {
-          content: imageHtml(
-            50,
-            86,
-            1,
-            machine.type === 'VENDING'
-              ? '/svg/pin_rental.svg'
-              : '/svg/pin_collection.svg',
-          ),
+          content: imageHtml({
+            width: 50,
+            height: 86,
+            imageLink:
+              machine.type === 'VENDING'
+                ? '/svg/pin_rental.svg'
+                : '/svg/pin_collection.svg',
+          }),
           size: new window.naver.maps.Size(40, 40),
           origin: new window.naver.maps.Point(0, 0),
           anchor: new window.naver.maps.Point(25, 70),
@@ -87,14 +85,15 @@ const useMap = () => {
       const icon = marker.marker.getIcon();
       marker.marker.setIcon({
         ...icon,
-        content: imageHtml(
-          50,
-          86,
+        content: imageHtml({
+          width: 50,
+          height: 86,
           opacity,
-          marker.machine.type === 'VENDING'
-            ? '/svg/pin_rental.svg'
-            : '/svg/pin_collection.svg',
-        ),
+          imageLink:
+            marker.machine.type === 'VENDING'
+              ? '/svg/pin_rental.svg'
+              : '/svg/pin_collection.svg',
+        }),
       });
       marker.marker.setZIndex(opacity * 10);
     },
@@ -134,14 +133,20 @@ const useMap = () => {
 };
 export default useMap;
 
-const imageHtml = (
-  width: number,
-  height: number,
-  opacity: number,
-  imageLink: string,
-) => {
-  return `<object
-    data="${imageLink}"
-    style="width: ${width}px; height: ${height}px; opacity: ${opacity};"
+interface IImageHtmlProps {
+  width: number;
+  height: number;
+  imageLink: string;
+  opacity?: number;
+}
+
+const imageHtml = ({
+  width,
+  height,
+  imageLink,
+  opacity = 1,
+}: IImageHtmlProps) => {
+  return `<div
+    style="width: ${width}px; height: ${height}px; background-image: url(${imageLink}); background-repeat: no-repeat; background-position: center; background-size: contain; opacity: ${opacity};"
   />`;
 };
