@@ -55,8 +55,8 @@ const useMap = () => {
             height: 86,
             imageLink:
               machine.type === 'VENDING'
-                ? '/svg/pin_rental.svg'
-                : '/svg/pin_collection.svg',
+                ? '/assets/pin_rental.png'
+                : '/assets/pin_collection.png',
           }),
           size: new window.naver.maps.Size(40, 40),
           origin: new window.naver.maps.Point(0, 0),
@@ -91,8 +91,8 @@ const useMap = () => {
           opacity,
           imageLink:
             marker.machine.type === 'VENDING'
-              ? '/svg/pin_rental.svg'
-              : '/svg/pin_collection.svg',
+              ? '/assets/pin_rental.png'
+              : '/assets/pin_collection.png',
         }),
       });
       marker.marker.setZIndex(opacity * 10);
