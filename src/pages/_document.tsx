@@ -1,5 +1,4 @@
 import { Head, Html, Main, NextScript } from 'next/document';
-import Script from 'next/script';
 
 export default function Document() {
   return (
@@ -62,20 +61,6 @@ export default function Document() {
           media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
-        <Script
-          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-          defer
-        />
-        <Script>
-          {`window.OneSignalDeferred = window.OneSignalDeferred || [];
-            OneSignalDeferred.push(function(OneSignal) {
-              OneSignal.init({
-                appId: ${process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID},
-                serviceWorkerParam: { scope: "/workers/" },
-                serviceWorkerPath: "workers/OneSignalSDKWorker.js",
-              });
-            });`}
-        </Script>
       </Head>
       <body>
         <Main />

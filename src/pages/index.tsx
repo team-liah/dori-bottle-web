@@ -15,6 +15,7 @@ import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
 import useModals from '@/hooks/useModals';
+import useOneSignal from '@/hooks/useOneSignal';
 import useToast from '@/hooks/useToast';
 import { fetcher } from '@/service/fetch';
 import { myLocationState } from '@/states/MyLocationState';
@@ -134,6 +135,7 @@ export default function Home() {
   const { openToast } = useToast();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const { data: banners } = useBanners();
+  useOneSignal();
 
   const { data: remainBubble } = useQuery<IRemainPoint>({
     queryKey: ['point', 'remain-point'],
