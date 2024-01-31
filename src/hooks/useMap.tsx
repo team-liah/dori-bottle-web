@@ -51,8 +51,8 @@ const useMap = () => {
         map: mapRef.current,
         icon: {
           content: imageHtml({
-            width: 50,
-            height: 86,
+            width: 40,
+            height: 70,
             imageLink:
               machine.type === 'VENDING'
                 ? '/assets/pin_rental.png'
@@ -60,7 +60,7 @@ const useMap = () => {
           }),
           size: new window.naver.maps.Size(40, 40),
           origin: new window.naver.maps.Point(0, 0),
-          anchor: new window.naver.maps.Point(25, 70),
+          anchor: new window.naver.maps.Point(20, 55),
         },
       });
 
@@ -86,8 +86,8 @@ const useMap = () => {
       marker.marker.setIcon({
         ...icon,
         content: imageHtml({
-          width: 50,
-          height: 86,
+          width: 40,
+          height: 70,
           opacity,
           imageLink:
             marker.machine.type === 'VENDING'
