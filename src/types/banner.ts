@@ -7,6 +7,7 @@ export interface IBanner {
   content: string;
   imageUrl?: string;
   backgroundColor?: string;
+  backgroundImageUrl?: string;
   priority: number;
   visible: boolean;
   targetUrl?: string;

@@ -77,6 +77,12 @@ const SlickBanner = ({ banners }: ISlickBannerProps) => {
           <ItemWrapper
             style={{
               backgroundColor: banner.backgroundColor,
+              backgroundImage: banner.backgroundImageUrl
+                ? `url(${banner.backgroundImageUrl})`
+                : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             <TextWrapper>
