@@ -90,7 +90,16 @@ const NotificationListItem = ({
             <Icon src="/svg/bill.svg" alt="bubble" />
           )}
           {notification.type === 'LOST_CUP' && (
-            <Icon src="/svg/empty_cup.svg" alt="bubble" />
+            <Icon
+              // svg 깨져서 png로 변경
+              src="/svg/empty_cup.png"
+              style={{
+                width: '22px',
+                padding: '2px 4px 2px 4px',
+                height: '22px',
+              }}
+              alt="bubble"
+            />
           )}
           {notification.type === 'NEAR_EXPIRATION' && (
             <Icon src="/svg/alert.svg" alt="bubble" />
