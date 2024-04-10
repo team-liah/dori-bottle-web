@@ -88,12 +88,6 @@ const QrcodeModal = ({ accessToken, refresh }: IQrcodeModalProps) => {
           fgColor={'#000000'}
           level={'L'}
           includeMargin={false}
-          imageSettings={{
-            src: '/svg/bubble.svg',
-            height: 24,
-            width: 24,
-            excavate: true,
-          }}
         />
         {seconds === 0 && (
           <Blur>
