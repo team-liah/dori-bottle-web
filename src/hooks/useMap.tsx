@@ -10,10 +10,10 @@ const useMap = () => {
   const mapRef = useRef<naver.maps.Map>();
 
   const moveMap = useCallback((latitude: number, longitude: number) => {
-    const currentZoom = mapRef.current?.getZoom() ?? 15;
+    const currentZoom = mapRef.current?.getZoom() ?? 17;
     mapRef.current?.morph(
       new window.naver.maps.LatLng(latitude, longitude),
-      currentZoom < 15 ? 15 : currentZoom,
+      currentZoom < 17 ? 17 : currentZoom,
     );
   }, []);
 
@@ -178,7 +178,7 @@ const MarkerComponent = ({
 }: IMarkerComponentProps) => {
   return (
     <div
-      className={`${selected && 'scale-125 animate-bounce'}`}
+      className={`${selected && 'animate-bounce-scale'}`}
       style={{
         width: '40px',
         height: '70px',

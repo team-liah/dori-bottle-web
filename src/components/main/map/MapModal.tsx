@@ -119,7 +119,7 @@ const MapModal = () => {
     data?.forEach((machine) => {
       const marker = addMachineMarker(machine, () => {
         setSelectedMachineId(machine.id);
-        onChangeFilter(machine.type);
+        setSelectedFilter(machine.type);
       });
       if (!marker) return;
       setMarkers((prev) => [
@@ -145,7 +145,7 @@ const MapModal = () => {
   const onClickNearMachine = (type: MachineType) => {
     const nearestMachine = moveToNearMachine(type, data);
     setSelectedMachineId(nearestMachine?.id);
-    onChangeFilter(type);
+    setSelectedFilter(type);
   };
 
   return (

@@ -46,6 +46,23 @@ module.exports = {
       borderRadius: {
         '4xl': '2rem',
       },
+      animation: {
+        'bounce-scale': 'bounce-scale 1s infinite',
+      },
+      keyframes: {
+        'bounce-scale': {
+          '0%, 100%': {
+            transform: 'translateY(-10%)',
+            scale: '1.3',
+            animationTimingFunction: 'cubic-bezier(0.8,0,1,1)',
+          },
+          '50%': {
+            transform: 'translateY(0)',
+            scale: '1.3',
+            animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
+          },
+        },
+      },
     },
   },
 };
