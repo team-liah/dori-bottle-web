@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import Script from 'next/script';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useCallback, useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import MachineInfo from './MachineInfo';
 import * as Custom from '@/components/common/CustomStyledComponent';
 import useMap from '@/hooks/useMap';
 import { fetcher } from '@/service/fetch';
-import { myLocationState } from '@/states/MyLocationState';
 import { IMachine, MachineType } from '@/types/machine';
+import { IMarker } from '@/types/map';
 
 //#region Styled Component
 
@@ -80,22 +79,16 @@ const MyLocationButton = tw.div`
 
 //#endregion
 const MapModal = () => {
-  const [myLocation] = useRecoilState(myLocationState);
   const [mapLoading, setMapLoading] = useState(true);
-  const [markers, setMarkers] = useState<
-    {
-      machine: IMachine;
-      marker: naver.maps.Marker;
-    }[]
-  >([]);
+  const [selectedMachineId, setSelectedMachineId] = useState<React.Key>();
   const [selectedFilter, setSelectedFilter] = useState<MachineType>();
+  const [markers, setMarkers] = useState<IMarker[]>([]);
   const {
-    selectedMachineId,
-    updateSelectedMarker,
-    moveMap,
     initializeMap,
     addMachineMarker,
     changeMarker,
+    moveToMyLocation,
+    moveToNearMachine,
   } = useMap();
 
   const { data } = useQuery<IMachine[]>({
@@ -104,26 +97,30 @@ const MapModal = () => {
   });
 
   const onReady = () => {
-    initializeMap();
+    initializeMap(() => {
+      setSelectedMachineId(undefined);
+    });
     setMapLoading(false);
   };
 
-  const onClickFilter = (type: MachineType) => {
-    setSelectedFilter((prev) => {
-      if (prev === type) return undefined;
-
-      return type;
-    });
-  };
-
-  const onClickMyLocation = () => {
-    moveMap(myLocation.latitude, myLocation.longitude);
-  };
+  const onChangeFilter = useCallback(
+    (type: MachineType) => {
+      if (selectedFilter === type) {
+        setSelectedFilter(undefined);
+      } else {
+        setSelectedFilter(type);
+      }
+    },
+    [selectedFilter],
+  );
 
   useEffect(() => {
     if (mapLoading) return;
     data?.forEach((machine) => {
-      const marker = addMachineMarker(machine);
+      const marker = addMachineMarker(machine, () => {
+        setSelectedMachineId(machine.id);
+        onChangeFilter(machine.type);
+      });
       if (!marker) return;
       setMarkers((prev) => [
         ...prev,
@@ -133,40 +130,22 @@ const MapModal = () => {
         },
       ]);
     });
-  }, [mapLoading, data, addMachineMarker]);
+  }, [mapLoading, data]);
 
   useEffect(() => {
-    markers.forEach((marker) => {
-      marker.machine.type === selectedFilter || selectedFilter === undefined
-        ? changeMarker(marker, 1)
-        : changeMarker(marker, 0.3);
-    });
-  }, [changeMarker, markers, selectedFilter]);
+    markers.forEach((marker) =>
+      changeMarker(
+        marker,
+        selectedMachineId === marker.machine.id,
+        selectedFilter !== undefined && marker.machine.type !== selectedFilter,
+      ),
+    );
+  }, [changeMarker, markers, selectedMachineId, selectedFilter]);
 
   const onClickNearMachine = (type: MachineType) => {
-    const nearestMachine = data?.reduce((prev: IMachine | null, curr) => {
-      if (curr.type !== type) return prev;
-      if (!prev) return curr;
-      const prevDistance = Math.sqrt(
-        Math.pow(prev.location.latitude - myLocation.latitude, 2) +
-          Math.pow(prev.location.longitude - myLocation.longitude, 2),
-      );
-      const currDistance = Math.sqrt(
-        Math.pow(curr.location.latitude - myLocation.latitude, 2) +
-          Math.pow(curr.location.longitude - myLocation.longitude, 2),
-      );
-
-      return prevDistance < currDistance ? prev : curr;
-    }, null);
-
-    if (!nearestMachine) return;
-
-    moveMap(
-      nearestMachine.location.latitude,
-      nearestMachine.location.longitude,
-    );
-    updateSelectedMarker(nearestMachine);
-    setSelectedFilter(type);
+    const nearestMachine = moveToNearMachine(type, data);
+    setSelectedMachineId(nearestMachine?.id);
+    onChangeFilter(type);
   };
 
   return (
@@ -193,7 +172,7 @@ const MapModal = () => {
                     ? 1
                     : 0.3,
               }}
-              onClick={() => onClickFilter('VENDING')}
+              onClick={() => onChangeFilter('VENDING')}
             />
             <Custom.Divider />
             <FilterButton
@@ -206,10 +185,10 @@ const MapModal = () => {
                     ? 1
                     : 0.3,
               }}
-              onClick={() => onClickFilter('COLLECTION')}
+              onClick={() => onChangeFilter('COLLECTION')}
             />
           </FilterButtonWrapper>
-          <MyLocationButton onClick={onClickMyLocation}>
+          <MyLocationButton onClick={moveToMyLocation}>
             <img src="/svg/current_location.svg" alt="내 위치" />
           </MyLocationButton>
         </VerticalButtonWrapper>

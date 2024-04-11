@@ -62,7 +62,7 @@ const Tag = tw.div`
 
 const MachineInfo = ({ machineId }: IMachineInfoProps) => {
   const { data: machine } = useQuery<IMachine>({
-    enabled: machineId !== null,
+    enabled: machineId !== undefined,
     queryKey: ['machine', machineId],
     queryFn: () => fetcher(`/api/machine/${machineId}`),
   });
