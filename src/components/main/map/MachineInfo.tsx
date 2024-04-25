@@ -82,7 +82,7 @@ const BubbleCountItem = tw.div`
   whitespace-nowrap
   rounded-full
   bg-back-color
-  text-[9px]
+  text-[10px]
 `;
 
 //#endregion
@@ -124,11 +124,11 @@ const MachineInfo = ({ machineId }: IMachineInfoProps) => {
                 <BubbleCountWrapper>
                   <BubbleCountItem>
                     <Icon src="/svg/normal_cup.svg" alt="bubble" />
-                    버블 {machine.rentCupAmounts ?? 1}개
+                    {machine.rentCupAmounts ?? 1}개
                   </BubbleCountItem>
                   <BubbleCountItem>
                     <Icon src="/svg/ice_cup.svg" alt="bubble" />
-                    버블 {machine.rentIceCupAmounts ?? 2}개
+                    {machine.rentIceCupAmounts ?? 2}개
                   </BubbleCountItem>
                 </BubbleCountWrapper>
               )}
