@@ -105,10 +105,12 @@ const MapModal = () => {
 
   const onChangeFilter = useCallback(
     (type: MachineType) => {
-      if (selectedFilter === type) {
+      if (selectedFilter && selectedFilter !== type) {
         setSelectedFilter(undefined);
-      } else {
-        setSelectedFilter(type);
+      } else if (type === 'VENDING') {
+        setSelectedFilter('COLLECTION');
+      } else if (type === 'COLLECTION') {
+        setSelectedFilter('VENDING');
       }
     },
     [selectedFilter],
@@ -130,7 +132,7 @@ const MapModal = () => {
         },
       ]);
     });
-  }, [mapLoading, data]);
+  }, [mapLoading, data, addMachineMarker]);
 
   useEffect(() => {
     markers.forEach((marker) =>
@@ -167,10 +169,7 @@ const MapModal = () => {
               src="/svg/rental.svg"
               alt="필터"
               style={{
-                opacity:
-                  selectedFilter === undefined || selectedFilter === 'VENDING'
-                    ? 1
-                    : 0.3,
+                opacity: selectedFilter !== 'COLLECTION' ? 1 : 0.3,
               }}
               onClick={() => onChangeFilter('VENDING')}
             />
@@ -179,11 +178,7 @@ const MapModal = () => {
               src="/svg/collection.svg"
               alt="필터"
               style={{
-                opacity:
-                  selectedFilter === undefined ||
-                  selectedFilter === 'COLLECTION'
-                    ? 1
-                    : 0.3,
+                opacity: selectedFilter !== 'VENDING' ? 1 : 0.3,
               }}
               onClick={() => onChangeFilter('COLLECTION')}
             />
