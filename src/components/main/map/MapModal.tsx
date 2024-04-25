@@ -41,7 +41,7 @@ const BottomButtonWrapper = tw.div`
   flex-row
   items-end
   gap-4
-  p-[30px]
+  p-[20px]
 `;
 
 const FilterButtonWrapper = tw.div`
