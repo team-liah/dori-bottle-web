@@ -15,9 +15,9 @@ const Container = tw(motion.div)`
   absolute
   bottom-0
   w-full
-  px-[30px]
+  px-[20px]
   pt-8
-  pb-[112px]
+  pb-[100px]
   z-[101]
   bg-white
   rounded-t-[20px]
@@ -59,8 +59,8 @@ const Tag = tw.div`
 `;
 
 const Icon = tw.img`
-  h-[16px]
-  w-[15px]
+  h-[14px]
+  w-[12px]
 `;
 
 const BubbleCountWrapper = tw.div`
@@ -82,7 +82,7 @@ const BubbleCountItem = tw.div`
   whitespace-nowrap
   rounded-full
   bg-back-color
-  text-[11px]
+  text-[9px]
 `;
 
 //#endregion
