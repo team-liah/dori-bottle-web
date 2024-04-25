@@ -5,7 +5,7 @@ export const MACHINE_TYPES: MachineType[] = [
   'WASHING',
 ];
 
-export type MachineState = 'NORMAL' | 'MALFUNCTION';
+export type MachineState = 'NORMAL' | 'MALFUNCTION' | 'PAUSE';
 export const MACHINE_STATES: MachineState[] = ['NORMAL', 'MALFUNCTION'];
 
 export interface IAddress {
@@ -26,6 +26,8 @@ export interface IMachine {
   capacity: number;
   cupAmounts: number;
   state: MachineState;
+  rentCupAmounts?: number;
+  rentIceCupAmounts?: number;
   location: {
     latitude: number;
     longitude: number;
