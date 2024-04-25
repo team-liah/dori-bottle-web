@@ -34,20 +34,20 @@ const InfoWrapper = tw.div`
 `;
 
 const Title = tw.div`
+  m
   max-w-[200px]
   truncate
-  text-lg
+  text-[16px]
   font-bold
   text-gray1
 `;
 
 const Text = tw.div`
-  text-sm
+  text-[11px]
   text-gray2
 `;
 
 const Tag = tw.div`
-  ml-auto
   w-fit
   min-w-[80px]
   rounded-full
@@ -56,6 +56,33 @@ const Tag = tw.div`
   text-center
   text-sm
   text-white
+`;
+
+const Icon = tw.img`
+  h-[16px]
+  w-[15px]
+`;
+
+const BubbleCountWrapper = tw.div`
+  flex
+  flex-row
+  items-center
+  justify-center
+  gap-[10px]
+  rounded-full
+  bg-back-color
+  px-4
+`;
+
+const BubbleCountItem = tw.div`
+  flex
+  flex-row
+  items-center
+  gap-1
+  whitespace-nowrap
+  rounded-full
+  bg-back-color
+  text-[11px]
 `;
 
 //#endregion
@@ -69,6 +96,7 @@ const MachineInfo = ({ machineId }: IMachineInfoProps) => {
 
   const breaked =
     machine?.state === 'MALFUNCTION' ||
+    machine?.state === 'PAUSE' ||
     (machine?.type === 'COLLECTION' &&
       machine?.capacity <= machine?.cupAmounts) ||
     (machine?.type === 'VENDING' && machine?.cupAmounts < 1);
@@ -91,7 +119,19 @@ const MachineInfo = ({ machineId }: IMachineInfoProps) => {
             )}
           </div>
           <InfoWrapper>
-            <div>
+            <div className="flex flex-row justify-end gap-3">
+              {machine.type === 'VENDING' && (
+                <BubbleCountWrapper>
+                  <BubbleCountItem>
+                    <Icon src="/svg/normal_cup.svg" alt="bubble" />
+                    버블 {machine.rentCupAmounts ?? 1}개
+                  </BubbleCountItem>
+                  <BubbleCountItem>
+                    <Icon src="/svg/ice_cup.svg" alt="bubble" />
+                    버블 {machine.rentIceCupAmounts ?? 2}개
+                  </BubbleCountItem>
+                </BubbleCountWrapper>
+              )}
               <Tag
                 className={
                   breaked
@@ -101,18 +141,25 @@ const MachineInfo = ({ machineId }: IMachineInfoProps) => {
                     : 'bg-main-blue'
                 }
               >
-                {breaked ? '점검 중' : '이용가능'}
+                {machine.type === 'VENDING' &&
+                  (breaked ? '점검 중' : '이용가능')}
+                {machine.type === 'COLLECTION' &&
+                  (breaked ? '반납불가' : '반납가능')}
               </Tag>
-              <Title>{`${machine.name}`}</Title>
-              <Text>
-                {` ${machine.address?.address1} ${
-                  machine.address?.address2 || ''
-                }`}
-              </Text>
             </div>
-            <Text className="text-xs tracking-[0.3px] text-unactivated">{`${getMachineTypeLabel(
-              machine.type,
-            )}번호 ${machine.no}`}</Text>
+            <div className="flex flex-col gap-3">
+              <div>
+                <Title>{`${machine.name}`}</Title>
+                <Text>
+                  {` ${machine.address?.address1} ${
+                    machine.address?.address2 || ''
+                  }`}
+                </Text>
+              </div>
+              <Text className="text-[11px] tracking-[0.3px] text-unactivated">{`${getMachineTypeLabel(
+                machine.type,
+              )}번호 ${machine.no}`}</Text>
+            </div>
           </InfoWrapper>
         </Container>
       )}
