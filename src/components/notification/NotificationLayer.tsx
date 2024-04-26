@@ -85,6 +85,8 @@ const NotificationLayer = () => {
         return router.push('/notice');
       case 'PENALTY':
         return router.push('/mypage');
+      case 'PENALTY_CANCEL':
+        return router.push('/mypage');
       case 'LOST_CUP':
         return router.push('/rental');
       case 'NEAR_EXPIRATION':

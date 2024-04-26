@@ -101,17 +101,17 @@ const QrcodeErrorModal = ({ error, onClose }: IQrcodeErrorModalProps) => {
           <TextWrapper>
             <p>결제 오류로 인해</p>
             <p>
-              <span className="text-main-blue">컵 분실 패널티가 연체</span>되어
+              <span className="text-main-blue">컵 분실 페널티가 연체</span>되어
             </p>
             <p>서비스 이용이 정지되었습니다.</p>
             <p>서비스 이용을 위해</p>
-            <p>패널티 비용을 결제해주세요!</p>
+            <p>페널티 비용을 결제해주세요!</p>
           </TextWrapper>
           <ButtomWrapper>
             <Button $style="disable" onClick={onClose}>
               닫기
             </Button>
-            <Button onClick={handleConfirm}>패널티 결제</Button>
+            <Button onClick={handleConfirm}>페널티 결제</Button>
           </ButtomWrapper>
           <DetailButton onClick={() => setShowDetail(true)}>
             왜 오류가 발생하나요?

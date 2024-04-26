@@ -11,6 +11,7 @@ export type NotificationType =
   | 'NOTICE'
   | 'PROMOTION'
   | 'PENALTY'
+  | 'PENALTY_CANCEL'
   | 'AUTO_PAYMENT'
   | 'LOST_CUP'
   | 'NEAR_EXPIRATION';

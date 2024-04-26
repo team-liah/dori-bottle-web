@@ -39,12 +39,12 @@ const guideItemList = [
   },
   {
     id: 2,
-    title: '패널티 부과',
+    title: '페널티 부과',
     content: (
       <p>
         24시간 내로 반납되지 않은 컵은{' '}
         <HighlightText $color="blue">분실</HighlightText>처리 되며 등록된 결제
-        수단으로 <HighlightText $color="blue">패널티 8,000원</HighlightText>이
+        수단으로 <HighlightText $color="blue">페널티 8,000원</HighlightText>이
         자동으로 청구됩니다. 반드시 기한 내에 반납해주세요 :)
       </p>
     ),
@@ -61,7 +61,7 @@ const guideItemList = [
           "받을 수 있습니다. 컵 반납 후 ‘결제내역 > 컵 분실'의 상세 탭에서 에서 환불접수를 해주세요. 미접수시 환불되지 않습니다."
         }
       </p>,
-      '컵 분실 시점으로부터 1주일이 지나면 패널티 비용 환불이 불가합니다.',
+      '컵 분실 시점으로부터 1주일이 지나면 페널티 비용 환불이 불가합니다.',
     ],
   },
   {
