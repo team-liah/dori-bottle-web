@@ -55,7 +55,7 @@ const FloatingProvider: React.FC<FloatingContextProps> = ({ children }) => {
 
   useEffect(() => {
     setOpenedModals([]);
-  }, [router.pathname]);
+  }, [router.asPath]);
 
   return (
     <FloatingContext.Provider
