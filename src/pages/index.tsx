@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
@@ -14,6 +15,7 @@ import SlickBanner from '@/components/main/SlickBanner';
 import MapModal from '@/components/main/map/MapModal';
 import { ERROR_MESSAGE } from '@/constants/ErrorMessage';
 import useAuth from '@/hooks/useAuth';
+import useDeviceDetect from '@/hooks/useDeviceDetect';
 import useModals from '@/hooks/useModals';
 import useOneSignal from '@/hooks/useOneSignal';
 import useToast from '@/hooks/useToast';
@@ -132,7 +134,9 @@ const BottomContainer = tw.div`
 export default function Home() {
   const { user, refreshUser } = useAuth();
   const { openModal, closeModal } = useModals();
+  const { isIos } = useDeviceDetect();
   const { openToast } = useToast();
+  const router = useRouter();
   const [myLocation, setMyLocation] = useRecoilState(myLocationState);
   const { data: banners } = useBanners();
   useOneSignal();
@@ -143,6 +147,10 @@ export default function Home() {
   });
   const openQrcode = async () => {
     try {
+      // 안드로이드에서 뒤로 가기 시 모달 닫히도록 수정
+      if (!isIos) {
+        router.push('/', '/qrcode', { shallow: true });
+      }
       const result = await fetcher('/api/account/pre-auth');
       openModal({
         component: QrcodeModal,
