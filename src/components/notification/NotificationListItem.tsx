@@ -86,6 +86,9 @@ const NotificationListItem = ({
           {notification.type === 'PENALTY' && (
             <Icon src="/svg/alert_card.svg" alt="bubble" />
           )}
+          {notification.type === 'PENALTY_CANCEL' && (
+            <Icon src="/svg/alert_card.svg" alt="bubble" />
+          )}
           {notification.type === 'AUTO_PAYMENT' && (
             <Icon src="/svg/bill.svg" alt="bubble" />
           )}
