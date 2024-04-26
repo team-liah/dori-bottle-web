@@ -34,7 +34,7 @@ const guideTabs: ITab[] = [
 
 const GuideLayer = () => {
   return (
-    <Layer title="이용가이드" fullScreen={true}>
+    <Layer title="이용방법" fullScreen={true}>
       <Wrapper>
         <Tab tabs={guideTabs} />
       </Wrapper>

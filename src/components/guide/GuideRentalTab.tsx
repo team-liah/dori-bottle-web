@@ -44,7 +44,6 @@ const Edge = tw(BsTriangleFill)`
 
 const Icon = tw.img`
   w-[99px]
-  scale-x-[-1]
 `;
 
 //#endregion
@@ -95,7 +94,7 @@ const GuideRentalTab = () => {
           <BubbleText>대여완료 !</BubbleText>
           <Edge />
         </BubbleWrapper>
-        <Icon src="/assets/Character.png" />
+        <Icon src="/assets/character-default.png" />
       </BottomWrapper>
     </Wrapper>
   );

@@ -44,7 +44,6 @@ const Edge = tw(BsTriangleFill)`
 
 const Icon = tw.img`
   w-[99px]
-  scale-x-[-1]
 `;
 
 //#endregion
@@ -91,7 +90,7 @@ const GuideReturnTab = () => {
           <BubbleText>반납완료 !</BubbleText>
           <Edge />
         </BubbleWrapper>
-        <Icon src="/assets/Character.png" />
+        <Icon src="/assets/character-default.png" />
       </BottomWrapper>
     </Wrapper>
   );
