@@ -1,7 +1,10 @@
 import React from 'react';
-import { BsTriangleFill } from 'react-icons/bs';
 import tw from 'tailwind-styled-components';
-import * as Custom from '@/components/common/CustomStyledComponent';
+import CpointDrawerItem from './CpointDrawerItem';
+import CpointJoinRequire from './CpointJoinRequire';
+import CpointLinkComplete from './CpointLinkComplete';
+import CpointNoticeTable from './CpointNoticeTable';
+import CpointVerifyRequire from './CpointVerifyRequire';
 import Layer from '@/components/common/Layer';
 
 //#region Styled Component
@@ -15,39 +18,16 @@ const Wrapper = tw.div`
   pt-10
 `;
 
-const Title = tw.div`
-  mb-1
-  whitespace-pre-line
-  text-center
-  text-[24px]
-  font-bold
-  leading-[32px]
-  tracking-[-0.72px]
-  text-main-text
-`;
-
-const SubTitle = tw.div`
-  whitespace-pre-line
-  text-center
-  text-[14px]
-  leading-[22px]
-  tracking-[-0.42px]
-  text-gray1
-`;
-
-const Icon = tw.img`
-  h-[140px]
-`;
-
 const BulletTextContainer = tw.ul`
-  mt-5
   flex
   w-full
   list-outside
   list-disc
   flex-col
   gap-1
-  px-5
+  bg-[#F2F3F8]
+  p-5
+  pl-10
 `;
 
 const BulletText = tw.li`
@@ -56,41 +36,6 @@ const BulletText = tw.li`
   leading-[22px]
   tracking-[-0.36px]
   text-gray2
-`;
-
-const CharacterWrapper = tw.div`
-  flex
-  flex-col
-  items-center
-  justify-center
-  gap-5
-`;
-
-const BubbleText = tw.div`
-  relative
-  flex
-  w-[280px]
-  items-center
-  justify-center
-  whitespace-pre-line
-  rounded-[28px]
-  bg-[#F5F5F5]
-  py-5
-  text-center
-  text-[16px]
-  font-bold
-  leading-[22px]
-  tracking-[-0.48px]
-  text-gray1
-`;
-
-const Edge = tw(BsTriangleFill)`
-  text-[#F5F5F5]
-  translate-x-[-4px]
-  rotate-180
-  bottom-0
-  absolute
-  translate-y-[80%]
 `;
 
 const PolicyWrapper = tw.div`
@@ -107,58 +52,48 @@ const PolicyWrapper = tw.div`
 `;
 
 //#endregion
+
+const bulletList = [
+  '도리보틀 회원이면서 탄소중립실천포인트 가입자인 경우에만 적립 가능합니다.',
+  '탄소중립실천포인트에 이미 가입되어 있더라도 도리보틀 본인인증을 완료해야 포인트 적립이 가능합니다.',
+  '반드시 도리보틀에 가입한 핸드폰 번호로 본인인증해주세요. 인증 번호가 다를 시 포인트 연동이 어렵습니다.',
+  '포인트 가입여부 확인 및 연동은 약 3~5영업일 소요됩니다.',
+  '인센티브 지급 주체는 한국환경공단으로, 한국환경공단의 사정에 따라 변동될 수 있습니다.',
+  '인센티브 적립 내역 및 세부 내용은 탄소중립실천포인트 사이트에서 확인이 가능합니다.(www.cpoint.or.kr/netzero)',
+  '탄소중립실천포인트 운영에 관한 규정(환경부 고시 제2023-16호)에 따라 운영됩니다.',
+  '도리보틀 회원이 아닌 경우 적립 대상에서 제외됩니다.',
+];
+
 const CpointLayer = () => {
-  const bulletList = [
-    <p>탄소중립포인트제 사이트에 가입하면 자동으로 도리보틀과 연동됩니다.</p>,
-    <p>
-      인센티브 지급 주체는 한국환경공단으로, 인센티브는 탄소중립포인트제 기준에
-      따라 익월 말 지급되며 한국환경공단 사정에 따라 변경될 수 있습니다.
-    </p>,
-    <p>
-      인센티브 적립 내역 및 세부내용은 탄소중립포인트제 사이트에서 확인이
-      가능합니다.
-    </p>,
-    <p>
-      탄소중립포인트제 운영에 관한 규정(환경부 고시 제2022-109호)에 따라
-      운영됩니다.
-    </p>,
-  ];
+  const PASS_VERIFIED = true;
+  const CPOINT_JOIN = true;
+
+  const CpointContent = () => {
+    if (!PASS_VERIFIED) return <CpointVerifyRequire />;
+    if (!CPOINT_JOIN) return <CpointJoinRequire />;
+
+    return <CpointLinkComplete />;
+  };
 
   return (
-    <Layer
-      title="탄소중립포인트제"
-      scrollable={true}
-      footer={
-        <a
-          href="https://www.cpoint.or.kr/netzero/main.do"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Custom.Button type="submit">탄소중립포인트제 참여하기</Custom.Button>
-        </a>
-      }
-    >
+    <Layer title="탄소중립실천포인트" scrollable={true} fullScreen={true}>
       <Wrapper>
-        <Title>탄소중립포인트제가 무엇인가요?</Title>
-        <SubTitle>
-          {
-            '친환경활동에 참여하는 국민에게 이용실적에 따라\n인센티브를 지원하는 제도에요.'
-          }
-        </SubTitle>
-        <CharacterWrapper>
-          <BubbleText>
-            {'도리보틀 컵을 반납하면\n200원이 지급돼요!'}
-            <Edge />
-          </BubbleText>
-          <Icon src="/assets/character-wink.png" />
-        </CharacterWrapper>
+        {CpointContent()}
         <PolicyWrapper>
-          [유의사항]
-          <BulletTextContainer>
-            {bulletList?.map((bullet, index) => (
-              <BulletText key={index}>{bullet}</BulletText>
-            ))}
-          </BulletTextContainer>
+          <CpointDrawerItem
+            title="적립 및 지급안내"
+            content={<CpointNoticeTable />}
+          />
+          <CpointDrawerItem
+            title="유의사항"
+            content={
+              <BulletTextContainer>
+                {bulletList.map((text, index) => (
+                  <BulletText key={index}>{text}</BulletText>
+                ))}
+              </BulletTextContainer>
+            }
+          />
         </PolicyWrapper>
       </Wrapper>
     </Layer>
