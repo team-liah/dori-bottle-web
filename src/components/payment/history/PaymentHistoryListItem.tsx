@@ -180,15 +180,18 @@ const PaymentHistoryListItem = ({
           {history.type === 'LOST_CUP' && (
             <Fragment>
               <Content>
-                {history.status === 'CANCELED' && (
+                {history.status === 'CANCELED' ? (
                   <Tag $style="disabled">환불완료</Tag>
-                )}
-                {dayjs(history.createdDate).isAfter(
-                  dayjs().subtract(7, 'day'),
-                ) && (
-                  <Tag $style="yellow" onClick={onInquiry}>
-                    환불접수
-                  </Tag>
+                ) : (
+                  <>
+                    {dayjs(history.createdDate).isAfter(
+                      dayjs().subtract(7, 'day'),
+                    ) && (
+                      <Tag $style="yellow" onClick={onInquiry}>
+                        환불접수
+                      </Tag>
+                    )}
+                  </>
                 )}
               </Content>
             </Fragment>
