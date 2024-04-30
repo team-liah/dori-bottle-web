@@ -10,6 +10,7 @@ import { getPaymentHistoryStatus } from '@/utils/util';
 interface IPaymentHistoryListItemProps {
   history: IPaymentHistory;
   onRefund: () => void;
+  onInquiry: () => void;
 }
 
 //#region Styled Component
@@ -110,6 +111,7 @@ const ChevronIcon = tw(FiChevronDown)<{ $open: boolean }>`
 const PaymentHistoryListItem = ({
   history,
   onRefund,
+  onInquiry,
 }: IPaymentHistoryListItemProps) => {
   const [open, setOpen] = useState(false);
 
@@ -184,7 +186,7 @@ const PaymentHistoryListItem = ({
                 {dayjs(history.createdDate).isAfter(
                   dayjs().subtract(7, 'day'),
                 ) && (
-                  <Tag $style="yellow" onClick={onRefund}>
+                  <Tag $style="yellow" onClick={onInquiry}>
                     환불접수
                   </Tag>
                 )}
