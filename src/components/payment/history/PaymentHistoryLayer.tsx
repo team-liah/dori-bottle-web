@@ -87,6 +87,17 @@ const PaymentHistoryLayer = () => {
       },
     });
   };
+  const openInquiryModal = (history: IPaymentHistory) => {
+    openModal({
+      component: AlertModal,
+      props: {
+        children: '환불 접수를 하시겠습니까?\n컵이 반납되면 환불처리됩니다.',
+        confirmText: '접수하기',
+        onConfirm: () => handleInquiry(history),
+        onClose: () => closeModal(AlertModal),
+      },
+    });
+  };
 
   const handleRefund = async (history: IPaymentHistory) => {
     try {
@@ -107,6 +118,40 @@ const PaymentHistoryLayer = () => {
         component: AlertModal,
         props: {
           children: '환불 처리에 실패하였습니다.',
+          confirmText: '확인',
+          onClose: () => closeModal(AlertModal),
+        },
+      });
+    }
+  };
+
+  const handleInquiry = async (history: IPaymentHistory) => {
+    try {
+      await api.post('/api/inquiry', {
+        type: 'REFUND',
+        content: '분실 비용 환불 요청',
+        target: {
+          id: history.id,
+          classType: 'PAYMENT',
+        },
+      });
+      await queryClient.invalidateQueries(['rental', 'ALL']);
+      await queryClient.invalidateQueries(['rental', type]);
+
+      openModal({
+        component: AlertModal,
+        props: {
+          children:
+            '환불접수가 완료되었습니다.\n컵 반납 검수 후 환불처리 됩니다.',
+          confirmText: '확인',
+          onClose: () => closeModal(AlertModal),
+        },
+      });
+    } catch (error) {
+      openModal({
+        component: AlertModal,
+        props: {
+          children: getErrorMessage(error) ?? '환불 접수에 실패하였습니다.',
           confirmText: '확인',
           onClose: () => closeModal(AlertModal),
         },
@@ -146,6 +191,7 @@ const PaymentHistoryLayer = () => {
                 <PaymentHistoryListItem
                   history={history}
                   onRefund={() => openRefundModal(history)}
+                  onInquiry={() => openInquiryModal(history)}
                 />
                 <Divider />
               </Fragment>
