@@ -1,46 +1,45 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import tw from 'tailwind-styled-components';
+import InquiryList from './InquiryList';
 import * as Custom from '@/components/common/CustomStyledComponent';
-import KakaoButton from '@/components/common/KakaoButton';
 
 //#region Styled Component
 
-const Wrapper = tw(Custom.TabWrapper)`
-  gap-8
-  pt-[calc(50dvh-300px)]
-`;
-
-const InfoWrapper = tw.div`
+const Wrapper = tw.div`
+  h-full
   flex
   w-full
   flex-col
-  items-center
-  gap-6
+  justify-between
 `;
 
-const Icon = tw.img`
-  w-[40vw]
-`;
-
-const InfoText = tw.div`
-  whitespace-pre
-  text-center
-  text-[20px]
-  font-medium
-  leading-normal
-  text-gray1
+const ButtonWrapper = tw.div`
+  flex
+  p-5
 `;
 
 //#endregion
 
 const InquiryTab = () => {
+  const router = useRouter();
+
+  const handleClickCreate = () => {
+    router.push('/faq', '/faq/inquiry/create', { shallow: true });
+  };
+
   return (
     <Wrapper>
-      <InfoWrapper>
-        <Icon src="/assets/character-default.png" />
-        <InfoText>{'카카오톡 상담채널로\n문의해주세요!'}</InfoText>
-      </InfoWrapper>
-      <KakaoButton />
+      {router.asPath === '/faq/inquiry/create' ? (
+        <div>CREATE</div>
+      ) : (
+        <>
+          <InquiryList />
+          <ButtonWrapper>
+            <Custom.Button onClick={handleClickCreate}>문의하기</Custom.Button>
+          </ButtonWrapper>
+        </>
+      )}
     </Wrapper>
   );
 };
