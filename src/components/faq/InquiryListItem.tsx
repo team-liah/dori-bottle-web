@@ -31,7 +31,8 @@ const Content = tw.div`
 `;
 
 const Title = tw.span`
-  text-ellipsis
+  w-full
+  truncate
   text-[16px]
   font-medium
   leading-[22px]
@@ -52,6 +53,8 @@ const OpenWrapper = tw(motion.div)`
 `;
 
 const ContentText = tw.span`
+  whitespace-wrap
+  break-all
   text-[14px]
   leading-[22px]
   text-gray1
