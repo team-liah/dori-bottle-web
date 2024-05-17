@@ -38,6 +38,7 @@
     "react-onesignal": "^3.0.1",
     "react-quill": "^2.0.0",
     "react-slick": "^0.29.0",
+    "react-textarea-autosize": "^8.5.3",
     "recoil": "^0.7.7",
     "slick-carousel": "^1.8.1",
     "tailwind-styled-components": "^2.2.0",
