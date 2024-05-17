@@ -36,31 +36,18 @@ export interface IInquiry {
   lastModifiedDate: string;
 }
 
-export interface IInquirysParams {
-  userId?: React.Key;
-  type?: InquiryType;
-  status?: InquiryStatus;
-  keyword?: string;
-  page?: number;
-  size?: number;
-  sort?: string | string[];
-}
-
 export interface IInquirysResponse {
   content: IInquiry[];
   pageable: IPageable;
 }
 
-export interface IAnswerInquiryFormValue {
-  answer: string;
-}
+export interface IInquiryFormValue extends Partial<IInquiry> {}
 
-export const useInfiniteInquirys = (params: IInquirysParams = {}) => {
+export const useInfiniteInquirys = () => {
   return useInfiniteQuery<IInquirysResponse>({
-    queryKey: ['inquiry', params],
+    queryKey: ['inquiry'],
     queryFn: ({ pageParam = 0 }) =>
       fetcher('/api/inquiry', {
-        ...params,
         page: pageParam,
       }),
     getNextPageParam: (lastPage) => {
@@ -71,7 +58,7 @@ export const useInfiniteInquirys = (params: IInquirysParams = {}) => {
   });
 };
 
-export const createInquiry = (data: Partial<IInquiry>) => {
+export const createInquiry = (data: IInquiryFormValue) => {
   return api.post('/api/inquiry', data);
 };
 
