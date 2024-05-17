@@ -3,6 +3,7 @@ import tw from 'tailwind-styled-components';
 export const Button = tw.button<{ $style?: 'primary' | 'default' | 'disable' }>`
     flex
     h-[54px]
+    min-h-[54px]
     w-full
     items-center
     justify-center

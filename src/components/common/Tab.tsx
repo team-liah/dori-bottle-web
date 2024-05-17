@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import * as Custom from '@/components/common/CustomStyledComponent';
@@ -82,33 +83,48 @@ const Underline = tw(motion.div)`
 //#endregion
 
 const Tab = ({ tabs, tabStyle = 'default' }: ITabProps) => {
-  const [activeTab, setActiveTab] = useState<ITab>();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<ITab>(
+    tabs.find((tab) => tab.id === router.query.tab) || tabs[0],
+  );
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 });
 
+  const handleClickTab = useCallback(
+    (tab: ITab) => {
+      setActiveTab(tab);
+      router.push(`${router.pathname}?tab=${tab.id}`, undefined, {
+        shallow: true,
+      });
+    },
+    [router],
+  );
+
   const handleTouchMove = useCallback(() => {
     if (touchStart.x - touchEnd.x < -75) {
-      setActiveTab(
-        (prev) =>
-          prev &&
-          (tabs.indexOf(prev) === 0
-            ? tabs[tabs.length - 1]
-            : tabs[tabs.indexOf(prev) - 1]),
-      );
+      const newActiveTab =
+        tabs.indexOf(activeTab) === 0
+          ? tabs[tabs.length - 1]
+          : tabs[tabs.indexOf(activeTab) - 1];
+      setActiveTab(newActiveTab);
+      router.push(`${router.pathname}?tab=${newActiveTab.id}`, undefined, {
+        shallow: true,
+      });
     } else if (touchStart.x - touchEnd.x > 75) {
-      setActiveTab(
-        (prev) =>
-          prev &&
-          (tabs.indexOf(prev) === tabs.length - 1
-            ? tabs[0]
-            : tabs[tabs.indexOf(prev) + 1]),
-      );
+      const newActiveTab =
+        tabs.indexOf(activeTab) === tabs.length - 1
+          ? tabs[0]
+          : tabs[tabs.indexOf(activeTab) + 1];
+      setActiveTab(newActiveTab);
+      router.push(`${router.pathname}?tab=${newActiveTab.id}`, undefined, {
+        shallow: true,
+      });
     }
-  }, [tabs, touchEnd.x, touchStart.x]);
+  }, [activeTab, router, tabs, touchEnd.x, touchStart.x]);
 
   useEffect(() => {
-    setActiveTab(tabs[0]);
-  }, [tabs]);
+    setActiveTab(tabs.find((tab) => tab.id === router.query.tab) || tabs[0]);
+  }, [router.query.tab, tabs]);
 
   useEffect(() => {
     handleTouchMove();
@@ -135,7 +151,7 @@ const Tab = ({ tabs, tabStyle = 'default' }: ITabProps) => {
           <TabButton
             $active={activeTab?.id === tab.id}
             key={tab.id}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleClickTab(tab)}
           >
             {activeTab?.id === tab.id && <SelectCircle layoutId="selected" />}
             <div className="relative">{tab.title}</div>
@@ -164,7 +180,7 @@ const Tab = ({ tabs, tabStyle = 'default' }: ITabProps) => {
           <UnderlineTabButton
             $active={activeTab?.id === tab.id}
             key={tab.id}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleClickTab(tab)}
           >
             {activeTab?.id === tab.id && <Underline layoutId="selected" />}
             {tab.title}

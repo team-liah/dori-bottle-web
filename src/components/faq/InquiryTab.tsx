@@ -23,23 +23,16 @@ const ButtonWrapper = tw.div`
 
 const InquiryTab = () => {
   const router = useRouter();
-
   const handleClickCreate = () => {
-    router.push('/faq', '/faq/inquiry/create', { shallow: true });
+    router.push('/faq/inquiry/create');
   };
 
   return (
     <Wrapper>
-      {router.asPath === '/faq/inquiry/create' ? (
-        <div>CREATE</div>
-      ) : (
-        <>
-          <InquiryList />
-          <ButtonWrapper>
-            <Custom.Button onClick={handleClickCreate}>문의하기</Custom.Button>
-          </ButtonWrapper>
-        </>
-      )}
+      <InquiryList />
+      <ButtonWrapper>
+        <Custom.Button onClick={handleClickCreate}>문의하기</Custom.Button>
+      </ButtonWrapper>
     </Wrapper>
   );
 };
