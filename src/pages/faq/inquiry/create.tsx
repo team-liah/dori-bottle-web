@@ -20,7 +20,16 @@ export default function InquiryCreate() {
 
   const onSubmit = async () => {
     try {
-      await createInquiry({ ...methods.getValues(), type: 'ETC' });
+      await createInquiry({
+        ...methods.getValues(),
+        type: 'ETC',
+        target: methods.getValues('originTarget')
+          ? {
+              id: methods.getValues('originTarget')?.id as string,
+              classType: 'RENTAL',
+            }
+          : undefined,
+      });
       queryClient.invalidateQueries({
         queryKey: ['inquiry'],
       });

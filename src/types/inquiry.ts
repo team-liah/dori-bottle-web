@@ -1,5 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { IPageable } from './common';
+import { IPaymentHistory } from './payment';
+import { IRental } from './rental';
 import { IUser } from './user';
 import api from '@/service/api';
 import { fetcher } from '@/service/fetch';
@@ -29,6 +31,7 @@ export interface IInquiry {
     id: React.Key;
     classType: InquiryTargetType;
   };
+  originTarget?: IRental | IPaymentHistory;
   imageUrls: string[];
   answer: string;
   status: InquiryStatus;
