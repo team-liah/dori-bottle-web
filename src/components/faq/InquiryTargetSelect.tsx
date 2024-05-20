@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
@@ -5,6 +6,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import tw from 'tailwind-styled-components';
 import useModals from '@/hooks/useModals';
 import { IRental } from '@/types/rental';
+import { getRentalStatus } from '@/utils/util';
 
 interface IInquiryTargetSelectProps {
   label?: React.ReactNode;
@@ -53,6 +55,8 @@ const CheckIcon = tw(AiOutlineCheck)`
 const SelectList = tw(motion.div)`
   pt-[20px]
   bg-white
+  max-h-[90dvh]
+  overflow-y-auto
 `;
 
 const SelectItem = tw.div`
@@ -78,10 +82,8 @@ const SelectItemBackground = tw.div`
 
 const LabelText = tw.span`
   leadiing-[22px]
-  text-[14px]
-  font-medium
-  tracking-[-0.42px]
-  text-gray1
+  text-[12px]
+  text-gray2
 `;
 
 const ErrorText = tw.span`
@@ -126,9 +128,10 @@ const InquiryTargetSelect = ({
   const getRentalLabel = (rental?: IRental) => {
     if (!rental) return '';
 
-    return `${rental.fromMachine.name} -> ${
-      rental.toMachine ? rental.toMachine.name : '반납'
-    }`;
+    return `no. ${rental.no} - ${dayjs(rental.createdDate).format(
+      'YY.MM.DD HH:mm',
+    )} (${getRentalStatus(rental.status)})
+      `;
   };
 
   return (
@@ -136,7 +139,9 @@ const InquiryTargetSelect = ({
       {label}
       <SelectedWrapper onClick={toggleOpen}>
         <LabelText>
-          {initialRental ? getRentalLabel(initialRental) : '문의대상 선택'}
+          {initialRental
+            ? getRentalLabel(initialRental)
+            : '이용내역에 대해 문의하려면 선택해주세요'}
         </LabelText>
         <ChevronIcon />
       </SelectedWrapper>
@@ -156,7 +161,16 @@ const SelectItemWrapper = ({ items, value, onClickItem }: ISelectItemProps) => {
       {items.map((item) => (
         <SelectItem key={item.id} onClick={() => onClickItem(item)}>
           <SelectItemBackground>
-            <LabelText>{item.no}</LabelText>
+            <div className="flex flex-col gap-1">
+              <LabelText>
+                <b>
+                  {`${dayjs(item.createdDate).format(
+                    'YY.MM.DD HH:mm',
+                  )} (${getRentalStatus(item.status)})`}
+                </b>
+              </LabelText>
+              <LabelText>no.{item.no}</LabelText>
+            </div>
             {item.id === value?.id && <CheckIcon />}
           </SelectItemBackground>
         </SelectItem>
