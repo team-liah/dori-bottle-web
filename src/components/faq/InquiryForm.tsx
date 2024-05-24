@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
 import InquiryTargetSelect from './InquiryTargetSelect';
+import MultiFileUpload from '../common/MultiFileUpload';
 import TextArea from '../common/TextArea';
 import { fetcher } from '@/service/fetch';
 import { IInquiryFormValue } from '@/types/inquiry';
@@ -87,9 +88,8 @@ const InquiryForm = () => {
         name="imageUrls"
         control={control}
         render={({ field }) => (
-          <TextArea
+          <MultiFileUpload
             label={<Label>사진 첨부 (최대 5장)</Label>}
-            placeholder="내용을 입력해주세요"
             field={field}
             error={errors.imageUrls?.message}
           />
