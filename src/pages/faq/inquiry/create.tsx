@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import AlertModal from '@/components/common/modal/AlertModal';
 import InquiryCreateLayer from '@/components/faq/InquiryCreateLayer';
 import useModals from '@/hooks/useModals';
+import { uploadFiles } from '@/service/uploadApi';
 import { IInquiryFormValue, createInquiry } from '@/types/inquiry';
 import { getErrorMessage } from '@/utils/error';
 
@@ -20,6 +21,8 @@ export default function InquiryCreate() {
 
   const onSubmit = async () => {
     try {
+      const originImageFiles = methods.getValues('originImageFiles');
+      const imageUrls = await uploadFiles(originImageFiles);
       await createInquiry({
         ...methods.getValues(),
         type: 'ETC',
@@ -29,6 +32,7 @@ export default function InquiryCreate() {
               classType: 'RENTAL',
             }
           : undefined,
+        imageUrls: imageUrls.map((item) => item.url),
       });
       queryClient.invalidateQueries({
         queryKey: ['inquiry'],
@@ -50,7 +54,7 @@ export default function InquiryCreate() {
         },
       });
     } catch (error: any) {
-      methods.setError('content', {
+      methods.setError('originImageFiles', {
         type: 'manual',
         message: getErrorMessage(error),
       });

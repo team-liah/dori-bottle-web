@@ -44,7 +44,9 @@ export interface IInquirysResponse {
   pageable: IPageable;
 }
 
-export interface IInquiryFormValue extends Partial<IInquiry> {}
+export interface IInquiryFormValue extends Partial<IInquiry> {
+  originImageFiles: File[];
+}
 
 export const useInfiniteInquirys = () => {
   return useInfiniteQuery<IInquirysResponse>({

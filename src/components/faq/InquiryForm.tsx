@@ -16,7 +16,7 @@ const Wrapper = tw.div`
   h-[calc(100dvh-250px)]
   w-full
   flex-col
-  gap-10
+  gap-8
   overflow-y-auto
   pt-14
 `;
@@ -85,13 +85,14 @@ const InquiryForm = () => {
         )}
       />
       <Controller
-        name="imageUrls"
+        name="originImageFiles"
         control={control}
         render={({ field }) => (
           <MultiFileUpload
             label={<Label>사진 첨부 (최대 5장)</Label>}
             field={field}
-            error={errors.imageUrls?.message}
+            maxCount={5}
+            error={errors.originImageFiles?.message}
           />
         )}
       />
