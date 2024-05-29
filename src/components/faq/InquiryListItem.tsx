@@ -71,6 +71,36 @@ const ChevronIcon = tw(FiChevronDown)<{ $open: boolean }>`
   ${({ $open }) => $open && 'rotate-180'}
 `;
 
+const ContentImageList = tw.div`
+  flex
+  flex-row
+  flex-wrap
+  gap-2
+  py-5
+`;
+
+const ThumbInner = tw.div`
+  aspect-square
+  h-[55px]
+  max-h-[55px]
+  min-h-[55px]
+  w-[55px]
+  min-w-[55px]
+  max-w-[55px]
+  overflow-hidden
+  rounded-[8px]
+`;
+
+const StyledImage = tw.img`
+  h-[55px]
+  max-h-[55px]
+  min-h-[55px]
+  w-[55px]
+  min-w-[55px]
+  max-w-[55px]
+  object-cover
+`;
+
 //#endregion
 const InquiryListItem = ({ inquiry }: IInquiryListItemProps) => {
   const [open, setOpen] = useState(false);
@@ -93,6 +123,13 @@ const InquiryListItem = ({ inquiry }: IInquiryListItemProps) => {
           <Content>
             <ContentLabel>[문의내용]</ContentLabel>
             <ContentText>{inquiry.content}</ContentText>
+            <ContentImageList>
+              {inquiry.imageUrls?.map((url, index) => (
+                <ThumbInner key={index}>
+                  <StyledImage alt={`문의사항 사진 - ${index}`} src={url} />
+                </ThumbInner>
+              ))}
+            </ContentImageList>
           </Content>
           <Content>
             <ContentLabel>[답변]</ContentLabel>
