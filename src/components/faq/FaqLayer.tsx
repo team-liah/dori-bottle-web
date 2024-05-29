@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import FaqTab from './FaqTab';
@@ -15,20 +16,26 @@ const Wrapper = tw.div`
 
 const guideTabs: ITab[] = [
   {
-    id: 'rental',
+    id: 'faq',
     title: 'FAQ',
     children: <FaqTab />,
   },
   {
-    id: 'return',
+    id: 'inquiry',
     title: '1:1 문의하기',
     children: <InquiryTab />,
   },
 ];
 
 const FaqLayer = () => {
+  const router = useRouter();
+
   return (
-    <Layer title="문의하기" fullScreen={true}>
+    <Layer
+      title="문의하기"
+      fullScreen={true}
+      onClickBack={() => router.replace('/')}
+    >
       <Wrapper>
         <Tab tabs={guideTabs} tabStyle="underline" />
       </Wrapper>

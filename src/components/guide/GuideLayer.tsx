@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import GuidePolicyTab from './GuidePolicyTab';
@@ -33,8 +34,14 @@ const guideTabs: ITab[] = [
 ];
 
 const GuideLayer = () => {
+  const router = useRouter();
+
   return (
-    <Layer title="이용방법" fullScreen={true}>
+    <Layer
+      title="이용방법"
+      fullScreen={true}
+      onClickBack={() => router.replace('/')}
+    >
       <Wrapper>
         <Tab tabs={guideTabs} />
       </Wrapper>
