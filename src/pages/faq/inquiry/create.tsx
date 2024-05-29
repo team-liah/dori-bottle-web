@@ -22,7 +22,7 @@ export default function InquiryCreate() {
   const onSubmit = async () => {
     try {
       const originImageFiles = methods.getValues('originImageFiles');
-      const imageUrls = await uploadFiles(originImageFiles);
+      const imageUrls = await uploadFiles(originImageFiles ?? []);
       await createInquiry({
         ...methods.getValues(),
         type: 'ETC',
@@ -33,6 +33,8 @@ export default function InquiryCreate() {
             }
           : undefined,
         imageUrls: imageUrls.map((item) => item.url),
+        originTarget: undefined,
+        originImageFiles: undefined,
       });
       queryClient.invalidateQueries({
         queryKey: ['inquiry'],

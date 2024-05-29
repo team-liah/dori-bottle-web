@@ -11,17 +11,11 @@ export const uploadFile: (file: File) => Promise<IUploadFileResponse> = async (
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await axios.post(
-    '/api/asset/upload',
-    {
-      body: formData,
+  const res = await axios.post('/api/asset/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    },
-  );
+  });
 
   return res.data;
 };

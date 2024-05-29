@@ -45,7 +45,7 @@ export interface IInquirysResponse {
 }
 
 export interface IInquiryFormValue extends Partial<IInquiry> {
-  originImageFiles: File[];
+  originImageFiles?: File[];
 }
 
 export const useInfiniteInquirys = () => {
